@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#ffffff">
   <meta name="description" content="SARVESH AI Chat">
   <title>SARVESH AI</title>
+  <link rel="manifest" href="./manifest.json">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -1229,6 +1230,15 @@
       }
 
     })();
+  </script>
+  <script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(() => console.log("SARVESH AI service worker registered"))
+      .catch(error => console.error("Service worker error:", error));
+  });
+}
   </script>
 </body>
 </html>
