@@ -493,22 +493,6 @@
 
       "use strict";
 
-      /*
-       * ==========================================================
-       * SARVESH AI FRONTEND
-       * ==========================================================
-       *
-       * Normal AI chat:
-       *   POST / Worker
-       *
-       * Image generation:
-       *   POST / Worker
-       *   { type: "image", prompt: "..." }
-       *
-       * IMPORTANT:
-       * OpenRouter API key stays on Cloudflare Worker.
-       */
-
       const APP_NAME = "SARVESH";
 
       const API_URL =
@@ -1021,12 +1005,6 @@
 
       }
 
-      /*
-       * ==========================================================
-       * NORMAL TEXT CHAT
-       * ==========================================================
-       */
-
       async function sendMessage(text) {
 
         const content =
@@ -1150,12 +1128,6 @@
         }
 
       }
-
-      /*
-       * ==========================================================
-       * IMAGE GENERATION
-       * ==========================================================
-       */
 
       async function generateImage(prompt) {
 
@@ -1468,166 +1440,34 @@
 
               /*
                * ==================================================
-               * FIXED DOWNLOAD BUTTON
+               * DOWNLOAD BUTTON
                * ==================================================
+               *
+               * Android/PWA-friendly method:
+               * Open the generated image in a
+               * separate browser tab.
+               *
+               * Then use Android:
+               * ⋮ → Download
                */
 
               const download =
-                document.createElement("button");
-
-              download.type =
-                "button";
+                document.createElement("a");
 
               download.className =
                 "image-download";
 
+              download.href =
+                message.image;
+
+              download.target =
+                "_blank";
+
+              download.rel =
+                "noopener";
+
               download.textContent =
                 "⬇️ Download image";
-
-              download.addEventListener(
-                "click",
-                function () {
-
-                  try {
-
-                    /*
-                     * Convert the Base64 data URL
-                     * directly into a Blob.
-                     *
-                     * This avoids relying on
-                     * fetch(data:...) which can
-                     * fail in some Android/PWA browsers.
-                     */
-
-                    const parts =
-                      message.image.split(",");
-
-                    const header =
-                      parts[0];
-
-                    const base64 =
-                      parts[1];
-
-                    if (
-                      !header ||
-                      !base64
-                    ) {
-
-                      throw new Error(
-                        "Invalid image data."
-                      );
-
-                    }
-
-                    const mimeMatch =
-                      header.match(
-                        /data:(.*?);base64/
-                      );
-
-                    const mime =
-                      mimeMatch
-                        ? mimeMatch[1]
-                        : "image/jpeg";
-
-                    const binary =
-                      atob(base64);
-
-                    const bytes =
-                      new Uint8Array(
-                        binary.length
-                      );
-
-                    for (
-                      let i = 0;
-                      i < binary.length;
-                      i++
-                    ) {
-
-                      bytes[i] =
-                        binary.charCodeAt(i);
-
-                    }
-
-                    const blob =
-                      new Blob(
-                        [bytes],
-                        {
-                          type: mime
-                        }
-                      );
-
-                    const blobUrl =
-                      URL.createObjectURL(
-                        blob
-                      );
-
-                    const link =
-                      document.createElement("a");
-
-                    link.href =
-                      blobUrl;
-
-                    link.download =
-                      "sarvesh-ai-image.jpg";
-
-                    link.style.display =
-                      "none";
-
-                    document.body.appendChild(
-                      link
-                    );
-
-                    link.click();
-
-                    link.remove();
-
-                    setTimeout(
-                      function () {
-
-                        URL.revokeObjectURL(
-                          blobUrl
-                        );
-
-                      },
-                      1000
-                    );
-
-                  } catch (error) {
-
-                    console.error(
-                      "Image download failed:",
-                      error
-                    );
-
-                    /*
-                     * Android/PWA fallback:
-                     * open the generated image.
-                     */
-
-                    try {
-
-                      window.open(
-                        message.image,
-                        "_blank"
-                      );
-
-                    } catch (fallbackError) {
-
-                      console.error(
-                        "Image fallback failed:",
-                        fallbackError
-                      );
-
-                      alert(
-                        "Unable to download the image. Please try again."
-                      );
-
-                    }
-
-                  }
-
-                }
-              );
 
               bubble.appendChild(
                 download
@@ -1905,12 +1745,6 @@
 
       }
 
-      /*
-       * ==========================================================
-       * INITIALIZE
-       * ==========================================================
-       */
-
       function init() {
 
         loadTheme();
@@ -1923,9 +1757,6 @@
           .style
           .display = "none";
 
-        /*
-         * New chat
-         */
         $("newChatBtn")
           .addEventListener(
             "click",
@@ -1938,9 +1769,6 @@
             }
           );
 
-        /*
-         * Mobile sidebar
-         */
         $("menuBtn")
           .addEventListener(
             "click",
@@ -1959,9 +1787,6 @@
             closeSidebar
           );
 
-        /*
-         * Settings
-         */
         $("settingsBtn")
           .addEventListener(
             "click",
@@ -1974,18 +1799,12 @@
             openSettings
           );
 
-        /*
-         * Theme
-         */
         $("themeBtn")
           .addEventListener(
             "click",
             toggleTheme
           );
 
-        /*
-         * System prompt
-         */
         $("systemPromptBtn")
           .addEventListener(
             "click",
@@ -1997,12 +1816,6 @@
             "click",
             saveSystemPrompt
           );
-
-        /*
-         * ======================================================
-         * IMAGE GENERATION BUTTON
-         * ======================================================
-         */
 
         $("imageBtn")
           .addEventListener(
@@ -2041,9 +1854,6 @@
             }
           );
 
-        /*
-         * Rename
-         */
         $("cancelRename")
           .addEventListener(
             "click",
@@ -2064,9 +1874,6 @@
             saveRename
           );
 
-        /*
-         * Chat form
-         */
         $("chatForm")
           .addEventListener(
             "submit",
@@ -2081,9 +1888,6 @@
             }
           );
 
-        /*
-         * Text input
-         */
         $("messageInput")
           .addEventListener(
             "input",
@@ -2098,10 +1902,6 @@
             }
           );
 
-        /*
-         * Enter = send
-         * Shift + Enter = new line
-         */
         $("messageInput")
           .addEventListener(
             "keydown",
@@ -2127,9 +1927,6 @@
             }
           );
 
-        /*
-         * Settings modal
-         */
         document
           .querySelectorAll(".modalClose")
           .forEach(
@@ -2143,9 +1940,6 @@
             }
           );
 
-        /*
-         * System modal
-         */
         document
           .querySelectorAll(".systemClose")
           .forEach(
@@ -2159,9 +1953,6 @@
             }
           );
 
-        /*
-         * Close settings by background
-         */
         $("settingsModal")
           .addEventListener(
             "click",
@@ -2179,9 +1970,6 @@
             }
           );
 
-        /*
-         * Close system prompt by background
-         */
         $("systemModal")
           .addEventListener(
             "click",
@@ -2199,9 +1987,6 @@
             }
           );
 
-        /*
-         * Close rename modal
-         */
         $("renameModal")
           .addEventListener(
             "click",
@@ -2223,9 +2008,6 @@
             }
           );
 
-        /*
-         * Rename keyboard shortcuts
-         */
         $("renameInput")
           .addEventListener(
             "keydown",
