@@ -288,6 +288,41 @@ box-shadow:0 10px 35px rgba(0,0,0,.2)
 display:block;max-width:100%;height:auto;border-radius:14px
 }
 
+/* =========================================================
+   GENERATED IMAGE DOWNLOAD BUTTON
+   ========================================================= */
+
+.image-download-wrap{
+display:flex;
+align-items:center;
+margin-top:10px
+}
+
+.download-image-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:7px;
+padding:9px 13px;
+border-radius:11px;
+color:#67e8f9;
+background:rgba(34,211,238,.06);
+border:1px solid rgba(34,211,238,.16);
+font-size:13px;
+transition:.2s
+}
+
+.download-image-btn:hover{
+color:#020617;
+background:#67e8f9;
+border-color:#67e8f9;
+box-shadow:0 0 20px rgba(34,211,238,.25)
+}
+
+.download-image-btn svg{
+flex:0 0 auto
+}
+
 .markdown-content pre{
 max-width:100%;overflow:auto;padding:14px;border-radius:12px;
 background:rgba(0,0,0,.35)
@@ -578,6 +613,11 @@ main{width:100%;margin-left:0}
 .top-status{font-size:8px}
 #toolsMenu{width:180px}
 .message-speaker{width:30px;height:30px}
+
+.download-image-btn{
+padding:8px 11px;
+font-size:12px
+}
 }
 
 html,body,#app,main,#messages,#chatForm,.markdown-content{
@@ -1592,6 +1632,72 @@ speechIndex=0;
 
 
 /* =========================================================
+   IMAGE DOWNLOAD
+   ========================================================= */
+
+function downloadGeneratedImage(button){
+
+try{
+
+const image=
+button.closest(".generated-image-container")
+?.querySelector("img");
+
+if(!image || !image.src){
+
+throw new Error("Image data is unavailable.");
+
+}
+
+const imageUrl=image.src;
+
+const link=
+document.createElement("a");
+
+link.href=imageUrl;
+link.download=
+"sarvesh-ai-image-"+Date.now()+".png";
+
+document.body.appendChild(link);
+link.click();
+link.remove();
+
+}catch(error){
+
+/*
+ If the browser blocks direct download of a data URL,
+ open the image instead so it can still be saved manually.
+*/
+
+try{
+
+const image=
+button.closest(".generated-image-container")
+?.querySelector("img");
+
+if(image && image.src){
+
+window.open(
+image.src,
+"_blank"
+);
+
+return;
+
+}
+
+}catch{}
+
+alert(
+"Unable to download the image. Please long-press the image and choose Save image."
+);
+
+}
+
+}
+
+
+/* =========================================================
    MESSAGE RENDERING
    ========================================================= */
 
@@ -1706,6 +1812,58 @@ speakText(content||"");
 };
 
 tools.appendChild(speaker);
+
+/*
+ Add the download button only when this assistant message
+ actually contains a generated image.
+*/
+const hasGeneratedImage=
+bubble.querySelector(
+".generated-image-container img"
+);
+
+if(hasGeneratedImage){
+
+const downloadButton=
+document.createElement("button");
+
+downloadButton.type="button";
+downloadButton.className="download-image-btn";
+downloadButton.title="Download image";
+
+downloadButton.innerHTML=`
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+<path d="M12 3v12"
+stroke="currentColor"
+stroke-width="1.8"
+stroke-linecap="round"/>
+<path d="m7 11 5 5 5-5"
+stroke="currentColor"
+stroke-width="1.8"
+stroke-linecap="round"
+stroke-linejoin="round"/>
+<path d="M5 21h14"
+stroke="currentColor"
+stroke-width="1.8"
+stroke-linecap="round"/>
+</svg>
+<span>Download Image</span>
+`;
+
+downloadButton.onclick=e=>{
+
+e.stopPropagation();
+
+downloadGeneratedImage(
+downloadButton
+);
+
+};
+
+tools.appendChild(downloadButton);
+
+}
+
 wrap.appendChild(tools);
 
 }
@@ -1827,12 +1985,6 @@ addTyping();
 $("messageInput").value="";
 
 try{
-
-/*
- Creator identity is automatically included
- with the existing saved system prompt.
- No other behavior is changed.
-*/
 
 const savedSystem=
 localStorage.getItem(SYSTEM_KEY)||"";
@@ -2013,11 +2165,18 @@ imageUrl;
 
 removeTyping();
 
+/*
+ The image is wrapped in a container so the
+ Download Image button can find it after
+ the conversation is rendered again.
+*/
 chat.messages.push({
 role:"assistant",
 content:
-`<img src="${imageUrl}" alt="Generated image"
-style="max-width:100%;height:auto;border-radius:14px;display:block;">`
+`<div class="generated-image-container">
+<img src="${imageUrl}" alt="Generated image"
+style="max-width:100%;height:auto;border-radius:14px;display:block;">
+</div>`
 });
 
 }else{
