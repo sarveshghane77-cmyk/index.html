@@ -1627,49 +1627,147 @@ speechIndex=0;
    IMAGE DOWNLOAD
    ========================================================= */
 
-async function downloadGeneratedImage(button){
+/*
+ IMPORTANT:
+
+ The generated image is already stored as a
+ data:image/jpeg;base64,... URL.
+
+ We intentionally DO NOT use:
+
+     await fetch(image.src)
+
+before clicking the download link.
+
+That asynchronous operation can cause Android Chrome
+to lose the original user tap/download permission.
+
+Instead, the Base64 image is converted to a Blob
+synchronously and the download is triggered immediately.
+*/
+
+function downloadGeneratedImage(button){
 
 const container=
-button.closest(".generated-image-container");
+button.closest(
+".generated-image-container"
+);
 
 const image=
 container?.querySelector("img");
 
 if(!image || !image.src){
 
+console.error(
+"SARVESH AI: Generated image not found."
+);
+
 return;
 
 }
 
-const imageUrl=image.src;
+const imageUrl=
+image.src;
 
 const filename=
-"sarvesh-ai-image-"+Date.now()+".png";
+"sarvesh-ai-image-"+
+Date.now()+
+".jpg";
 
 
 /*
- First method:
- Convert the image into a real Blob URL.
+ CASE 1:
+ Generated image is a Base64 data URL.
 
- This is more reliable inside Android WebView
- than directly downloading a data:image URL.
+ This is the normal SARVESH AI image format.
 */
+
+if(
+imageUrl.startsWith("data:")
+){
 
 try{
 
-const response=
-await fetch(imageUrl);
+const commaIndex=
+imageUrl.indexOf(",");
 
-if(!response.ok){
+if(commaIndex===-1){
 
 throw new Error(
-"Unable to read generated image."
+"Invalid image data."
 );
 
 }
 
+const header=
+imageUrl.slice(
+0,
+commaIndex
+);
+
+const base64=
+imageUrl.slice(
+commaIndex+1
+);
+
+const mimeMatch=
+header.match(
+/data:([^;]+);base64/i
+);
+
+const mimeType=
+mimeMatch?.[1]||
+"image/jpeg";
+
+const binary=
+atob(base64);
+
+const chunkSize=8192;
+
+const chunks=[];
+
+for(
+let offset=0;
+offset<binary.length;
+offset+=chunkSize
+){
+
+const slice=
+binary.slice(
+offset,
+Math.min(
+offset+chunkSize,
+binary.length
+)
+);
+
+const bytes=
+new Uint8Array(
+slice.length
+);
+
+for(
+let i=0;
+i<slice.length;
+i++
+){
+
+bytes[i]=
+slice.charCodeAt(i);
+
+}
+
+chunks.push(bytes);
+
+}
+
 const blob=
-await response.blob();
+new Blob(
+chunks,
+{
+type:mimeType
+}
+);
 
 const blobUrl=
 URL.createObjectURL(blob);
@@ -1679,29 +1777,35 @@ document.createElement("a");
 
 link.href=blobUrl;
 link.download=filename;
-link.style.display="none";
+link.style.position="fixed";
+link.style.left="-9999px";
+link.style.width="1px";
+link.style.height="1px";
 
 document.body.appendChild(link);
 
+/*
+ This click happens synchronously from the
+ original button click.
+*/
+
 link.click();
 
-setTimeout(()=>{
-
-try{
-
 link.remove();
+
+setTimeout(
+()=>{
 URL.revokeObjectURL(blobUrl);
-
-}catch{}
-
-},5000);
+},
+15000
+);
 
 return;
 
 }catch(error){
 
-console.log(
-"SARVESH AI blob download attempt failed:",
+console.error(
+"SARVESH AI Base64 download failed:",
 error
 );
 
@@ -1709,9 +1813,7 @@ error
 
 
 /*
- Second method:
- Try direct download if the WebView does not
- support the Blob download method.
+ Direct data URL fallback.
 */
 
 try{
@@ -1727,28 +1829,100 @@ document.body.appendChild(link);
 
 link.click();
 
-setTimeout(
-()=>link.remove(),
-1000
-);
+link.remove();
 
 return;
 
 }catch(error){
 
-console.log(
-"SARVESH AI direct download attempt failed:",
+console.error(
+"SARVESH AI direct image download failed:",
 error
 );
 
 }
 
+}
+
 
 /*
- No popup is shown here.
- The old "Unable to download..." alert
- has intentionally been removed.
+ CASE 2:
+ The image happens to be a normal HTTP/HTTPS URL.
+
+ This fallback uses a normal browser download.
 */
+
+if(
+imageUrl.startsWith("http://") ||
+imageUrl.startsWith("https://")
+){
+
+try{
+
+const link=
+document.createElement("a");
+
+link.href=imageUrl;
+link.download=filename;
+link.target="_blank";
+link.rel="noopener";
+
+document.body.appendChild(link);
+
+link.click();
+
+link.remove();
+
+return;
+
+}catch(error){
+
+console.error(
+"SARVESH AI URL download failed:",
+error
+);
+
+}
+
+}
+
+
+/*
+ CASE 3:
+ Blob URL.
+*/
+
+if(
+imageUrl.startsWith("blob:")
+){
+
+try{
+
+const link=
+document.createElement("a");
+
+link.href=imageUrl;
+link.download=filename;
+link.style.display="none";
+
+document.body.appendChild(link);
+
+link.click();
+
+link.remove();
+
+return;
+
+}catch(error){
+
+console.error(
+"SARVESH AI Blob URL download failed:",
+error
+);
+
+}
+
+}
 
 }
 
@@ -1868,12 +2042,6 @@ speakText(content||"");
 };
 
 tools.appendChild(speaker);
-
-
-/*
- Add download button only when this assistant
- message contains a generated image.
-*/
 
 const hasGeneratedImage=
 bubble.querySelector(
@@ -2067,31 +2235,44 @@ system
 }
 );
 
-if(!response.ok){
+let data=null;
 
-throw new Error(
-"Server error: "+response.status
-);
+try{
+
+data=
+await response.json();
+
+}catch{
+
+data=null;
 
 }
 
-const data=
-await response.json();
+if(!response.ok){
+
+throw new Error(
+data?.error||
+data?.details||
+"Server error: "+
+response.status
+);
+
+}
 
 let reply="";
 
 if(typeof data==="string")
 reply=data;
-else if(data.reply)
+else if(data?.reply)
 reply=data.reply;
-else if(data.response)
+else if(data?.response)
 reply=data.response;
-else if(data.message)
+else if(data?.message)
 reply=data.message;
-else if(data.content)
+else if(data?.content)
 reply=data.content;
 else if(
-data.choices &&
+data?.choices &&
 data.choices[0] &&
 data.choices[0].message
 )
@@ -2099,6 +2280,14 @@ reply=
 data.choices[0].message.content;
 else
 reply=JSON.stringify(data);
+
+if(!reply){
+
+throw new Error(
+"Server returned an empty reply."
+);
+
+}
 
 chat.messages.push({
 role:"assistant",
@@ -2127,7 +2316,10 @@ removeTyping();
 
 const errorText=
 "⚠️ Connection error: "+
-error.message;
+(
+error?.message||
+"Unknown server error."
+);
 
 chat.messages.push({
 role:"assistant",
