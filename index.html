@@ -126,9 +126,10 @@
     .image-download {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       margin-top: 8px;
-      padding: 8px 12px;
+      padding: 10px 14px;
       border-radius: 10px;
       background: #111827;
       color: white;
@@ -137,6 +138,12 @@
       border: 0;
       cursor: pointer;
       font-family: inherit;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .image-download:active {
+      transform: scale(.97);
     }
 
     .dark .image-download {
@@ -306,7 +313,6 @@
 
               <div class="flex items-center gap-1">
 
-                <!-- NEW IMAGE BUTTON -->
                 <button
                   id="imageBtn"
                   type="button"
@@ -1296,6 +1302,201 @@
 
       }
 
+      /*
+       * ==========================================================
+       * BASE64 IMAGE -> BLOB
+       * ==========================================================
+       *
+       * Converts the Cloudflare Workers AI Base64 image into
+       * a real Blob. This is more reliable than downloading the
+       * data: URL directly on Android/PWA.
+       */
+      function dataUrlToBlob(dataUrl) {
+
+        const parts =
+          String(dataUrl || "").split(",");
+
+        if (parts.length !== 2) {
+
+          throw new Error(
+            "Invalid image data."
+          );
+
+        }
+
+        const header =
+          parts[0];
+
+        const base64 =
+          parts[1];
+
+        const mimeMatch =
+          header.match(
+            /^data:([^;]+);base64$/i
+          );
+
+        const mime =
+          mimeMatch && mimeMatch[1]
+            ? mimeMatch[1]
+            : "image/jpeg";
+
+        const byteChars =
+          atob(base64);
+
+        const byteNumbers =
+          new Uint8Array(
+            byteChars.length
+          );
+
+        for (
+          let i = 0;
+          i < byteChars.length;
+          i++
+        ) {
+
+          byteNumbers[i] =
+            byteChars.charCodeAt(i);
+
+        }
+
+        return new Blob(
+          [byteNumbers],
+          {
+            type: mime
+          }
+        );
+
+      }
+
+      /*
+       * ==========================================================
+       * DOWNLOAD GENERATED IMAGE
+       * ==========================================================
+       *
+       * Android/PWA-friendly:
+       *
+       * 1. Convert Base64 to Blob
+       * 2. Create temporary object URL
+       * 3. Trigger real download
+       * 4. If that fails, open image directly
+       */
+      async function downloadGeneratedImage(dataUrl) {
+
+        try {
+
+          if (
+            !dataUrl ||
+            typeof dataUrl !== "string"
+          ) {
+
+            throw new Error(
+              "Image data is missing."
+            );
+
+          }
+
+          const blob =
+            dataUrlToBlob(dataUrl);
+
+          const blobUrl =
+            URL.createObjectURL(blob);
+
+          const link =
+            document.createElement("a");
+
+          link.href =
+            blobUrl;
+
+          link.download =
+            "sarvesh-ai-image.jpg";
+
+          link.setAttribute(
+            "download",
+            "sarvesh-ai-image.jpg"
+          );
+
+          link.rel =
+            "noopener";
+
+          link.style.display =
+            "none";
+
+          document.body.appendChild(
+            link
+          );
+
+          link.click();
+
+          link.remove();
+
+          setTimeout(
+            function () {
+
+              URL.revokeObjectURL(
+                blobUrl
+              );
+
+            },
+            2000
+          );
+
+        } catch (error) {
+
+          console.error(
+            "SARVESH image download failed:",
+            error
+          );
+
+          /*
+           * Final fallback:
+           * open the generated image directly.
+           * Android users can then use the browser
+           * menu to save/download the image.
+           */
+          try {
+
+            const blob =
+              dataUrlToBlob(dataUrl);
+
+            const blobUrl =
+              URL.createObjectURL(blob);
+
+            window.open(
+              blobUrl,
+              "_blank",
+              "noopener"
+            );
+
+            setTimeout(
+              function () {
+
+                URL.revokeObjectURL(
+                  blobUrl
+                );
+
+              },
+              60000
+            );
+
+          } catch (fallbackError) {
+
+            console.error(
+              "SARVESH image fallback failed:",
+              fallbackError
+            );
+
+            window.open(
+              dataUrl,
+              "_blank",
+              "noopener"
+            );
+
+          }
+
+        }
+
+      }
+
       function setGenerating(state) {
 
         isGenerating =
@@ -1442,32 +1643,37 @@
                * ==================================================
                * DOWNLOAD BUTTON
                * ==================================================
-               *
-               * Android/PWA-friendly method:
-               * Open the generated image in a
-               * separate browser tab.
-               *
-               * Then use Android:
-               * ⋮ → Download
                */
-
               const download =
-                document.createElement("a");
+                document.createElement("button");
+
+              download.type =
+                "button";
 
               download.className =
                 "image-download";
 
-              download.href =
-                message.image;
-
-              download.target =
-                "_blank";
-
-              download.rel =
-                "noopener";
-
               download.textContent =
                 "⬇️ Download image";
+
+              download.setAttribute(
+                "aria-label",
+                "Download generated image"
+              );
+
+              download.addEventListener(
+                "click",
+                function (event) {
+
+                  event.preventDefault();
+                  event.stopPropagation();
+
+                  downloadGeneratedImage(
+                    message.image
+                  );
+
+                }
+              );
 
               bubble.appendChild(
                 download
