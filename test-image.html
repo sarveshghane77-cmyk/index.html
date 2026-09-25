@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>SARVESH AI Image Test</title>
+</head>
+<body>
+  <h2>SARVESH AI Image Test</h2>
+
+  <button onclick="generateImage()">Generate Test Image</button>
+
+  <p id="status"></p>
+
+  <img
+    id="result"
+    style="max-width:100%;display:block;margin-top:20px;"
+  >
+
+  <script>
+    async function generateImage() {
+      const status = document.getElementById("status");
+      const image = document.getElementById("result");
+
+      status.textContent = "Generating...";
+      image.src = "";
+
+      try {
+        const response = await fetch(
+          "https://sarvesh-ai.sarveshghane77.workers.dev",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              type: "image",
+              prompt: "A cute white cat sitting on the moon, beautiful night sky"
+            })
+          }
+        );
+
+        const data = await response.json();
+
+        console.log("Worker response:", data);
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+            data.details ||
+            "Worker returned HTTP " + response.status
+          );
+        }
+
+        if (!data.image) {
+          throw new Error("Worker returned no image.");
+        }
+
+        image.src = data.image;
+        status.textContent = "✅ Image generated successfully!";
+      } catch (error) {
+        console.error(error);
+        status.textContent =
+          "❌ ERROR: " + error.message;
+      }
+    }
+  </script>
+</body>
+</html>
