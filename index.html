@@ -1225,12 +1225,12 @@ value=value.replace(
 );
 
 value=value.replace(
-/![^]*\][^)]+/g,
+/!\[[^\]]*\]\([^)]+\)/g,
 ""
 );
 
 value=value.replace(
-/([^]+)\][^)]+/g,
+/\[([^\]]+)\]\([^)]+\)/g,
 "$1"
 );
 
@@ -1501,16 +1501,18 @@ speechIndex=0;
 
 
 /* =========================================================
-   IMAGE DOWNLOAD — FIXED
+   IMAGE DOWNLOAD — CHROME FRIENDLY
    ========================================================= */
 
 function downloadGeneratedImage(button){
 
-const container =
-button.closest(".generated-image-container");
+const wrap =
+button.closest(".message-wrap");
 
 const image =
-container?.querySelector("img");
+wrap?.querySelector(
+".generated-image-container img"
+);
 
 if(!image || !image.src){
 
@@ -1525,425 +1527,61 @@ return;
 const imageUrl =
 image.src;
 
-const filename =
-"sarvesh-ai-image-" +
-Date.now() +
-".jpg";
-
-
-/* =========================================================
-   DATA URL → BLOB
-   ========================================================= */
-
-function dataUrlToBlob(dataUrl){
-
-const comma =
-dataUrl.indexOf(",");
-
-if(comma === -1){
-
-throw new Error(
-"Invalid image data."
-);
-
-}
-
-const header =
-dataUrl.slice(
-0,
-comma
-);
-
-const data =
-dataUrl.slice(
-comma + 1
-);
-
-const match =
-header.match(
-/^data:([^;,]+)(;base64)?/i
-);
-
-const mime =
-match?.[1] ||
-"image/jpeg";
-
-
-/* Base64 image */
-
-if(
-/;base64/i.test(header)
-){
-
-const binary =
-atob(data);
-
-const chunkSize =
-8192;
-
-const parts=[];
-
-for(
-let i=0;
-i<binary.length;
-i+=chunkSize
-){
-
-const end =
-Math.min(
-i+chunkSize,
-binary.length
-);
-
-const bytes =
-new Uint8Array(
-end-i
-);
-
-for(
-let j=i;
-j<end;
-j++
-){
-
-bytes[j-i]=
-binary.charCodeAt(j);
-
-}
-
-parts.push(bytes);
-
-}
-
-return new Blob(
-parts,
-{
-type:mime
-}
-);
-
-}
-
-
-/* URL encoded data */
-
-return new Blob(
-[
-decodeURIComponent(data)
-],
-{
-type:mime
-}
-);
-
-}
-
-
-/* =========================================================
-   BLOB DOWNLOAD FALLBACK
-   ========================================================= */
-
-function downloadWithBlobLink(blob){
-
-const blobUrl =
-URL.createObjectURL(blob);
-
-const link =
-document.createElement("a");
-
-link.href =
-blobUrl;
-
-link.download =
-"sarvesh-ai-image-" +
-Date.now() +
-".jpg";
-
-link.style.position =
-"fixed";
-
-link.style.left =
-"-9999px";
-
-link.style.top =
-"-9999px";
-
-link.style.width =
-"1px";
-
-link.style.height =
-"1px";
-
-link.style.opacity =
-"0";
-
-document.body.appendChild(link);
-
 
 /*
  IMPORTANT:
- The click happens immediately.
- There is no await before it.
+
+The click on this button is a real user action.
+Opening the image immediately in a new Chrome tab
+lets Chrome handle the image normally.
+
+This avoids the problem where Chrome/WebView silently
+blocks JavaScript-created download links.
 */
-
-link.click();
-
-
-setTimeout(
-()=>{
-
-link.remove();
-
-URL.revokeObjectURL(
-blobUrl
-);
-
-},
-2000
-);
-
-}
-
-
-/* =========================================================
-   MAIN DOWNLOAD
-   ========================================================= */
 
 try{
 
-let blob;
-
-
-/* Normal SARVESH AI generated image */
-
-if(
-imageUrl.startsWith("data:")
-){
-
-blob =
-dataUrlToBlob(
-imageUrl
+const newTab =
+window.open(
+imageUrl,
+"_blank"
 );
 
-}
+if(newTab){
 
-
-/* Existing Blob URL */
-
-else if(
-imageUrl.startsWith("blob:")
-){
-
-const link =
-document.createElement("a");
-
-link.href =
-imageUrl;
-
-link.download =
-filename;
-
-link.style.display =
-"none";
-
-document.body.appendChild(
-link
-);
-
-link.click();
-
-link.remove();
+try{
+newTab.focus();
+}catch{}
 
 return;
 
 }
-
-
-/* Normal HTTP/HTTPS image */
-
-else if(
-imageUrl.startsWith("http://") ||
-imageUrl.startsWith("https://")
-){
-
-const link =
-document.createElement("a");
-
-link.href =
-imageUrl;
-
-link.download =
-filename;
-
-link.style.display =
-"none";
-
-document.body.appendChild(
-link
-);
-
-link.click();
-
-link.remove();
-
-return;
-
-}
-
-else{
-
-throw new Error(
-"Unsupported image format."
-);
-
-}
-
-
-/* =========================================================
-   CHROME SAVE FILE
-   ========================================================= */
-
-if(
-typeof window.showSaveFilePicker ===
-"function"
-){
-
-window.showSaveFilePicker({
-
-suggestedName:
-filename,
-
-types:[
-{
-description:
-"JPEG Image",
-
-accept:{
-"image/jpeg":[
-".jpg",
-".jpeg"
-]
-}
-
-}
-]
-
-})
-.then(
-async handle=>{
-
-const writable =
-await handle.createWritable();
-
-await writable.write(
-blob
-);
-
-await writable.close();
-
-}
-)
-.catch(
-error=>{
-
-if(
-error?.name ===
-"AbortError"
-){
-
-return;
-
-}
-
-console.log(
-"SARVESH AI save picker failed:",
-error
-);
-
-downloadWithBlobLink(
-blob
-);
-
-}
-);
-
-return;
-
-}
-
-
-/* =========================================================
-   ANDROID CHROME NORMAL DOWNLOAD
-   ========================================================= */
-
-downloadWithBlobLink(
-blob
-);
-
 
 }catch(error){
 
 console.error(
-"SARVESH AI image download failed:",
+"SARVESH AI image open error:",
 error
 );
 
+}
 
-/* =========================================================
-   FINAL FALLBACK
-   ========================================================= */
+
+/*
+ Fallback if Chrome blocks a new tab.
+*/
 
 try{
 
-const newWindow =
-window.open();
+window.location.href =
+imageUrl;
 
-if(newWindow){
-
-newWindow.document.write(
-`
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport"
-content="width=device-width,initial-scale=1">
-<title>SARVESH AI Image</title>
-</head>
-
-<body style="
-margin:0;
-background:#000;
-display:flex;
-align-items:center;
-justify-content:center;
-min-height:100vh;
-">
-
-<img
-src="${imageUrl}"
-style="
-max-width:100%;
-height:auto;
-display:block;
-">
-
-</body>
-</html>
-`
-);
-
-newWindow.document.close();
-
-}
-
-}catch(fallbackError){
+}catch(error){
 
 console.error(
-"SARVESH AI final image fallback failed:",
-fallbackError
+"SARVESH AI image fallback failed:",
+error
 );
-
-}
 
 }
 
