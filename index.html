@@ -288,10 +288,6 @@ box-shadow:0 10px 35px rgba(0,0,0,.2)
 display:block;max-width:100%;height:auto;border-radius:14px
 }
 
-/* =========================================================
-   GENERATED IMAGE DOWNLOAD BUTTON
-   ========================================================= */
-
 .image-download-wrap{
 display:flex;
 align-items:center;
@@ -883,10 +879,6 @@ const CHAT_KEY="sarvesh_chats";
 const ACTIVE_KEY="sarvesh_active_chat";
 const SYSTEM_KEY="sarvesh_system_prompt";
 const VOICE_KEY="sarvesh_voice_enabled";
-
-/* =========================================================
-   SARVESH AI CREATOR IDENTITY
-   ========================================================= */
 
 const CREATOR_IDENTITY = `
 Identity instruction:
@@ -1635,64 +1627,128 @@ speechIndex=0;
    IMAGE DOWNLOAD
    ========================================================= */
 
-function downloadGeneratedImage(button){
+async function downloadGeneratedImage(button){
 
-try{
+const container=
+button.closest(".generated-image-container");
 
 const image=
-button.closest(".generated-image-container")
-?.querySelector("img");
+container?.querySelector("img");
 
 if(!image || !image.src){
-
-throw new Error("Image data is unavailable.");
-
-}
-
-const imageUrl=image.src;
-
-const link=
-document.createElement("a");
-
-link.href=imageUrl;
-link.download=
-"sarvesh-ai-image-"+Date.now()+".png";
-
-document.body.appendChild(link);
-link.click();
-link.remove();
-
-}catch(error){
-
-/*
- If the browser blocks direct download of a data URL,
- open the image instead so it can still be saved manually.
-*/
-
-try{
-
-const image=
-button.closest(".generated-image-container")
-?.querySelector("img");
-
-if(image && image.src){
-
-window.open(
-image.src,
-"_blank"
-);
 
 return;
 
 }
 
-}catch{}
+const imageUrl=image.src;
 
-alert(
-"Unable to download the image. Please long-press the image and choose Save image."
+const filename=
+"sarvesh-ai-image-"+Date.now()+".png";
+
+
+/*
+ First method:
+ Convert the image into a real Blob URL.
+
+ This is more reliable inside Android WebView
+ than directly downloading a data:image URL.
+*/
+
+try{
+
+const response=
+await fetch(imageUrl);
+
+if(!response.ok){
+
+throw new Error(
+"Unable to read generated image."
 );
 
 }
+
+const blob=
+await response.blob();
+
+const blobUrl=
+URL.createObjectURL(blob);
+
+const link=
+document.createElement("a");
+
+link.href=blobUrl;
+link.download=filename;
+link.style.display="none";
+
+document.body.appendChild(link);
+
+link.click();
+
+setTimeout(()=>{
+
+try{
+
+link.remove();
+URL.revokeObjectURL(blobUrl);
+
+}catch{}
+
+},5000);
+
+return;
+
+}catch(error){
+
+console.log(
+"SARVESH AI blob download attempt failed:",
+error
+);
+
+}
+
+
+/*
+ Second method:
+ Try direct download if the WebView does not
+ support the Blob download method.
+*/
+
+try{
+
+const link=
+document.createElement("a");
+
+link.href=imageUrl;
+link.download=filename;
+link.style.display="none";
+
+document.body.appendChild(link);
+
+link.click();
+
+setTimeout(
+()=>link.remove(),
+1000
+);
+
+return;
+
+}catch(error){
+
+console.log(
+"SARVESH AI direct download attempt failed:",
+error
+);
+
+}
+
+
+/*
+ No popup is shown here.
+ The old "Unable to download..." alert
+ has intentionally been removed.
+*/
 
 }
 
@@ -1813,10 +1869,12 @@ speakText(content||"");
 
 tools.appendChild(speaker);
 
+
 /*
- Add the download button only when this assistant message
- actually contains a generated image.
+ Add download button only when this assistant
+ message contains a generated image.
 */
+
 const hasGeneratedImage=
 bubble.querySelector(
 ".generated-image-container img"
@@ -2165,11 +2223,6 @@ imageUrl;
 
 removeTyping();
 
-/*
- The image is wrapped in a container so the
- Download Image button can find it after
- the conversation is rendered again.
-*/
 chat.messages.push({
 role:"assistant",
 content:
