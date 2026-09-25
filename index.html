@@ -1,19 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta name="theme-color" content="#020617">
 <link rel="manifest" href="./manifest.json">
-<title>SARVESH AI</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-<style>
-*{
-  box-sizing:border-box;
-}
+<title>SARVESH AI</title><script src="https://cdn.tailwindcss.com"></script><script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script><style>
+*{box-sizing:border-box}
 
 html,body{
   width:100%;
@@ -26,17 +18,8 @@ html,body{
   font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 
-button,input,textarea{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-/* =========================================================
-   LIVE UNIVERSE
-   ========================================================= */
+button,input,textarea{font:inherit}
+button{cursor:pointer}
 
 #space{
   position:fixed;
@@ -59,33 +42,15 @@ button{
   top:10%;
   background:white;
   box-shadow:
-    4vw 8vh #fff,
-    10vw 35vh #bdefff,
-    17vw 14vh #fff,
-    24vw 65vh #dff,
-    31vw 22vh #fff,
-    38vw 78vh #bdefff,
-    44vw 12vh #fff,
-    51vw 31vh #dff,
-    57vw 71vh #fff,
-    64vw 18vh #bdefff,
-    71vw 52vh #fff,
-    78vw 27vh #dff,
-    84vw 76vh #fff,
-    91vw 43vh #bdefff,
-    96vw 12vh #fff,
-    8vw 88vh #dff,
-    14vw 48vh #fff,
-    21vw 79vh #bdefff,
-    28vw 38vh #fff,
-    35vw 91vh #dff,
-    42vw 55vh #fff,
-    49vw 83vh #bdefff,
-    56vw 7vh #fff,
-    63vw 91vh #dff,
-    70vw 37vh #fff,
-    77vw 84vh #bdefff,
-    86vw 62vh #fff,
+    4vw 8vh #fff,10vw 35vh #bdefff,17vw 14vh #fff,
+    24vw 65vh #dff,31vw 22vh #fff,38vw 78vh #bdefff,
+    44vw 12vh #fff,51vw 31vh #dff,57vw 71vh #fff,
+    64vw 18vh #bdefff,71vw 52vh #fff,78vw 27vh #dff,
+    84vw 76vh #fff,91vw 43vh #bdefff,96vw 12vh #fff,
+    8vw 88vh #dff,14vw 48vh #fff,21vw 79vh #bdefff,
+    28vw 38vh #fff,35vw 91vh #dff,42vw 55vh #fff,
+    49vw 83vh #bdefff,56vw 7vh #fff,63vw 91vh #dff,
+    70vw 37vh #fff,77vw 84vh #bdefff,86vw 62vh #fff,
     94vw 81vh #dff;
   opacity:.7;
   animation:starDrift 28s linear infinite;
@@ -103,30 +68,16 @@ button{
 }
 
 @keyframes starDrift{
-  0%{
-    transform:translate3d(0,0,0);
-  }
-  50%{
-    transform:translate3d(-35px,55px,0);
-  }
-  100%{
-    transform:translate3d(0,110px,0);
-  }
+  0%{transform:translate3d(0,0,0)}
+  50%{transform:translate3d(-35px,55px,0)}
+  100%{transform:translate3d(0,110px,0)}
 }
 
 @keyframes deepSpace{
-  0%{
-    transform:translate3d(0,0,0) scale(1);
-  }
-  50%{
-    transform:translate3d(-50px,70px,0) scale(1.04);
-  }
-  100%{
-    transform:translate3d(-100px,140px,0) scale(1);
-  }
+  0%{transform:translate3d(0,0,0) scale(1)}
+  50%{transform:translate3d(-50px,70px,0) scale(1.04)}
+  100%{transform:translate3d(-100px,140px,0) scale(1)}
 }
-
-/* moving light particles */
 
 .space-particles{
   position:absolute;
@@ -156,25 +107,11 @@ button{
 .space-particles i:nth-child(10){left:45%;top:55%;animation-duration:20s}
 
 @keyframes particleFloat{
-  0%{
-    transform:translateY(80px);
-    opacity:0;
-  }
-  20%{
-    opacity:.8;
-  }
-  80%{
-    opacity:.6;
-  }
-  100%{
-    transform:translateY(-160px);
-    opacity:0;
-  }
+  0%{transform:translateY(80px);opacity:0}
+  20%{opacity:.8}
+  80%{opacity:.6}
+  100%{transform:translateY(-160px);opacity:0}
 }
-
-/* =========================================================
-   LOADING
-   ========================================================= */
 
 #loading{
   position:fixed;
@@ -211,9 +148,7 @@ button{
   animation:spin 1s linear infinite;
 }
 
-@keyframes spin{
-  to{transform:rotate(360deg)}
-}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 @keyframes corePulse{
   50%{
@@ -224,10 +159,6 @@ button{
   }
 }
 
-/* =========================================================
-   APP
-   ========================================================= */
-
 #app{
   position:relative;
   width:100%;
@@ -236,10 +167,6 @@ button{
   overflow:hidden;
   display:flex;
 }
-
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
 
 #sidebar{
   position:fixed;
@@ -396,10 +323,6 @@ button{
   border-color:rgba(34,211,238,.25);
 }
 
-/* =========================================================
-   MAIN
-   ========================================================= */
-
 main{
   position:relative;
   width:calc(100% - 290px);
@@ -445,10 +368,7 @@ main{
 }
 
 @keyframes statusPulse{
-  50%{
-    opacity:.3;
-    transform:scale(.7);
-  }
+  50%{opacity:.3;transform:scale(.7)}
 }
 
 .mobile-menu{
@@ -460,10 +380,6 @@ main{
   background:rgba(34,211,238,.06);
   border:1px solid rgba(34,211,238,.15);
 }
-
-/* =========================================================
-   MESSAGES
-   ========================================================= */
 
 #messages{
   position:absolute;
@@ -481,9 +397,7 @@ main{
   display:flex;
 }
 
-.message-wrap.user{
-  justify-content:flex-end;
-}
+.message-wrap.user{justify-content:flex-end}
 
 .message{
   max-width:min(760px,90%);
@@ -519,6 +433,7 @@ main{
 }
 
 .message img{
+  display:block;
   max-width:100%;
   height:auto;
   border-radius:14px;
@@ -536,13 +451,7 @@ main{
   overflow-wrap:anywhere;
 }
 
-.markdown-content a{
-  color:#67e8f9;
-}
-
-/* =========================================================
-   FUTURISTIC CENTRAL CORE
-   ========================================================= */
+.markdown-content a{color:#67e8f9}
 
 #welcome{
   position:absolute;
@@ -559,8 +468,6 @@ main{
   text-align:center;
 }
 
-/* Main planet */
-
 .orbital{
   width:190px;
   height:190px;
@@ -570,11 +477,8 @@ main{
   display:flex;
   align-items:center;
   justify-content:center;
-  animation:
-    planetFloat 5s ease-in-out infinite;
+  animation:planetFloat 5s ease-in-out infinite;
 }
-
-/* outer rotating energy ring */
 
 .orbital:before{
   content:"";
@@ -584,12 +488,9 @@ main{
   border:1px solid rgba(34,211,238,.28);
   border-left-color:transparent;
   border-right-color:rgba(34,211,238,.65);
-  box-shadow:
-    0 0 25px rgba(34,211,238,.12);
+  box-shadow:0 0 25px rgba(34,211,238,.12);
   animation:outerOrbit 8s linear infinite;
 }
-
-/* second tilted ring */
 
 .orbital:after{
   content:"";
@@ -602,8 +503,6 @@ main{
   transform:rotate(-28deg);
   animation:ringTilt 5s linear infinite;
 }
-
-/* actual rotating digital planet */
 
 .orb-core{
   width:108px;
@@ -630,8 +529,6 @@ main{
   animation:planetSpin 9s linear infinite;
 }
 
-/* planet surface */
-
 .orb-core:before{
   content:"";
   position:absolute;
@@ -653,8 +550,6 @@ main{
   animation:surfaceMove 3s linear infinite;
 }
 
-/* bright atmosphere */
-
 .orb-core:after{
   content:"";
   position:absolute;
@@ -665,8 +560,6 @@ main{
     inset 4px 0 12px rgba(103,232,249,.5),
     inset -10px 0 20px rgba(0,0,0,.8);
 }
-
-/* orbital atoms */
 
 .atom-system{
   position:absolute;
@@ -686,53 +579,14 @@ main{
     0 0 18px rgba(34,211,238,.9);
 }
 
-.atom:nth-child(1){
-  left:50%;
-  top:-4px;
-}
-
-.atom:nth-child(2){
-  right:2px;
-  top:32%;
-}
-
-.atom:nth-child(3){
-  right:20%;
-  bottom:-3px;
-}
-
-.atom:nth-child(4){
-  left:8%;
-  bottom:17%;
-}
-
-.atom:nth-child(5){
-  left:-4px;
-  top:27%;
-}
-
-.atom:nth-child(6){
-  left:27%;
-  top:4px;
-  width:6px;
-  height:6px;
-}
-
-.atom:nth-child(7){
-  right:25%;
-  top:8%;
-  width:6px;
-  height:6px;
-}
-
-.atom:nth-child(8){
-  right:3%;
-  bottom:25%;
-  width:5px;
-  height:5px;
-}
-
-/* atom trails */
+.atom:nth-child(1){left:50%;top:-4px}
+.atom:nth-child(2){right:2px;top:32%}
+.atom:nth-child(3){right:20%;bottom:-3px}
+.atom:nth-child(4){left:8%;bottom:17%}
+.atom:nth-child(5){left:-4px;top:27%}
+.atom:nth-child(6){left:27%;top:4px;width:6px;height:6px}
+.atom:nth-child(7){right:25%;top:8%;width:6px;height:6px}
+.atom:nth-child(8){right:3%;bottom:25%;width:5px;height:5px}
 
 .atom-system:before,
 .atom-system:after{
@@ -749,60 +603,34 @@ main{
 }
 
 @keyframes planetSpin{
-  from{
-    transform:rotate(0deg);
-  }
-  to{
-    transform:rotate(360deg);
-  }
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
 }
 
 @keyframes surfaceMove{
-  from{
-    transform:translateX(-15px);
-  }
-  to{
-    transform:translateX(15px);
-  }
+  from{transform:translateX(-15px)}
+  to{transform:translateX(15px)}
 }
 
 @keyframes atomSystemSpin{
-  from{
-    transform:rotate(0deg);
-  }
-  to{
-    transform:rotate(360deg);
-  }
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
 }
 
 @keyframes outerOrbit{
-  from{
-    transform:rotate(0deg);
-  }
-  to{
-    transform:rotate(360deg);
-  }
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
 }
 
 @keyframes ringTilt{
-  from{
-    transform:rotate(-28deg);
-  }
-  to{
-    transform:rotate(332deg);
-  }
+  from{transform:rotate(-28deg)}
+  to{transform:rotate(332deg)}
 }
 
 @keyframes planetFloat{
-  0%,100%{
-    transform:translateY(0);
-  }
-  50%{
-    transform:translateY(-8px);
-  }
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
 }
-
-/* energy scan */
 
 .core-scan{
   position:absolute;
@@ -819,20 +647,10 @@ main{
 }
 
 @keyframes scanLine{
-  0%,100%{
-    transform:translateY(-105px);
-    opacity:0;
-  }
-  40%{
-    opacity:.5;
-  }
-  50%{
-    transform:translateY(105px);
-    opacity:0;
-  }
+  0%,100%{transform:translateY(-105px);opacity:0}
+  40%{opacity:.5}
+  50%{transform:translateY(105px);opacity:0}
 }
-
-/* little energy sparks */
 
 .core-sparks{
   position:absolute;
@@ -857,14 +675,8 @@ main{
 .core-sparks span:nth-child(6){right:5%;top:62%;animation-delay:2.4s}
 
 @keyframes sparkMove{
-  0%,100%{
-    transform:scale(.5);
-    opacity:.15;
-  }
-  50%{
-    transform:scale(1.8);
-    opacity:1;
-  }
+  0%,100%{transform:scale(.5);opacity:.15}
+  50%{transform:scale(1.8);opacity:1}
 }
 
 .welcome-title{
@@ -872,8 +684,7 @@ main{
   font-weight:800;
   letter-spacing:.08em;
   color:#f8fafc;
-  text-shadow:
-    0 0 25px rgba(103,232,249,.18);
+  text-shadow:0 0 25px rgba(103,232,249,.18);
 }
 
 .welcome-text{
@@ -881,10 +692,6 @@ main{
   color:#64748b;
   font-size:14px;
 }
-
-/* =========================================================
-   INPUT
-   ========================================================= */
 
 .input-zone{
   position:absolute;
@@ -929,9 +736,7 @@ main{
   padding:12px 8px;
 }
 
-#messageInput::placeholder{
-  color:#475569;
-}
+#messageInput::placeholder{color:#475569}
 
 .icon-btn{
   flex:0 0 auto;
@@ -963,10 +768,6 @@ main{
   background:#a5f3fc;
   box-shadow:0 0 25px rgba(34,211,238,.35);
 }
-
-/* =========================================================
-   CHAT MENU / MODALS
-   ========================================================= */
 
 #chatActionMenu{
   position:fixed;
@@ -1069,28 +870,13 @@ main{
   animation:typeDot 1s infinite;
 }
 
-.typing span:nth-child(2){
-  animation-delay:.15s;
-}
-
-.typing span:nth-child(3){
-  animation-delay:.3s;
-}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
 
 @keyframes typeDot{
-  0%,60%,100%{
-    opacity:.25;
-    transform:translateY(0);
-  }
-  30%{
-    opacity:1;
-    transform:translateY(-4px);
-  }
+  0%,60%,100%{opacity:.25;transform:translateY(0)}
+  30%{opacity:1;transform:translateY(-4px)}
 }
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
 
 @media(max-width:767px){
 
@@ -1100,34 +886,22 @@ main{
     transition:transform .25s ease;
   }
 
-  #sidebar.open{
-    transform:translateX(0);
-  }
+  #sidebar.open{transform:translateX(0)}
 
   main{
     width:100%;
     margin-left:0;
   }
 
-  .mobile-menu{
-    display:block;
-  }
+  .mobile-menu{display:block}
 
-  .topbar{
-    padding:0 13px;
-  }
+  .topbar{padding:0 13px}
 
-  #messages{
-    padding:25px 12px 25px;
-  }
+  #messages{padding:25px 12px 25px}
 
-  .message{
-    max-width:94%;
-  }
+  .message{max-width:94%}
 
-  #welcome{
-    padding:20px;
-  }
+  #welcome{padding:20px}
 
   .orbital{
     width:150px;
@@ -1144,27 +918,17 @@ main{
     height:65px;
   }
 
-  .input-zone{
-    padding:10px 10px 12px;
-  }
+  .input-zone{padding:10px 10px 12px}
 
-  #chatForm{
-    border-radius:17px;
-  }
+  #chatForm{border-radius:17px}
 
   .icon-btn{
     width:40px;
     height:40px;
   }
 
-  .top-status{
-    font-size:8px;
-  }
+  .top-status{font-size:8px}
 }
-
-/* =========================================================
-   SAFETY AGAINST HORIZONTAL OVERFLOW
-   ========================================================= */
 
 html,
 body,
@@ -1187,144 +951,90 @@ main,
 video{
   max-width:100%;
 }
-
-</style>
-</head>
-
-<body>
-
-<div id="space">
+</style></head><body><div id="space">
   <div class="space-particles">
     <i></i><i></i><i></i><i></i><i></i>
     <i></i><i></i><i></i><i></i><i></i>
   </div>
-</div>
-
-<div id="loading">
+</div><div id="loading">
   <div class="loader-core"></div>
+</div><div id="app"><aside id="sidebar">  <div class="brand"><div class="brand-core">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="12" r="8"
+      stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="12" cy="12" r="3"
+      fill="currentColor"/>
+    <path d="M12 1v4M12 19v4M1 12h4M19 12h4"
+      stroke="currentColor"
+      stroke-width="1.5"/>
+  </svg>
 </div>
 
-<div id="app">
+<div>
+  <div class="brand-title">SARVESH AI</div>
+  <div class="brand-sub">Neural Intelligence</div>
+</div>
 
-<aside id="sidebar">
-
-  <div class="brand">
-
-    <div class="brand-core">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="8"
-          stroke="currentColor" stroke-width="1.5"/>
-        <circle cx="12" cy="12" r="3"
-          fill="currentColor"/>
-        <path d="M12 1v4M12 19v4M1 12h4M19 12h4"
-          stroke="currentColor"
-          stroke-width="1.5"/>
-      </svg>
-    </div>
-
-    <div>
-      <div class="brand-title">SARVESH AI</div>
-      <div class="brand-sub">Neural Intelligence</div>
-    </div>
-
-  </div>
-
-  <button class="new-chat" id="newChatBtn">
+  </div>  <button class="new-chat" id="newChatBtn">
     + New Conversation
-  </button>
-
-  <div class="history-label">
+  </button>  <div class="history-label">
     Memory Stream
-  </div>
-
-  <div id="chatHistory"></div>
-
-  <div class="sidebar-bottom">
+  </div>  <div id="chatHistory"></div>  <div class="sidebar-bottom">
     <button id="settingsBtn">⚙ Settings</button>
     <button id="mobileCloseBtn">× Close</button>
-  </div>
-
-</aside>
-
-<main>
-
-<header class="topbar">
-
-  <button class="mobile-menu" id="mobileMenuBtn">
+  </div></aside><main><header class="topbar">  <button class="mobile-menu" id="mobileMenuBtn">
     ☰
-  </button>
-
-  <div class="top-status">
+  </button>  <div class="top-status">
     <span class="status-dot"></span>
     Neural Core Online
-  </div>
-
-  <div class="top-status">
+  </div>  <div class="top-status">
     SECURE
-  </div>
-
-</header>
-
-<section id="messages">
+  </div></header><section id="messages">
   <div id="messageContainer"></div>
-</section>
+</section><section id="welcome">  <div class="welcome-inner"><div class="orbital">
 
-<section id="welcome">
+  <div class="atom-system">
 
-  <div class="welcome-inner">
-
-    <div class="orbital">
-
-      <div class="atom-system">
-
-        <span class="atom"></span>
-        <span class="atom"></span>
-        <span class="atom"></span>
-        <span class="atom"></span>
-        <span class="atom"></span>
-        <span class="atom"></span>
-        <span class="atom"></span>
-        <span class="atom"></span>
-
-      </div>
-
-      <div class="core-sparks">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-
-      <div class="core-scan"></div>
-
-      <div class="orb-core"></div>
-
-    </div>
-
-    <div class="welcome-title">
-      SARVESH AI
-    </div>
-
-    <div class="welcome-text">
-      Your intelligent digital companion.
-      Ask anything and begin a new conversation.
-    </div>
+    <span class="atom"></span>
+    <span class="atom"></span>
+    <span class="atom"></span>
+    <span class="atom"></span>
+    <span class="atom"></span>
+    <span class="atom"></span>
+    <span class="atom"></span>
+    <span class="atom"></span>
 
   </div>
 
-</section>
+  <div class="core-sparks">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 
-<div class="input-zone">
+  <div class="core-scan"></div>
 
-<form id="chatForm">
+  <div class="orb-core"></div>
 
-<button
-  type="button"
-  class="icon-btn"
-  id="imageBtn"
-  title="Generate image">
+</div>
+
+<div class="welcome-title">
+  SARVESH AI
+</div>
+
+<div class="welcome-text">
+  Your intelligent digital companion.
+  Ask anything and begin a new conversation.
+</div>
+
+  </div></section><div class="input-zone"><form id="chatForm"><button
+type="button"
+class="icon-btn"
+id="imageBtn"
+title="Generate image">
 
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
   <rect x="3" y="4" width="18" height="16" rx="3"
@@ -1336,105 +1046,50 @@ video{
     stroke-width="1.6"
     stroke-linecap="round"
     stroke-linejoin="round"/>
-</svg>
-
-</button>
-
-<textarea
+</svg></button><textarea
   id="messageInput"
   rows="1"
   placeholder="Transmit a message..."
-  autocomplete="off"></textarea>
-
-<button
-  type="submit"
-  class="icon-btn"
-  id="sendBtn"
-  title="Send">
+  autocomplete="off"></textarea><button
+type="submit"
+class="icon-btn"
+id="sendBtn"
+title="Send">
 
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
   <path d="M21 3 10.5 13.5"
-    stroke="currentColor"
-    stroke-width="1.8"
+    stroke="currentColor" stroke-width="1.8"
     stroke-linecap="round"/>
   <path d="m21 3-6.7 18-3.8-7.7L3 9.7 21 3Z"
     stroke="currentColor"
     stroke-width="1.8"
     stroke-linejoin="round"/>
-</svg>
-
-</button>
-
-</form>
-
-</div>
-
-</main>
-
-</div>
-
-<div id="chatActionMenu">
+</svg></button></form></div></main></div><div id="chatActionMenu">
   <button id="renameChatBtn">✎ Rename</button>
   <button id="deleteChatBtn">⌫ Delete</button>
-</div>
-
-<div class="modal-bg" id="renameModal">
-
-<div class="modal">
-
-<h2>Rename Conversation</h2>
-
-<input
-  id="renameInput"
-  type="text"
-  placeholder="Enter new name">
+</div><div class="modal-bg" id="renameModal"><div class="modal"><h2>Rename Conversation</h2><input
+id="renameInput"
+type="text"
+placeholder="Enter new name">
 
 <div class="modal-actions">
   <button id="renameCancel">Cancel</button>
   <button class="primary" id="renameSave">Rename</button>
-</div>
-
-</div>
-</div>
-
-<div class="modal-bg" id="deleteModal">
-
-<div class="modal">
-
-<h2>Delete Conversation?</h2>
-
-<p style="color:#64748b;font-size:14px">
+</div></div>
+</div><div class="modal-bg" id="deleteModal"><div class="modal"><h2>Delete Conversation?</h2><p style="color:#64748b;font-size:14px">
 This conversation will be permanently removed.
-</p>
-
-<div class="modal-actions">
+</p><div class="modal-actions">
   <button id="deleteCancel">Cancel</button>
   <button class="primary" id="deleteConfirm">Delete</button>
-</div>
-
-</div>
-</div>
-
-<div class="modal-bg" id="settingsModal">
-
-<div class="modal">
-
-<h2>System Settings</h2>
-
-<textarea
+</div></div>
+</div><div class="modal-bg" id="settingsModal"><div class="modal"><h2>System Settings</h2><textarea
   id="systemPrompt"
   style="width:100%;min-height:150px;padding:12px;border-radius:11px;background:#020617;color:#e2e8f0;border:1px solid rgba(148,163,184,.15);outline:none;resize:vertical"
-  placeholder="Enter system instructions..."></textarea>
-
-<div class="modal-actions">
+  placeholder="Enter system instructions..."></textarea><div class="modal-actions">
   <button id="settingsCancel">Close</button>
   <button class="primary" id="settingsSave">Save</button>
-</div>
-
-</div>
-</div>
-
-<script>
+</div></div>
+</div><script>
 
 const API_URL =
 "https://sarvesh-ai.sarveshghane77.workers.dev";
@@ -1890,6 +1545,10 @@ async function sendMessage(text){
   }
 }
 
+/* =========================================================
+   IMAGE GENERATION
+   ========================================================= */
+
 async function generateImage(prompt){
 
   const chat =
@@ -1920,66 +1579,82 @@ async function generateImage(prompt){
             "Content-Type":
               "application/json"
           },
+
+          /*
+           * IMPORTANT:
+           * The Cloudflare Worker expects
+           * type:"image", not image:true.
+           */
           body:JSON.stringify({
-            image:true,
+            type:"image",
             prompt:prompt
           })
         }
       );
 
+    let data = null;
+
+    try{
+      data =
+        await response.json();
+    }catch{
+      data = null;
+    }
+
     if(!response.ok){
+
       throw new Error(
+        data?.error ||
+        data?.details ||
         "Image server error: " +
         response.status
       );
     }
 
-    const data =
-      await response.json();
+    /*
+     * The Worker returns:
+     * {
+     *   image:"data:image/jpeg;base64,..."
+     * }
+     */
 
     let imageUrl =
-      data.image_url ||
-      data.url ||
-      data.image ||
-      (
-        data.data &&
-        data.data[0] &&
-        (
-          data.data[0].url ||
-          data.data[0].b64_json
-        )
-      );
-
-    removeTyping();
+      data?.image;
 
     if(
       imageUrl &&
-      typeof imageUrl==="string"
+      typeof imageUrl === "string"
     ){
 
+      /*
+       * If the Worker ever returns raw
+       * base64 instead of a data URL,
+       * convert it to a usable image URL.
+       */
       if(
         !imageUrl.startsWith("http") &&
         !imageUrl.startsWith("data:")
       ){
 
         imageUrl =
-          "data:image/png;base64," +
+          "data:image/jpeg;base64," +
           imageUrl;
       }
+
+      removeTyping();
 
       chat.messages.push({
         role:"assistant",
         content:
-          `<img src="${imageUrl}" alt="Generated image">`
+          `<img src="${imageUrl}" alt="Generated image" style="max-width:100%;height:auto;border-radius:14px;display:block;">`
       });
 
     }else{
 
-      chat.messages.push({
-        role:"assistant",
-        content:
-          "I couldn't retrieve the generated image."
-      });
+      throw new Error(
+        data?.error ||
+        "The image was generated but no image data was returned."
+      );
     }
 
     saveChats();
@@ -1993,7 +1668,10 @@ async function generateImage(prompt){
       role:"assistant",
       content:
         "⚠️ Image generation error: " +
-        error.message
+        (
+          error?.message ||
+          "Unknown image generation error."
+        )
     });
 
     saveChats();
@@ -2286,7 +1964,5 @@ if("serviceWorker" in navigator){
 
 startApp();
 
-</script>
-
-</body>
+</script></body>
 </html>
