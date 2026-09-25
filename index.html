@@ -795,7 +795,6 @@ typeof window.Native.call==="function"
 
 }
 
-
 async function waitForWebInto(){
 
 if(typeof window.waitForNative==="function"){
@@ -814,7 +813,6 @@ if(ready)return true;
 return hasWebIntoBridge();
 
 }
-
 
 function nativeCall(method,payload){
 
@@ -909,7 +907,6 @@ resolve(null);
 
 }
 
-
 async function requestWebIntoMicrophone(){
 
 if(!hasWebIntoBridge()){
@@ -962,7 +959,6 @@ return false;
 
 }
 
-
 async function checkWebIntoMicrophone(){
 
 if(!hasWebIntoBridge())return false;
@@ -1010,7 +1006,6 @@ JSON.stringify(chats)
 );
 
 }
-
 
 function loadChats(){
 
@@ -1078,7 +1073,6 @@ return chat;
 
 }
 
-
 function ensureChat(){
 
 if(!activeChatId)
@@ -1095,7 +1089,6 @@ return createChat();
 return chat;
 
 }
-
 
 function getActiveChat(){
 
@@ -1155,7 +1148,6 @@ $("sidebar")
 
 };
 
-
 const menu=
 document.createElement("button");
 
@@ -1200,7 +1192,7 @@ history.appendChild(item);
 
 
 /* =========================================================
-   SPEECH TEXT CLEANING
+   SPEECH
    ========================================================= */
 
 function textForSpeech(text){
@@ -1209,35 +1201,12 @@ if(!text)return"";
 
 let value=String(text);
 
-value=value.replace(
-/```[\s\S]*?```/g,
-""
-);
-
-value=value.replace(
-/<img[\s\S]*?>/gi,
-""
-);
-
-value=value.replace(
-/<[^>]*>/g,
-" "
-);
-
-value=value.replace(
-/!\[[^\]]*\]\([^)]+\)/g,
-""
-);
-
-value=value.replace(
-/\[([^\]]+)\]\([^)]+\)/g,
-"$1"
-);
-
-value=value.replace(
-/[*_~`#>]/g,
-""
-);
+value=value.replace(/```[\s\S]*?```/g,"");
+value=value.replace(/<img[\s\S]*?>/gi,"");
+value=value.replace(/<[^>]*>/g," ");
+value=value.replace(/!\[[^\]]*\]\([^)]+\)/g,"");
+value=value.replace(/\[([^\]]+)\]\([^)]+\)/g,"$1");
+value=value.replace(/[*_~`#>]/g,"");
 
 const decoder=
 document.createElement("textarea");
@@ -1251,11 +1220,6 @@ return value
 
 }
 
-
-/* =========================================================
-   SPEECH CHUNKS
-   ========================================================= */
-
 function splitSpeechText(text){
 
 const clean=textForSpeech(text);
@@ -1264,16 +1228,12 @@ if(!clean)return[];
 
 const chunks=[];
 let remaining=clean;
-
 const maxLength=210;
 
 while(remaining.length>maxLength){
 
 let cut=
-remaining.lastIndexOf(
-". ",
-maxLength
-);
+remaining.lastIndexOf(". ",maxLength);
 
 cut=Math.max(
 cut,
@@ -1281,19 +1241,11 @@ remaining.lastIndexOf("? ",maxLength),
 remaining.lastIndexOf("! ",maxLength)
 );
 
-if(cut<80){
+if(cut<80)
+cut=remaining.lastIndexOf(", ",maxLength);
 
-cut=
-remaining.lastIndexOf(", ",maxLength);
-
-}
-
-if(cut<80){
-
-cut=
-remaining.lastIndexOf(" ",maxLength);
-
-}
+if(cut<80)
+cut=remaining.lastIndexOf(" ",maxLength);
 
 if(cut<1)
 cut=maxLength;
@@ -1314,11 +1266,6 @@ return chunks;
 
 }
 
-
-/* =========================================================
-   LANGUAGE
-   ========================================================= */
-
 function detectSpeechLanguage(text){
 
 if(/[\u0900-\u097F]/.test(text))
@@ -1328,11 +1275,6 @@ return"en-IN";
 
 }
 
-
-/* =========================================================
-   SPEECH SYNTHESIS
-   ========================================================= */
-
 function getSpeechVoices(){
 
 if(!("speechSynthesis"in window))
@@ -1341,7 +1283,6 @@ return[];
 return speechSynthesis.getVoices()||[];
 
 }
-
 
 function selectVoice(lang){
 
@@ -1401,14 +1342,10 @@ return voices[0]||null;
 
 }
 
-
 function speakText(text){
 
-if(!("speechSynthesis"in window)){
-
+if(!("speechSynthesis"in window))
 return;
-
-}
 
 const clean=textForSpeech(text);
 
@@ -1424,7 +1361,6 @@ speechIndex=0;
 speakNextChunk(clean);
 
 }
-
 
 function speakNextChunk(originalText){
 
@@ -1483,7 +1419,6 @@ utterance
 
 }
 
-
 function stopSpeech(){
 
 if("speechSynthesis"in window){
@@ -1501,10 +1436,294 @@ speechIndex=0;
 
 
 /* =========================================================
-   IMAGE DOWNLOAD — CHROME FRIENDLY
+   IMAGE DOWNLOAD — FIXED
    ========================================================= */
 
-function downloadGeneratedImage(button){
+async function downloadGeneratedImage(button){
+
+try{
+
+const wrap =
+button.closest(".message-wrap");
+
+if(!wrap){
+
+console.error(
+"SARVESH AI: message wrapper not found."
+);
+
+return;
+
+}
+
+const image =
+wrap.querySelector(
+".generated-image-container img"
+);
+
+if(!image || !image.src){
+
+console.error(
+"SARVESH AI: generated image not found."
+);
+
+return;
+
+}
+
+const source =
+image.src;
+
+console.log(
+"SARVESH AI: Download requested."
+);
+
+
+/* ---------------------------------------------------------
+   CASE 1 — DATA IMAGE
+   --------------------------------------------------------- */
+
+if(source.startsWith("data:")){
+
+const parts =
+source.split(",");
+
+if(parts.length<2)
+throw new Error("Invalid image data.");
+
+const header =
+parts[0];
+
+const base64 =
+parts.slice(1).join(",");
+
+const mime =
+(
+header.match(
+/data:([^;]+)/i
+)||[]
+)[1] ||
+"image/png";
+
+const binary =
+atob(base64);
+
+const length =
+binary.length;
+
+const bytes =
+new Uint8Array(length);
+
+for(let i=0;i<length;i++){
+
+bytes[i]=
+binary.charCodeAt(i);
+
+}
+
+const blob =
+new Blob(
+[bytes],
+{type:mime}
+);
+
+const blobUrl =
+URL.createObjectURL(blob);
+
+
+/*
+  Create a real browser download.
+*/
+
+const link =
+document.createElement("a");
+
+link.href =
+blobUrl;
+
+link.download =
+"SARVESH-AI-Generated-Image.png";
+
+link.style.display="none";
+
+document.body.appendChild(link);
+
+link.click();
+
+link.remove();
+
+
+/*
+  Keep the object URL alive briefly so Chrome
+  has time to start the download.
+*/
+
+setTimeout(
+()=>URL.revokeObjectURL(blobUrl),
+10000
+);
+
+return;
+
+}
+
+
+/* ---------------------------------------------------------
+   CASE 2 — NORMAL HTTP/HTTPS IMAGE
+   --------------------------------------------------------- */
+
+if(
+source.startsWith("http://") ||
+source.startsWith("https://")
+){
+
+try{
+
+const response =
+await fetch(
+source,
+{
+mode:"cors"
+}
+);
+
+if(response.ok){
+
+const blob =
+await response.blob();
+
+const blobUrl =
+URL.createObjectURL(blob);
+
+const link =
+document.createElement("a");
+
+link.href =
+blobUrl;
+
+link.download =
+"SARVESH-AI-Generated-Image.png";
+
+link.style.display="none";
+
+document.body.appendChild(link);
+
+link.click();
+
+link.remove();
+
+setTimeout(
+()=>URL.revokeObjectURL(blobUrl),
+10000
+);
+
+return;
+
+}
+
+}catch(error){
+
+console.log(
+"SARVESH AI: CORS download unavailable.",
+error
+);
+
+}
+
+
+/*
+  If the server does not allow fetch/CORS,
+  open the actual image in Chrome.
+*/
+
+const opened =
+window.open(
+source,
+"_blank"
+);
+
+if(opened){
+
+try{
+opened.focus();
+}catch{}
+
+return;
+
+}
+
+window.location.href =
+source;
+
+return;
+
+}
+
+
+/* ---------------------------------------------------------
+   CASE 3 — BLOB URL
+   --------------------------------------------------------- */
+
+if(source.startsWith("blob:")){
+
+const link =
+document.createElement("a");
+
+link.href =
+source;
+
+link.download =
+"SARVESH-AI-Generated-Image.png";
+
+link.style.display="none";
+
+document.body.appendChild(link);
+
+link.click();
+
+link.remove();
+
+return;
+
+}
+
+
+/* ---------------------------------------------------------
+   FINAL FALLBACK
+   --------------------------------------------------------- */
+
+const opened =
+window.open(
+source,
+"_blank"
+);
+
+if(opened){
+
+try{
+opened.focus();
+}catch{}
+
+}else{
+
+window.location.href =
+source;
+
+}
+
+}catch(error){
+
+console.error(
+"SARVESH AI image download error:",
+error
+);
+
+/*
+ If anything fails, still try opening the
+ generated image directly.
+*/
+
+try{
 
 const wrap =
 button.closest(".message-wrap");
@@ -1514,74 +1733,31 @@ wrap?.querySelector(
 ".generated-image-container img"
 );
 
-if(!image || !image.src){
+if(image?.src){
 
-console.error(
-"SARVESH AI: Generated image not found."
-);
-
-return;
-
-}
-
-const imageUrl =
-image.src;
-
-
-/*
- IMPORTANT:
-
-The click on this button is a real user action.
-Opening the image immediately in a new Chrome tab
-lets Chrome handle the image normally.
-
-This avoids the problem where Chrome/WebView silently
-blocks JavaScript-created download links.
-*/
-
-try{
-
-const newTab =
+const opened =
 window.open(
-imageUrl,
+image.src,
 "_blank"
 );
 
-if(newTab){
-
-try{
-newTab.focus();
-}catch{}
-
-return;
-
-}
-
-}catch(error){
-
-console.error(
-"SARVESH AI image open error:",
-error
-);
-
-}
-
-
-/*
- Fallback if Chrome blocks a new tab.
-*/
-
-try{
+if(!opened){
 
 window.location.href =
-imageUrl;
+image.src;
 
-}catch(error){
+}
+
+}
+
+}catch(fallbackError){
 
 console.error(
-"SARVESH AI image fallback failed:",
-error
+"SARVESH AI final image fallback failed:",
+fallbackError
 );
+
+}
 
 }
 
@@ -1634,7 +1810,6 @@ scrollBottom();
 
 }
 
-
 function addMessageToUI(
 role,
 content
@@ -1660,9 +1835,7 @@ role==="user"
 ?"user":"ai"
 );
 
-if(
-role==="user"
-){
+if(role==="user"){
 
 bubble.textContent =
 content;
@@ -1746,9 +1919,7 @@ bubble.querySelector(
 ".generated-image-container img"
 );
 
-if(
-hasGeneratedImage
-){
+if(hasGeneratedImage){
 
 const downloadButton =
 document.createElement("button");
@@ -1784,6 +1955,7 @@ stroke-linecap="round"/>
 downloadButton.onclick =
 e=>{
 
+e.preventDefault();
 e.stopPropagation();
 
 downloadGeneratedImage(
@@ -1810,7 +1982,6 @@ wrap
 );
 
 }
-
 
 function scrollBottom(){
 
@@ -1866,7 +2037,6 @@ scrollBottom();
 
 }
 
-
 function removeTyping(){
 
 const typing =
@@ -1882,9 +2052,7 @@ typing.remove();
    TITLE
    ========================================================= */
 
-function setChatTitle(
-chat
-){
+function setChatTitle(chat){
 
 if(
 chat.title==="New Conversation" &&
@@ -1916,9 +2084,7 @@ first.content
    SEND MESSAGE
    ========================================================= */
 
-async function sendMessage(
-text
-){
+async function sendMessage(text){
 
 const chat =
 ensureChat();
@@ -1928,9 +2094,7 @@ role:"user",
 content:text
 });
 
-setChatTitle(
-chat
-);
+setChatTitle(chat);
 
 saveChats();
 renderHistory();
@@ -1969,8 +2133,7 @@ system
 }
 );
 
-let data =
-null;
+let data=null;
 
 try{
 
@@ -1979,8 +2142,7 @@ await response.json();
 
 }catch{
 
-data =
-null;
+data=null;
 
 }
 
@@ -1997,34 +2159,19 @@ response.status
 
 let reply="";
 
-if(
-typeof data==="string"
-)
-
+if(typeof data==="string")
 reply=data;
 
-else if(
-data?.reply
-)
-
+else if(data?.reply)
 reply=data.reply;
 
-else if(
-data?.response
-)
-
+else if(data?.response)
 reply=data.response;
 
-else if(
-data?.message
-)
-
+else if(data?.message)
 reply=data.message;
 
-else if(
-data?.content
-)
-
+else if(data?.content)
 reply=data.content;
 
 else if(
@@ -2093,9 +2240,7 @@ saveChats();
 
 renderMessages();
 
-if(
-voiceEnabled
-){
+if(voiceEnabled){
 
 setTimeout(
 ()=>speakText(errorText),
@@ -2113,9 +2258,7 @@ setTimeout(
    IMAGE GENERATION
    ========================================================= */
 
-async function generateImage(
-prompt
-){
+async function generateImage(prompt){
 
 const chat =
 ensureChat();
@@ -2152,8 +2295,7 @@ prompt
 }
 );
 
-let data =
-null;
+let data=null;
 
 try{
 
@@ -2262,13 +2404,10 @@ input.value.trim();
 if(!text)
 return;
 
-sendMessage(
-text
-);
+sendMessage(text);
 
 }
 );
-
 
 $("messageInput")
 .addEventListener(
@@ -2289,7 +2428,6 @@ $("chatForm")
 
 }
 );
-
 
 $("messageInput")
 .addEventListener(
@@ -2334,20 +2472,15 @@ $("mobileMenuBtn").onclick =
 ()=>{
 
 $("sidebar")
-.classList.add(
-"open"
-);
+.classList.add("open");
 
 };
-
 
 $("mobileCloseBtn").onclick =
 ()=>{
 
 $("sidebar")
-.classList.remove(
-"open"
-);
+.classList.remove("open");
 
 };
 
@@ -2418,13 +2551,11 @@ $("renameModal")
 "flex";
 
 setTimeout(
-()=>$("renameInput")
-.focus(),
+()=>$("renameInput").focus(),
 50
 );
 
 };
-
 
 $("renameCancel").onclick =
 ()=>{
@@ -2434,7 +2565,6 @@ $("renameModal")
 "none";
 
 };
-
 
 $("renameSave").onclick =
 ()=>{
@@ -2453,11 +2583,9 @@ $("renameInput")
 .trim();
 
 if(name)
-chat.title =
-name;
+chat.title=name;
 
 saveChats();
-
 renderHistory();
 
 $("renameModal")
@@ -2484,7 +2612,6 @@ $("deleteModal")
 
 };
 
-
 $("deleteCancel").onclick =
 ()=>{
 
@@ -2493,7 +2620,6 @@ $("deleteModal")
 "none";
 
 };
-
 
 $("deleteConfirm").onclick =
 ()=>{
@@ -2510,8 +2636,7 @@ activeChatId===
 selectedChatId
 ){
 
-activeChatId =
-null;
+activeChatId=null;
 
 if(chats.length){
 
@@ -2566,15 +2691,13 @@ return;
 
 $("messageInput").value="";
 
-generateImage(
-prompt
-);
+generateImage(prompt);
 
 };
 
 
 /* =========================================================
-   VOICE OUTPUT TOGGLE
+   VOICE OUTPUT
    ========================================================= */
 
 function updateVoiceButton(){
@@ -2607,7 +2730,6 @@ button.title =
 
 }
 
-
 $("voiceToggleBtn").onclick =
 ()=>{
 
@@ -2638,11 +2760,6 @@ stopSpeech();
 
 };
 
-
-/* =========================================================
-   STOP VOICE
-   ========================================================= */
-
 $("stopSpeechBtn").onclick =
 ()=>{
 
@@ -2652,7 +2769,7 @@ stopSpeech();
 
 
 /* =========================================================
-   WEBINTO + MICROPHONE
+   MICROPHONE
    ========================================================= */
 
 async function prepareMicrophone(){
@@ -2699,11 +2816,6 @@ return false;
 
 }
 
-
-/* =========================================================
-   SPEECH RECOGNITION
-   ========================================================= */
-
 function getSpeechRecognition(){
 
 return window.SpeechRecognition ||
@@ -2712,17 +2824,13 @@ null;
 
 }
 
-
 async function setupVoiceRecognition(){
 
 const SpeechRecognition =
 getSpeechRecognition();
 
-if(!SpeechRecognition){
-
+if(!SpeechRecognition)
 return false;
-
-}
 
 recognition =
 new SpeechRecognition();
@@ -2739,15 +2847,11 @@ false;
 recognition.maxAlternatives =
 1;
 
-
 recognition.onstart =
 ()=>{
 
-isListening =
-true;
-
-recognitionStarting =
-false;
+isListening=true;
+recognitionStarting=false;
 
 $("micBtn")
 .classList.add(
@@ -2758,7 +2862,6 @@ $("micBtn").title =
 "Listening...";
 
 };
-
 
 recognition.onresult =
 event=>{
@@ -2793,15 +2896,11 @@ input.focus();
 
 };
 
-
 recognition.onerror =
 event=>{
 
-isListening =
-false;
-
-recognitionStarting =
-false;
+isListening=false;
+recognitionStarting=false;
 
 $("micBtn")
 .classList.remove(
@@ -2825,15 +2924,11 @@ alert(
 
 };
 
-
 recognition.onend =
 ()=>{
 
-isListening =
-false;
-
-recognitionStarting =
-false;
+isListening=false;
+recognitionStarting=false;
 
 $("micBtn")
 .classList.remove(
@@ -2848,11 +2943,6 @@ $("micBtn").title =
 return true;
 
 }
-
-
-/* =========================================================
-   MIC BUTTON
-   ========================================================= */
 
 $("micBtn").onclick =
 async()=>{
@@ -2885,8 +2975,7 @@ return;
 
 }
 
-recognitionStarting =
-true;
+recognitionStarting=true;
 
 $("micBtn").title =
 "Requesting microphone...";
@@ -2896,8 +2985,7 @@ await prepareMicrophone();
 
 if(!permission){
 
-recognitionStarting =
-false;
+recognitionStarting=false;
 
 $("micBtn").title =
 "Voice input";
@@ -2922,8 +3010,7 @@ recognition.start();
 
 }catch(error){
 
-recognitionStarting =
-false;
+recognitionStarting=false;
 
 $("micBtn")
 .classList.remove(
@@ -2981,7 +3068,6 @@ input
 
 };
 
-
 $("toolsBtn").onclick =
 e=>{
 
@@ -2994,9 +3080,7 @@ if(
 menu.style.display==="block"
 ){
 
-menu.style.display =
-"none";
-
+menu.style.display="none";
 return;
 
 }
@@ -3005,14 +3089,10 @@ const rect =
 $("toolsBtn")
 .getBoundingClientRect();
 
-const width =
-190;
+const width=190;
 
-let left =
-rect.left;
-
-let top =
-rect.top-255;
+let left=rect.left;
+let top=rect.top-255;
 
 if(
 left+width >
@@ -3020,18 +3100,12 @@ window.innerWidth-8
 ){
 
 left =
-window.innerWidth-
-width-
-8;
+window.innerWidth-width-8;
 
 }
 
-if(top<8){
-
-top =
-rect.bottom+8;
-
-}
+if(top<8)
+top=rect.bottom+8;
 
 menu.style.left =
 left+"px";
@@ -3043,7 +3117,6 @@ menu.style.display =
 "block";
 
 };
-
 
 document
 .querySelectorAll(
@@ -3140,7 +3213,6 @@ $("settingsModal")
 
 };
 
-
 $("settingsCancel").onclick =
 ()=>{
 
@@ -3149,7 +3221,6 @@ $("settingsModal")
 "none";
 
 };
-
 
 $("settingsSave").onclick =
 ()=>{
@@ -3167,7 +3238,7 @@ $("settingsModal")
 
 
 /* =========================================================
-   SPEECH VOICES READY
+   SPEECH VOICES
    ========================================================= */
 
 if(
@@ -3203,7 +3274,6 @@ createChat();
 }else{
 
 renderHistory();
-
 renderMessages();
 
 }
