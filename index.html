@@ -844,6 +844,18 @@ const ACTIVE_KEY="sarvesh_active_chat";
 const SYSTEM_KEY="sarvesh_system_prompt";
 const VOICE_KEY="sarvesh_voice_enabled";
 
+/* =========================================================
+   SARVESH AI CREATOR IDENTITY
+   ========================================================= */
+
+const CREATOR_IDENTITY = `
+Identity instruction:
+You are SARVESH AI, an AI assistant created and developed by Sarvesh.
+If the user asks who created, developed, or made you, identify Sarvesh as the creator of SARVESH AI.
+Do not claim that OpenAI created SARVESH AI.
+OpenAI may provide the underlying AI model or technology used by this application, but SARVESH AI itself was created and developed by Sarvesh.
+`;
+
 const $=id=>document.getElementById(id);
 
 let chats=[];
@@ -964,11 +976,6 @@ result !== undefined &&
 result !== null
 ){
 
-/*
- WebInto versions may return
- synchronously or through callback.
-*/
-
 done(result);
 
 }
@@ -993,13 +1000,6 @@ resolve(null);
 
 }
 
-
-/*
- WebInto.app microphone permission.
-
- WebInto documents AUDIO as the
- microphone permission type.
-*/
 
 async function requestWebIntoMicrophone(){
 
@@ -1828,8 +1828,19 @@ $("messageInput").value="";
 
 try{
 
-const system=
+/*
+ Creator identity is automatically included
+ with the existing saved system prompt.
+ No other behavior is changed.
+*/
+
+const savedSystem=
 localStorage.getItem(SYSTEM_KEY)||"";
+
+const system=
+CREATOR_IDENTITY+
+"\n"+
+savedSystem;
 
 const response=
 await fetch(
@@ -2383,22 +2394,11 @@ stopSpeech();
 
 async function prepareMicrophone(){
 
-/*
- First ask WebInto.app for its
- native AUDIO permission.
-*/
-
 const nativeGranted=
 await requestWebIntoMicrophone();
 
 if(nativeGranted)
 return true;
-
-
-/*
- Fallback to normal browser/WebView
- permission.
-*/
 
 if(
 navigator.mediaDevices &&
@@ -2411,12 +2411,6 @@ const stream=
 await navigator.mediaDevices.getUserMedia({
 audio:true
 });
-
-/*
- We only needed permission.
- SpeechRecognition will use
- the microphone itself.
-*/
 
 stream.getTracks().forEach(
 track=>track.stop()
@@ -2590,13 +2584,6 @@ return;
 
 }
 
-
-/*
- IMPORTANT:
- Get native WebInto permission
- BEFORE starting recognition.
-*/
-
 recognitionStarting=true;
 
 $("micBtn").title=
@@ -2620,11 +2607,6 @@ return;
 }
 
 try{
-
-/*
- Recreate recognition after permission
- to improve Android WebView reliability.
-*/
 
 if(!recognition){
 
@@ -2848,11 +2830,6 @@ $("settingsModal")
 if("speechSynthesis"in window){
 
 speechSynthesis.onvoiceschanged=()=>{
-
-/*
- Force Android/WebView to load
- its available voices.
-*/
 
 getSpeechVoices();
 
