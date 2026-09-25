@@ -779,6 +779,18 @@
 
       }
 
+      /*
+       * ==========================================================
+       * CHAT ACTION MENU
+       * ==========================================================
+       *
+       * Changed from the old prompt that asked the user to type
+       * "rename" or "delete".
+       *
+       * Now it directly displays:
+       *   ✏️ Rename
+       *   🗑️ Delete
+       */
       function showChatActions(id) {
 
         const chat =
@@ -788,24 +800,202 @@
 
         if (!chat) return;
 
-        const action =
-          window.prompt(
-            "Enter: rename or delete",
-            "rename"
+        const oldMenu =
+          document.getElementById(
+            "chatActionMenu"
           );
 
-        if (!action) return;
-
-        const normalized =
-          action.trim().toLowerCase();
-
-        if (normalized === "rename") {
-          openRenameModal(id);
+        if (oldMenu) {
+          oldMenu.remove();
         }
 
-        if (normalized === "delete") {
-          deleteChat(id);
+        const menu =
+          document.createElement("div");
+
+        menu.id =
+          "chatActionMenu";
+
+        menu.className =
+          "fixed z-[200] w-36 rounded-xl " +
+          "bg-white dark:bg-gray-800 " +
+          "border border-gray-200 dark:border-gray-700 " +
+          "shadow-xl overflow-hidden";
+
+        menu.innerHTML = `
+
+          <button type="button"
+            id="chatRenameAction"
+            class="w-full text-left px-4 py-3 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
+            ✏️ Rename
+          </button>
+
+          <button type="button"
+            id="chatDeleteAction"
+            class="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30">
+            🗑️ Delete
+          </button>
+
+        `;
+
+        document.body.appendChild(menu);
+
+        /*
+         * Find the exact row belonging to this chat.
+         */
+        const rows =
+          document.querySelectorAll(
+            "#chatHistory > div"
+          );
+
+        let targetButton = null;
+
+        rows.forEach(function (row) {
+
+          const buttons =
+            row.querySelectorAll("button");
+
+          if (buttons.length >= 2) {
+
+            const titleButton =
+              buttons[0];
+
+            if (
+              titleButton.textContent.trim() ===
+              (chat.title || "New Chat")
+            ) {
+
+              targetButton =
+                buttons[1];
+
+            }
+
+          }
+
+        });
+
+        /*
+         * Position menu beside the selected
+         * three-dot button.
+         */
+        if (targetButton) {
+
+          const rect =
+            targetButton.getBoundingClientRect();
+
+          let top =
+            rect.bottom + 4;
+
+          let left =
+            rect.right - 144;
+
+          if (
+            top + 90 >
+            window.innerHeight
+          ) {
+
+            top =
+              rect.top - 94;
+
+          }
+
+          if (left < 8) {
+            left = 8;
+          }
+
+          if (
+            left + 144 >
+            window.innerWidth
+          ) {
+
+            left =
+              window.innerWidth - 152;
+
+          }
+
+          menu.style.top =
+            top + "px";
+
+          menu.style.left =
+            left + "px";
+
+        } else {
+
+          menu.style.top =
+            "100px";
+
+          menu.style.right =
+            "20px";
+
         }
+
+        /*
+         * Rename action
+         */
+        document
+          .getElementById(
+            "chatRenameAction"
+          )
+          .addEventListener(
+            "click",
+            function (event) {
+
+              event.stopPropagation();
+
+              menu.remove();
+
+              openRenameModal(id);
+
+            }
+          );
+
+        /*
+         * Delete action
+         */
+        document
+          .getElementById(
+            "chatDeleteAction"
+          )
+          .addEventListener(
+            "click",
+            function (event) {
+
+              event.stopPropagation();
+
+              menu.remove();
+
+              deleteChat(id);
+
+            }
+          );
+
+        /*
+         * Close the menu when tapping outside.
+         */
+        setTimeout(function () {
+
+          document.addEventListener(
+            "click",
+            function closeChatMenu(event) {
+
+              if (
+                !menu.contains(
+                  event.target
+                )
+              ) {
+
+                menu.remove();
+
+                document.removeEventListener(
+                  "click",
+                  closeChatMenu
+                );
+
+              }
+
+            }
+          );
+
+        }, 0);
 
       }
 
@@ -1306,10 +1496,6 @@
        * ==========================================================
        * BASE64 IMAGE -> BLOB
        * ==========================================================
-       *
-       * Converts the Cloudflare Workers AI Base64 image into
-       * a real Blob. This is more reliable than downloading the
-       * data: URL directly on Android/PWA.
        */
       function dataUrlToBlob(dataUrl) {
 
@@ -1372,13 +1558,6 @@
        * ==========================================================
        * DOWNLOAD GENERATED IMAGE
        * ==========================================================
-       *
-       * Android/PWA-friendly:
-       *
-       * 1. Convert Base64 to Blob
-       * 2. Create temporary object URL
-       * 3. Trigger real download
-       * 4. If that fails, open image directly
        */
       async function downloadGeneratedImage(dataUrl) {
 
@@ -1447,12 +1626,6 @@
             error
           );
 
-          /*
-           * Final fallback:
-           * open the generated image directly.
-           * Android users can then use the browser
-           * menu to save/download the image.
-           */
           try {
 
             const blob =
@@ -1639,11 +1812,6 @@
 
               bubble.appendChild(image);
 
-              /*
-               * ==================================================
-               * DOWNLOAD BUTTON
-               * ==================================================
-               */
               const download =
                 document.createElement("button");
 
