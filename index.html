@@ -17,6 +17,7 @@
 
   <style>
     html { min-height: 100%; }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -46,9 +47,17 @@
       line-height: 1.6;
     }
 
-    .markdown-content p { margin: 8px 0; }
-    .markdown-content p:first-child { margin-top: 0; }
-    .markdown-content p:last-child { margin-bottom: 0; }
+    .markdown-content p {
+      margin: 8px 0;
+    }
+
+    .markdown-content p:first-child {
+      margin-top: 0;
+    }
+
+    .markdown-content p:last-child {
+      margin-bottom: 0;
+    }
 
     .markdown-content ul,
     .markdown-content ol {
@@ -56,7 +65,9 @@
       margin: 10px 0;
     }
 
-    .markdown-content li { margin: 4px 0; }
+    .markdown-content li {
+      margin: 4px 0;
+    }
 
     .markdown-content blockquote {
       border-left: 4px solid #9ca3af;
@@ -65,7 +76,9 @@
       margin: 10px 0;
     }
 
-    .markdown-content a { text-decoration: underline; }
+    .markdown-content a {
+      text-decoration: underline;
+    }
 
     .markdown-content code {
       font-family: Consolas, Monaco, monospace;
@@ -92,7 +105,53 @@
       padding: 0;
     }
 
-    .sidebar-transition { transition: transform .25s ease; }
+    .markdown-content img {
+      display: block;
+      width: 100%;
+      max-width: 768px;
+      height: auto;
+      border-radius: 18px;
+      margin: 12px 0;
+    }
+
+    .generated-image {
+      display: block;
+      width: 100%;
+      max-width: 768px;
+      border-radius: 18px;
+      margin-top: 8px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.12);
+    }
+
+    .image-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: #111827;
+      color: white;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .dark .image-download {
+      background: white;
+      color: #111827;
+    }
+
+    .sidebar-transition {
+      transition: transform .25s ease;
+    }
+
+    .image-button-active {
+      background: #e5e7eb;
+    }
+
+    .dark .image-button-active {
+      background: #1f2937;
+    }
 
     @media (max-width: 767px) {
       .mobile-sidebar {
@@ -105,7 +164,9 @@
         transform: translateX(-105%);
       }
 
-      .mobile-sidebar.open { transform: translateX(0); }
+      .mobile-sidebar.open {
+        transform: translateX(0);
+      }
 
       .sidebar-overlay {
         display: none;
@@ -115,11 +176,15 @@
         background: rgba(0,0,0,.4);
       }
 
-      .sidebar-overlay.open { display: block; }
+      .sidebar-overlay.open {
+        display: block;
+      }
     }
 
     @media (min-width: 768px) {
-      .sidebar-overlay { display: none !important; }
+      .sidebar-overlay {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -196,7 +261,10 @@
           </button>
 
           <div class="min-w-0">
-            <div id="chatTitle" class="font-semibold truncate">New Chat</div>
+            <div id="chatTitle" class="font-semibold truncate">
+              New Chat
+            </div>
+
             <div id="modelLabel" class="text-xs text-gray-500 truncate">
               SARVESH AI
             </div>
@@ -215,6 +283,7 @@
         class="flex-1 w-full max-w-5xl mx-auto px-3 sm:px-5 md:px-8 pt-6 pb-44">
       </section>
 
+      <!-- CHAT INPUT -->
       <div class="fixed md:absolute bottom-0 left-0 md:left-72 right-0 z-30 pointer-events-none">
 
         <div class="max-w-4xl mx-auto px-3 sm:px-5 pb-[calc(10px+env(safe-area-inset-bottom))]">
@@ -232,8 +301,23 @@
 
             <div class="absolute bottom-2 left-3 right-3 flex items-center justify-between">
 
-              <div class="text-xs text-gray-400 hidden sm:block">
-                Enter to send · Shift+Enter for new line
+              <div class="flex items-center gap-1">
+
+                <!-- NEW IMAGE BUTTON -->
+                <button
+                  id="imageBtn"
+                  type="button"
+                  title="Generate image"
+                  aria-label="Generate image"
+                  class="w-10 h-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-center text-lg transition"
+                >
+                  🖼️
+                </button>
+
+                <div class="text-xs text-gray-400 hidden sm:block ml-1">
+                  Enter to send · Shift+Enter for new line
+                </div>
+
               </div>
 
               <button id="sendBtn" type="submit" disabled
@@ -242,6 +326,7 @@
               </button>
 
             </div>
+
           </form>
 
           <div class="text-center text-[11px] text-gray-400 mt-2">
@@ -250,6 +335,7 @@
 
         </div>
       </div>
+
     </main>
   </div>
 
@@ -260,43 +346,57 @@
     <div class="w-full max-w-lg rounded-2xl bg-white dark:bg-gray-900 shadow-2xl border border-gray-200 dark:border-gray-800">
 
       <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800">
-        <h2 class="text-lg font-semibold">SARVESH Settings</h2>
+
+        <h2 class="text-lg font-semibold">
+          SARVESH Settings
+        </h2>
 
         <button type="button"
           class="modalClose w-9 h-9 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
           ✕
         </button>
+
       </div>
 
       <div class="p-5 space-y-4">
 
         <div class="rounded-xl border border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-950/30 p-4">
+
           <div class="font-medium text-green-700 dark:text-green-300">
             ✓ SARVESH AI server connected
           </div>
+
           <div class="text-xs text-green-700/80 dark:text-green-300/80 mt-1">
-            Users do not need to enter an OpenRouter API key. The API key is securely kept on the SARVESH backend.
+            Users do not need to enter an OpenRouter API key.
+            The API key is securely kept on the SARVESH backend.
           </div>
+
         </div>
 
         <div>
-          <label class="block text-sm font-medium mb-2">AI service</label>
+          <label class="block text-sm font-medium mb-2">
+            AI service
+          </label>
+
           <div class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
             SARVESH AI · Cloudflare Worker
           </div>
         </div>
 
         <div class="text-xs text-gray-500 leading-relaxed">
-          Your private API key is never requested from visitors and is not stored in this website.
+          Your private API key is never requested from visitors
+          and is not stored in this website.
         </div>
 
       </div>
 
       <div class="flex justify-end p-5 border-t border-gray-200 dark:border-gray-800">
+
         <button type="button"
           class="modalClose px-5 py-2 rounded-xl bg-black dark:bg-white text-white dark:text-black">
           Close
         </button>
+
       </div>
 
     </div>
@@ -309,15 +409,20 @@
     <div class="w-full max-w-lg rounded-2xl bg-white dark:bg-gray-900 shadow-2xl border border-gray-200 dark:border-gray-800">
 
       <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800">
-        <h2 class="text-lg font-semibold">SARVESH System Prompt</h2>
+
+        <h2 class="text-lg font-semibold">
+          SARVESH System Prompt
+        </h2>
 
         <button type="button"
           class="systemClose w-9 h-9 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
           ✕
         </button>
+
       </div>
 
       <div class="p-5">
+
         <textarea id="systemPromptInput" rows="8"
           placeholder="Example: You are SARVESH, a helpful and friendly AI assistant..."
           class="w-full resize-y px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 outline-none focus:ring-2 focus:ring-blue-500"></textarea>
@@ -325,6 +430,7 @@
         <p class="text-xs text-gray-500 mt-2">
           This prompt is stored locally for this chat and is sent to the SARVESH backend.
         </p>
+
       </div>
 
       <div class="flex justify-end gap-2 p-5 border-t border-gray-200 dark:border-gray-800">
@@ -340,6 +446,7 @@
         </button>
 
       </div>
+
     </div>
   </div>
 
@@ -351,7 +458,9 @@
 
       <div class="p-5">
 
-        <h2 class="text-lg font-semibold mb-4">Rename chat</h2>
+        <h2 class="text-lg font-semibold mb-4">
+          Rename chat
+        </h2>
 
         <input id="renameInput" type="text" maxlength="100"
           class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 outline-none focus:ring-2 focus:ring-blue-500">
@@ -369,6 +478,7 @@
           </button>
 
         </div>
+
       </div>
     </div>
   </div>
@@ -377,6 +487,7 @@
 
   <script>
     (function () {
+
       "use strict";
 
       /*
@@ -384,9 +495,15 @@
        * SARVESH AI FRONTEND
        * ==========================================================
        *
+       * Normal AI chat:
+       *   POST / Worker
+       *
+       * Image generation:
+       *   POST / Worker
+       *   { type: "image", prompt: "..." }
+       *
        * IMPORTANT:
-       * The OpenRouter API key is NOT stored here.
-       * The browser talks only to your Cloudflare Worker.
+       * OpenRouter API key stays on Cloudflare Worker.
        */
 
       const APP_NAME = "SARVESH";
@@ -410,22 +527,28 @@
       }
 
       function safeJSON(value, fallback) {
+
         try {
           return JSON.parse(value);
         } catch (error) {
           return fallback;
         }
+
       }
 
       function generateId() {
+
         return (
           Date.now().toString(36) +
           Math.random().toString(36).substring(2, 10)
         );
+
       }
 
       function saveChats() {
+
         try {
+
           localStorage.setItem(
             STORAGE.CHATS,
             JSON.stringify(chats)
@@ -435,21 +558,33 @@
             STORAGE.ACTIVE_CHAT,
             activeChatId || ""
           );
+
         } catch (error) {
-          console.warn("SARVESH: Unable to save chats.", error);
+
+          console.warn(
+            "SARVESH: Unable to save chats.",
+            error
+          );
+
         }
+
       }
 
       function loadChats() {
+
         let storedChats = [];
 
         try {
+
           storedChats = safeJSON(
             localStorage.getItem(STORAGE.CHATS),
             []
           );
+
         } catch (error) {
+
           storedChats = [];
+
         }
 
         if (!Array.isArray(storedChats)) {
@@ -457,47 +592,71 @@
         }
 
         chats = storedChats.filter(function (chat) {
+
           return (
             chat &&
             typeof chat.id === "string" &&
             Array.isArray(chat.messages)
           );
+
         });
 
         try {
+
           activeChatId =
-            localStorage.getItem(STORAGE.ACTIVE_CHAT);
+            localStorage.getItem(
+              STORAGE.ACTIVE_CHAT
+            );
+
         } catch (error) {
+
           activeChatId = null;
+
         }
 
         if (!chats.length) {
+
           createNewChat(false);
           return;
+
         }
 
-        if (!chats.some(function (chat) {
-          return chat.id === activeChatId;
-        })) {
+        if (
+          !chats.some(function (chat) {
+            return chat.id === activeChatId;
+          })
+        ) {
+
           activeChatId = chats[0].id;
+
         }
+
       }
 
       function createNewChat(save) {
+
         if (typeof save === "undefined") {
           save = true;
         }
 
         const chat = {
+
           id: generateId(),
+
           title: "New Chat",
+
           systemPrompt: "",
+
           createdAt: Date.now(),
+
           updatedAt: Date.now(),
+
           messages: []
+
         };
 
         chats.unshift(chat);
+
         activeChatId = chat.id;
 
         if (save) {
@@ -505,31 +664,42 @@
         }
 
         renderAll();
+
         closeSidebar();
+
       }
 
       function getActiveChat() {
+
         return chats.find(function (chat) {
+
           return chat.id === activeChatId;
+
         }) || null;
+
       }
 
       function updateChat(chat) {
+
         if (!chat) return;
 
         chat.updatedAt = Date.now();
 
         chats.sort(function (a, b) {
+
           return (
             (b.updatedAt || 0) -
             (a.updatedAt || 0)
           );
+
         });
 
         saveChats();
+
       }
 
       function renderHistory() {
+
         const container = $("chatHistory");
 
         if (!container) return;
@@ -537,13 +707,18 @@
         container.innerHTML = "";
 
         if (!chats.length) {
+
           container.innerHTML =
             '<div class="p-4 text-sm text-gray-500">No chats yet.</div>';
+
           return;
+
         }
 
         chats.forEach(function (chat) {
-          const row = document.createElement("div");
+
+          const row =
+            document.createElement("div");
 
           row.className =
             "group flex items-center gap-1 rounded-xl mb-1 " +
@@ -553,57 +728,83 @@
                 : "hover:bg-gray-200 dark:hover:bg-gray-800"
             );
 
-          const button = document.createElement("button");
+          const button =
+            document.createElement("button");
 
           button.type = "button";
+
           button.className =
             "flex-1 min-w-0 text-left px-3 py-3 text-sm truncate";
 
-          button.textContent = chat.title || "New Chat";
+          button.textContent =
+            chat.title || "New Chat";
 
-          button.addEventListener("click", function () {
-            if (isGenerating) return;
+          button.addEventListener(
+            "click",
+            function () {
 
-            activeChatId = chat.id;
-            saveChats();
-            renderAll();
-            closeSidebar();
-          });
+              if (isGenerating) return;
 
-          const menu = document.createElement("button");
+              activeChatId = chat.id;
+
+              saveChats();
+
+              renderAll();
+
+              closeSidebar();
+
+            }
+          );
+
+          const menu =
+            document.createElement("button");
 
           menu.type = "button";
+
           menu.className =
             "w-9 h-9 mr-1 rounded-lg opacity-60 hover:opacity-100 hover:bg-white dark:hover:bg-gray-700";
 
           menu.textContent = "⋮";
 
-          menu.addEventListener("click", function (event) {
-            event.stopPropagation();
-            showChatActions(chat.id);
-          });
+          menu.addEventListener(
+            "click",
+            function (event) {
+
+              event.stopPropagation();
+
+              showChatActions(chat.id);
+
+            }
+          );
 
           row.appendChild(button);
           row.appendChild(menu);
+
           container.appendChild(row);
+
         });
+
       }
 
       function showChatActions(id) {
-        const chat = chats.find(function (item) {
-          return item.id === id;
-        });
+
+        const chat =
+          chats.find(function (item) {
+            return item.id === id;
+          });
 
         if (!chat) return;
 
-        const action = window.prompt(
-          "Enter: rename or delete",
-          "rename"
-        );
+        const action =
+          window.prompt(
+            "Enter: rename or delete",
+            "rename"
+          );
 
         if (!action) return;
 
-        const normalized = action.trim().toLowerCase();
+        const normalized =
+          action.trim().toLowerCase();
 
         if (normalized === "rename") {
           openRenameModal(id);
@@ -612,41 +813,54 @@
         if (normalized === "delete") {
           deleteChat(id);
         }
+
       }
 
       function deleteChat(id) {
-        const chat = chats.find(function (item) {
-          return item.id === id;
-        });
+
+        const chat =
+          chats.find(function (item) {
+            return item.id === id;
+          });
 
         if (!chat) return;
 
-        const confirmed = window.confirm(
-          'Delete "' +
-          (chat.title || "New Chat") +
-          '"?'
-        );
+        const confirmed =
+          window.confirm(
+            'Delete "' +
+            (chat.title || "New Chat") +
+            '"?'
+          );
 
         if (!confirmed) return;
 
-        chats = chats.filter(function (item) {
-          return item.id !== id;
-        });
+        chats =
+          chats.filter(function (item) {
+            return item.id !== id;
+          });
 
         if (!chats.length) {
+
           createNewChat(false);
+
         } else if (activeChatId === id) {
+
           activeChatId = chats[0].id;
+
         }
 
         saveChats();
+
         renderAll();
+
       }
 
       function openRenameModal(id) {
-        const chat = chats.find(function (item) {
-          return item.id === id;
-        });
+
+        const chat =
+          chats.find(function (item) {
+            return item.id === id;
+          });
 
         if (!chat) return;
 
@@ -655,20 +869,28 @@
         $("renameInput").value =
           chat.title || "New Chat";
 
-        $("renameModal").classList.remove("hidden");
+        $("renameModal")
+          .classList
+          .remove("hidden");
 
         setTimeout(function () {
+
           $("renameInput").focus();
+
           $("renameInput").select();
+
         }, 50);
+
       }
 
       function saveRename() {
+
         if (!renameTargetId) return;
 
-        const chat = chats.find(function (item) {
-          return item.id === renameTargetId;
-        });
+        const chat =
+          chats.find(function (item) {
+            return item.id === renameTargetId;
+          });
 
         if (!chat) return;
 
@@ -676,105 +898,148 @@
           $("renameInput").value.trim();
 
         if (value) {
+
           chat.title = value;
+
           updateChat(chat);
+
         }
 
         renameTargetId = null;
-        $("renameModal").classList.add("hidden");
+
+        $("renameModal")
+          .classList
+          .add("hidden");
+
         renderAll();
+
       }
 
       function addUserMessage(content) {
+
         const chat = getActiveChat();
 
         if (!chat) return null;
 
         chat.messages.push({
+
           role: "user",
+
           content: content
+
         });
 
         if (
           !chat.title ||
           chat.title === "New Chat"
         ) {
+
           chat.title =
             content.length > 40
               ? content.substring(0, 40) + "…"
               : content;
+
         }
 
         updateChat(chat);
+
         return chat;
+
       }
 
       function addAssistantMessage() {
+
         const chat = getActiveChat();
 
         if (!chat) return null;
 
         const message = {
+
           role: "assistant",
+
           content: ""
+
         };
 
         chat.messages.push(message);
+
         updateChat(chat);
 
         return message;
+
       }
 
       function buildApiMessages(chat) {
-        const messages = [];
 
-        /*
-         * The current Cloudflare Worker version filters out system
-         * messages. We still send it here so it works after the
-         * Worker is updated to allow role=system.
-         */
+        const messages = [];
 
         if (
           chat.systemPrompt &&
           chat.systemPrompt.trim()
         ) {
+
           messages.push({
+
             role: "system",
-            content: chat.systemPrompt.trim()
+
+            content:
+              chat.systemPrompt.trim()
+
           });
+
         }
 
-        chat.messages.forEach(function (message) {
-          if (
-            message &&
-            (
-              message.role === "user" ||
-              message.role === "assistant"
-            ) &&
-            typeof message.content === "string"
-          ) {
-            messages.push({
-              role: message.role,
-              content: message.content
-            });
+        chat.messages.forEach(
+          function (message) {
+
+            if (
+              message &&
+              (
+                message.role === "user" ||
+                message.role === "assistant"
+              ) &&
+              typeof message.content === "string"
+            ) {
+
+              messages.push({
+
+                role: message.role,
+
+                content: message.content
+
+              });
+
+            }
+
           }
-        });
+        );
 
         return messages.slice(-30);
+
       }
 
+      /*
+       * ==========================================================
+       * NORMAL TEXT CHAT
+       * ==========================================================
+       */
+
       async function sendMessage(text) {
-        const content = String(text || "").trim();
+
+        const content =
+          String(text || "").trim();
 
         if (!content || isGenerating) {
           return;
         }
 
-        const chat = addUserMessage(content);
+        const chat =
+          addUserMessage(content);
 
         if (!chat) return;
 
         $("messageInput").value = "";
+
         autoResizeTextarea();
 
         renderAll();
@@ -785,36 +1050,52 @@
         if (!assistantMessage) return;
 
         renderMessages();
+
         setGenerating(true);
 
         try {
-          const response = await fetch(API_URL, {
-            method: "POST",
 
-            headers: {
-              "Content-Type": "application/json"
-            },
+          const response =
+            await fetch(API_URL, {
 
-            body: JSON.stringify({
-              messages: buildApiMessages(chat)
-            })
-          });
+              method: "POST",
+
+              headers: {
+                "Content-Type": "application/json"
+              },
+
+              body: JSON.stringify({
+
+                messages:
+                  buildApiMessages(chat)
+
+              })
+
+            });
 
           let data = {};
 
           try {
+
             data = await response.json();
+
           } catch (error) {
+
             data = {};
+
           }
 
           if (!response.ok) {
+
             throw new Error(
+
               data && data.error
                 ? data.error
                 : "SARVESH server returned HTTP " +
                   response.status
+
             );
+
           }
 
           if (
@@ -822,18 +1103,26 @@
             typeof data.reply !== "string" ||
             !data.reply.trim()
           ) {
+
             throw new Error(
               "SARVESH server returned no AI response."
             );
+
           }
 
-          assistantMessage.content = data.reply;
+          assistantMessage.content =
+            data.reply;
 
           saveChats();
+
           renderMessages();
 
         } catch (error) {
-          console.error("SARVESH API error:", error);
+
+          console.error(
+            "SARVESH API error:",
+            error
+          );
 
           assistantMessage.content =
             "⚠️ **Error:** " +
@@ -844,402 +1133,1057 @@
             );
 
           saveChats();
+
           renderMessages();
 
         } finally {
+
           setGenerating(false);
+
           saveChats();
+
           renderHistory();
+
         }
+
+      }
+
+      /*
+       * ==========================================================
+       * IMAGE GENERATION
+       * ==========================================================
+       *
+       * The browser NEVER receives the OpenRouter API key.
+       *
+       * It sends:
+       *
+       * {
+       *   type: "image",
+       *   prompt: "..."
+       * }
+       *
+       * to the Cloudflare Worker.
+       *
+       * The Worker will later return:
+       *
+       * {
+       *   image: "data:image/png;base64,..."
+       * }
+       */
+
+      async function generateImage(prompt) {
+
+        const text =
+          String(prompt || "").trim();
+
+        if (!text || isGenerating) {
+          return;
+        }
+
+        const chat =
+          getActiveChat();
+
+        if (!chat) return;
+
+        chat.messages.push({
+
+          role: "user",
+
+          content: "🖼️ " + text,
+
+          type: "image-request"
+
+        });
+
+        if (
+          !chat.title ||
+          chat.title === "New Chat"
+        ) {
+
+          chat.title =
+            text.length > 40
+              ? text.substring(0, 40) + "…"
+              : text;
+
+        }
+
+        updateChat(chat);
+
+        renderMessages();
+
+        setGenerating(true);
+
+        const loadingMessage = {
+
+          role: "assistant",
+
+          content:
+            "🎨 **Creating your image...**",
+
+          type: "image"
+
+        };
+
+        chat.messages.push(loadingMessage);
+
+        saveChats();
+
+        renderMessages();
+
+        try {
+
+          const response =
+            await fetch(API_URL, {
+
+              method: "POST",
+
+              headers: {
+
+                "Content-Type":
+                  "application/json"
+
+              },
+
+              body: JSON.stringify({
+
+                type: "image",
+
+                prompt: text
+
+              })
+
+            });
+
+          let data = {};
+
+          try {
+
+            data = await response.json();
+
+          } catch (error) {
+
+            data = {};
+
+          }
+
+          if (!response.ok) {
+
+            throw new Error(
+
+              data && data.error
+                ? data.error
+                : "Image generation failed. HTTP " +
+                  response.status
+
+            );
+
+          }
+
+          if (
+            !data ||
+            typeof data.image !== "string" ||
+            !data.image.trim()
+          ) {
+
+            throw new Error(
+              "SARVESH server returned no image."
+            );
+
+          }
+
+          loadingMessage.content =
+            data.image;
+
+          loadingMessage.type =
+            "generated-image";
+
+          loadingMessage.image =
+            data.image;
+
+          saveChats();
+
+          renderMessages();
+
+        } catch (error) {
+
+          console.error(
+            "SARVESH image generation error:",
+            error
+          );
+
+          loadingMessage.content =
+            "⚠️ **Image generation error:** " +
+            (
+              error && error.message
+                ? error.message
+                : "Unable to generate image."
+            );
+
+          loadingMessage.type =
+            "image-error";
+
+          saveChats();
+
+          renderMessages();
+
+        } finally {
+
+          setGenerating(false);
+
+          saveChats();
+
+          renderHistory();
+
+        }
+
       }
 
       function setGenerating(state) {
-        isGenerating = Boolean(state);
+
+        isGenerating =
+          Boolean(state);
 
         $("sendBtn").disabled =
           isGenerating ||
           !$("messageInput").value.trim();
 
         $("sendBtn").textContent =
-          isGenerating ? "■" : "➤";
+          isGenerating
+            ? "■"
+            : "➤";
+
+        const imageButton =
+          $("imageBtn");
+
+        if (imageButton) {
+
+          imageButton.disabled =
+            isGenerating;
+
+          imageButton.classList.toggle(
+            "opacity-40",
+            isGenerating
+          );
+
+          imageButton.classList.toggle(
+            "cursor-not-allowed",
+            isGenerating
+          );
+
+        }
+
       }
 
       function renderMessages() {
-        const container = $("messages");
+
+        const container =
+          $("messages");
 
         if (!container) return;
 
         container.innerHTML = "";
 
-        const chat = getActiveChat();
+        const chat =
+          getActiveChat();
 
-        if (!chat || !chat.messages.length) {
-          const welcome = document.createElement("div");
+        if (
+          !chat ||
+          !chat.messages.length
+        ) {
+
+          const welcome =
+            document.createElement("div");
 
           welcome.className =
             "min-h-[55vh] flex items-center justify-center";
 
           welcome.innerHTML = `
+
             <div class="text-center max-w-xl px-4">
-              <div class="text-4xl mb-4">✦</div>
-              <h1 class="text-3xl font-bold mb-3">SARVESH AI</h1>
+
+              <div class="text-4xl mb-4">
+                ✦
+              </div>
+
+              <h1 class="text-3xl font-bold mb-3">
+                SARVESH AI
+              </h1>
+
               <p class="text-gray-500 dark:text-gray-400">
                 How can I help you today?
               </p>
+
             </div>
+
           `;
 
           container.appendChild(welcome);
+
           return;
+
         }
 
-        chat.messages.forEach(function (message) {
-          const wrapper =
-            document.createElement("div");
+        chat.messages.forEach(
+          function (message) {
 
-          wrapper.className =
-            "w-full flex mb-6 " +
-            (
+            const wrapper =
+              document.createElement("div");
+
+            wrapper.className =
+              "w-full flex mb-6 " +
+              (
+                message.role === "user"
+                  ? "justify-end"
+                  : "justify-start"
+              );
+
+            const bubble =
+              document.createElement("div");
+
+            /*
+             * Generated image
+             */
+            if (
+              message.type ===
+              "generated-image" &&
+              message.image
+            ) {
+
+              bubble.className =
+                "max-w-[95%] sm:max-w-[85%] rounded-2xl px-2 py-1";
+
+              const image =
+                document.createElement("img");
+
+              image.className =
+                "generated-image";
+
+              image.src =
+                message.image;
+
+              image.alt =
+                "Generated by SARVESH AI";
+
+              image.loading =
+                "lazy";
+
+              image.onerror =
+                function () {
+
+                  image.replaceWith(
+                    document.createTextNode(
+                      "⚠️ Unable to display generated image."
+                    )
+                  );
+
+                };
+
+              bubble.appendChild(image);
+
+              /*
+               * Download button
+               */
+              const download =
+                document.createElement("a");
+
+              download.className =
+                "image-download";
+
+              download.href =
+                message.image;
+
+              download.download =
+                "sarvesh-ai-image.png";
+
+              download.textContent =
+                "⬇️ Download image";
+
+              bubble.appendChild(
+                download
+              );
+
+            }
+
+            /*
+             * User message
+             */
+            else if (
               message.role === "user"
-                ? "justify-end"
-                : "justify-start"
-            );
+            ) {
 
-          const bubble =
-            document.createElement("div");
+              bubble.className =
+                "max-w-[85%] sm:max-w-[75%] rounded-3xl px-4 py-3 bg-gray-200 dark:bg-gray-800 whitespace-pre-wrap break-words";
 
-          if (message.role === "user") {
-            bubble.className =
-              "max-w-[85%] sm:max-w-[75%] rounded-3xl px-4 py-3 bg-gray-200 dark:bg-gray-800 whitespace-pre-wrap break-words";
-            bubble.textContent = message.content || "";
-          } else {
-            bubble.className =
-              "max-w-[95%] sm:max-w-[85%] rounded-2xl px-2 py-1 markdown-content";
+              bubble.textContent =
+                message.content || "";
 
-            bubble.innerHTML =
-              renderMarkdown(message.content || "");
+            }
+
+            /*
+             * Normal assistant message
+             */
+            else {
+
+              bubble.className =
+                "max-w-[95%] sm:max-w-[85%] rounded-2xl px-2 py-1 markdown-content";
+
+              bubble.innerHTML =
+                renderMarkdown(
+                  message.content || ""
+                );
+
+            }
+
+            wrapper.appendChild(bubble);
+
+            container.appendChild(wrapper);
+
           }
+        );
 
-          wrapper.appendChild(bubble);
-          container.appendChild(wrapper);
-        });
+        requestAnimationFrame(
+          function () {
 
-        requestAnimationFrame(function () {
-          window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: "smooth"
-          });
-        });
-      }
+            window.scrollTo({
 
-      function updateStreamingMessage(content) {
-        renderMessages();
+              top:
+                document.body.scrollHeight,
+
+              behavior:
+                "smooth"
+
+            });
+
+          }
+        );
+
       }
 
       function renderMarkdown(text) {
+
         if (window.marked) {
+
           try {
+
             return marked.parse(text);
+
           } catch (error) {}
+
         }
 
-        const div = document.createElement("div");
-        div.textContent = text;
-        return div.innerHTML.replace(/\n/g, "<br>");
+        const div =
+          document.createElement("div");
+
+        div.textContent =
+          text;
+
+        return div.innerHTML
+          .replace(/\n/g, "<br>");
+
       }
 
       function renderAll() {
+
         renderHistory();
+
         renderMessages();
 
-        const chat = getActiveChat();
+        const chat =
+          getActiveChat();
 
         $("chatTitle").textContent =
-          chat ? (chat.title || "New Chat") : "New Chat";
+          chat
+            ? (chat.title || "New Chat")
+            : "New Chat";
 
         $("modelLabel").textContent =
           "SARVESH AI";
+
       }
 
       function autoResizeTextarea() {
-        const input = $("messageInput");
 
-        input.style.height = "auto";
+        const input =
+          $("messageInput");
+
         input.style.height =
-          Math.min(input.scrollHeight, 160) + "px";
+          "auto";
+
+        input.style.height =
+          Math.min(
+            input.scrollHeight,
+            160
+          ) + "px";
 
         $("sendBtn").disabled =
           isGenerating ||
           !input.value.trim();
+
       }
 
       function openSidebar() {
-        $("sidebar").classList.add("open");
-        $("sidebarOverlay").classList.add("open");
+
+        $("sidebar")
+          .classList
+          .add("open");
+
+        $("sidebarOverlay")
+          .classList
+          .add("open");
+
       }
 
       function closeSidebar() {
-        $("sidebar").classList.remove("open");
-        $("sidebarOverlay").classList.remove("open");
+
+        $("sidebar")
+          .classList
+          .remove("open");
+
+        $("sidebarOverlay")
+          .classList
+          .remove("open");
+
       }
 
       function openSettings() {
-        $("settingsModal").classList.remove("hidden");
+
+        $("settingsModal")
+          .classList
+          .remove("hidden");
+
       }
 
       function closeSettings() {
-        $("settingsModal").classList.add("hidden");
+
+        $("settingsModal")
+          .classList
+          .add("hidden");
+
       }
 
       function openSystemPrompt() {
-        const chat = getActiveChat();
+
+        const chat =
+          getActiveChat();
 
         $("systemPromptInput").value =
-          chat ? (chat.systemPrompt || "") : "";
+          chat
+            ? (chat.systemPrompt || "")
+            : "";
 
-        $("systemModal").classList.remove("hidden");
+        $("systemModal")
+          .classList
+          .remove("hidden");
+
       }
 
       function closeSystemPrompt() {
-        $("systemModal").classList.add("hidden");
+
+        $("systemModal")
+          .classList
+          .add("hidden");
+
       }
 
       function saveSystemPrompt() {
-        const chat = getActiveChat();
+
+        const chat =
+          getActiveChat();
 
         if (!chat) return;
 
         chat.systemPrompt =
-          $("systemPromptInput").value.trim();
+          $("systemPromptInput")
+            .value
+            .trim();
 
         updateChat(chat);
+
         closeSystemPrompt();
+
       }
 
       function loadTheme() {
+
         let theme = "light";
 
         try {
+
           theme =
-            localStorage.getItem(STORAGE.THEME) ||
-            "light";
+            localStorage.getItem(
+              STORAGE.THEME
+            ) || "light";
+
         } catch (error) {}
 
         if (theme === "dark") {
-          document.documentElement.classList.add("dark");
-          $("themeIcon").textContent = "☀️";
-          $("themeText").textContent = "Light mode";
+
+          document.documentElement
+            .classList
+            .add("dark");
+
+          $("themeIcon").textContent =
+            "☀️";
+
+          $("themeText").textContent =
+            "Light mode";
+
         } else {
-          document.documentElement.classList.remove("dark");
-          $("themeIcon").textContent = "🌙";
-          $("themeText").textContent = "Dark mode";
+
+          document.documentElement
+            .classList
+            .remove("dark");
+
+          $("themeIcon").textContent =
+            "🌙";
+
+          $("themeText").textContent =
+            "Dark mode";
+
         }
+
       }
 
       function toggleTheme() {
+
         const dark =
-          document.documentElement.classList.toggle("dark");
+          document.documentElement
+            .classList
+            .toggle("dark");
 
         try {
+
           localStorage.setItem(
             STORAGE.THEME,
-            dark ? "dark" : "light"
+            dark
+              ? "dark"
+              : "light"
           );
+
         } catch (error) {}
 
         $("themeIcon").textContent =
-          dark ? "☀️" : "🌙";
+          dark
+            ? "☀️"
+            : "🌙";
 
         $("themeText").textContent =
-          dark ? "Light mode" : "Dark mode";
+          dark
+            ? "Light mode"
+            : "Dark mode";
+
       }
 
+      /*
+       * ==========================================================
+       * INITIALIZE
+       * ==========================================================
+       */
+
       function init() {
+
         loadTheme();
+
         loadChats();
+
         renderAll();
 
-        $("loading").style.display = "none";
+        $("loading")
+          .style
+          .display = "none";
 
-        $("newChatBtn").addEventListener(
-          "click",
-          function () {
-            if (!isGenerating) {
-              createNewChat();
-            }
-          }
-        );
-
-        $("menuBtn").addEventListener(
-          "click",
-          openSidebar
-        );
-
-        $("closeSidebarBtn").addEventListener(
-          "click",
-          closeSidebar
-        );
-
-        $("sidebarOverlay").addEventListener(
-          "click",
-          closeSidebar
-        );
-
-        $("settingsBtn").addEventListener(
-          "click",
-          openSettings
-        );
-
-        $("topSettingsBtn").addEventListener(
-          "click",
-          openSettings
-        );
-
-        $("themeBtn").addEventListener(
-          "click",
-          toggleTheme
-        );
-
-        $("systemPromptBtn").addEventListener(
-          "click",
-          openSystemPrompt
-        );
-
-        $("saveSystemPromptBtn").addEventListener(
-          "click",
-          saveSystemPrompt
-        );
-
-        $("cancelRename").addEventListener(
-          "click",
-          function () {
-            renameTargetId = null;
-            $("renameModal").classList.add("hidden");
-          }
-        );
-
-        $("saveRename").addEventListener(
-          "click",
-          saveRename
-        );
-
-        $("chatForm").addEventListener(
-          "submit",
-          function (event) {
-            event.preventDefault();
-            sendMessage($("messageInput").value);
-          }
-        );
-
-        $("messageInput").addEventListener(
-          "input",
-          autoResizeTextarea
-        );
-
-        $("messageInput").addEventListener(
-          "keydown",
-          function (event) {
-            if (
-              event.key === "Enter" &&
-              !event.shiftKey &&
-              !event.isComposing
-            ) {
-              event.preventDefault();
+        /*
+         * New chat
+         */
+        $("newChatBtn")
+          .addEventListener(
+            "click",
+            function () {
 
               if (!isGenerating) {
-                $("chatForm").requestSubmit();
+                createNewChat();
               }
-            }
-          }
-        );
 
+            }
+          );
+
+        /*
+         * Mobile sidebar
+         */
+        $("menuBtn")
+          .addEventListener(
+            "click",
+            openSidebar
+          );
+
+        $("closeSidebarBtn")
+          .addEventListener(
+            "click",
+            closeSidebar
+          );
+
+        $("sidebarOverlay")
+          .addEventListener(
+            "click",
+            closeSidebar
+          );
+
+        /*
+         * Settings
+         */
+        $("settingsBtn")
+          .addEventListener(
+            "click",
+            openSettings
+          );
+
+        $("topSettingsBtn")
+          .addEventListener(
+            "click",
+            openSettings
+          );
+
+        /*
+         * Theme
+         */
+        $("themeBtn")
+          .addEventListener(
+            "click",
+            toggleTheme
+          );
+
+        /*
+         * System prompt
+         */
+        $("systemPromptBtn")
+          .addEventListener(
+            "click",
+            openSystemPrompt
+          );
+
+        $("saveSystemPromptBtn")
+          .addEventListener(
+            "click",
+            saveSystemPrompt
+          );
+
+        /*
+         * ======================================================
+         * IMAGE GENERATION BUTTON
+         * ======================================================
+         */
+
+        $("imageBtn")
+          .addEventListener(
+            "click",
+            function () {
+
+              if (isGenerating) {
+                return;
+              }
+
+              const prompt =
+                $("messageInput")
+                  .value
+                  .trim();
+
+              if (!prompt) {
+
+                $("messageInput")
+                  .placeholder =
+                  "Describe the image you want...";
+
+                $("messageInput")
+                  .focus();
+
+                return;
+
+              }
+
+              $("messageInput")
+                .value = "";
+
+              autoResizeTextarea();
+
+              generateImage(prompt);
+
+            }
+          );
+
+        /*
+         * Rename
+         */
+        $("cancelRename")
+          .addEventListener(
+            "click",
+            function () {
+
+              renameTargetId = null;
+
+              $("renameModal")
+                .classList
+                .add("hidden");
+
+            }
+          );
+
+        $("saveRename")
+          .addEventListener(
+            "click",
+            saveRename
+          );
+
+        /*
+         * Chat form
+         */
+        $("chatForm")
+          .addEventListener(
+            "submit",
+            function (event) {
+
+              event.preventDefault();
+
+              sendMessage(
+                $("messageInput").value
+              );
+
+            }
+          );
+
+        /*
+         * Text input
+         */
+        $("messageInput")
+          .addEventListener(
+            "input",
+            function () {
+
+              autoResizeTextarea();
+
+              $("messageInput")
+                .placeholder =
+                "Message SARVESH...";
+
+            }
+          );
+
+        /*
+         * Enter = send
+         * Shift + Enter = new line
+         */
+        $("messageInput")
+          .addEventListener(
+            "keydown",
+            function (event) {
+
+              if (
+                event.key === "Enter" &&
+                !event.shiftKey &&
+                !event.isComposing
+              ) {
+
+                event.preventDefault();
+
+                if (!isGenerating) {
+
+                  $("chatForm")
+                    .requestSubmit();
+
+                }
+
+              }
+
+            }
+          );
+
+        /*
+         * Settings modal
+         */
         document
           .querySelectorAll(".modalClose")
-          .forEach(function (button) {
-            button.addEventListener(
-              "click",
-              closeSettings
-            );
-          });
+          .forEach(
+            function (button) {
 
+              button.addEventListener(
+                "click",
+                closeSettings
+              );
+
+            }
+          );
+
+        /*
+         * System modal
+         */
         document
           .querySelectorAll(".systemClose")
-          .forEach(function (button) {
-            button.addEventListener(
-              "click",
-              closeSystemPrompt
-            );
-          });
+          .forEach(
+            function (button) {
 
-        $("settingsModal").addEventListener(
-          "click",
-          function (event) {
-            if (event.target === $("settingsModal")) {
-              closeSettings();
-            }
-          }
-        );
+              button.addEventListener(
+                "click",
+                closeSystemPrompt
+              );
 
-        $("systemModal").addEventListener(
-          "click",
-          function (event) {
-            if (event.target === $("systemModal")) {
-              closeSystemPrompt();
             }
-          }
-        );
+          );
 
-        $("renameModal").addEventListener(
-          "click",
-          function (event) {
-            if (event.target === $("renameModal")) {
-              renameTargetId = null;
-              $("renameModal").classList.add("hidden");
-            }
-          }
-        );
+        /*
+         * Close settings by background
+         */
+        $("settingsModal")
+          .addEventListener(
+            "click",
+            function (event) {
 
-        $("renameInput").addEventListener(
-          "keydown",
-          function (event) {
-            if (event.key === "Enter") {
-              event.preventDefault();
-              saveRename();
-            }
+              if (
+                event.target ===
+                $("settingsModal")
+              ) {
 
-            if (event.key === "Escape") {
-              renameTargetId = null;
-              $("renameModal").classList.add("hidden");
+                closeSettings();
+
+              }
+
             }
-          }
-        );
+          );
+
+        /*
+         * Close system prompt by background
+         */
+        $("systemModal")
+          .addEventListener(
+            "click",
+            function (event) {
+
+              if (
+                event.target ===
+                $("systemModal")
+              ) {
+
+                closeSystemPrompt();
+
+              }
+
+            }
+          );
+
+        /*
+         * Close rename modal
+         */
+        $("renameModal")
+          .addEventListener(
+            "click",
+            function (event) {
+
+              if (
+                event.target ===
+                $("renameModal")
+              ) {
+
+                renameTargetId = null;
+
+                $("renameModal")
+                  .classList
+                  .add("hidden");
+
+              }
+
+            }
+          );
+
+        /*
+         * Rename keyboard shortcuts
+         */
+        $("renameInput")
+          .addEventListener(
+            "keydown",
+            function (event) {
+
+              if (
+                event.key === "Enter"
+              ) {
+
+                event.preventDefault();
+
+                saveRename();
+
+              }
+
+              if (
+                event.key === "Escape"
+              ) {
+
+                renameTargetId = null;
+
+                $("renameModal")
+                  .classList
+                  .add("hidden");
+
+              }
+
+            }
+          );
 
         window.addEventListener(
           "resize",
           autoResizeTextarea
         );
+
       }
 
-      if (document.readyState === "loading") {
+      if (
+        document.readyState ===
+        "loading"
+      ) {
+
         document.addEventListener(
           "DOMContentLoaded",
           init
         );
+
       } else {
+
         init();
+
       }
 
     })();
   </script>
+
+  <!-- SERVICE WORKER -->
   <script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js")
-      .then(() => console.log("SARVESH AI service worker registered"))
-      .catch(error => console.error("Service worker error:", error));
-  });
-}
+    if ("serviceWorker" in navigator) {
+
+      window.addEventListener(
+        "load",
+        () => {
+
+          navigator.serviceWorker
+            .register("./sw.js")
+
+            .then(
+              () =>
+                console.log(
+                  "SARVESH AI service worker registered"
+                )
+            )
+
+            .catch(
+              error =>
+                console.error(
+                  "Service worker error:",
+                  error
+                )
+            );
+
+        }
+      );
+
+    }
   </script>
+
   <script src="ai-tools.js"></script>
+
 </body>
 </html>
