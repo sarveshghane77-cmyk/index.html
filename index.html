@@ -2,13 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
+>
+
 <meta name="theme-color" content="#020617">
+
 <title>SARVESH AI</title>
 
 <style>
-*{box-sizing:border-box}
-html,body{
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
   margin:0;
   width:100%;
   height:100%;
@@ -20,21 +31,18 @@ html,body{
 
 body{
   background:
-    radial-gradient(circle at 20% 20%,rgba(59,130,246,.14),transparent 28%),
-    radial-gradient(circle at 80% 70%,rgba(168,85,247,.13),transparent 30%),
-    radial-gradient(circle at 50% 100%,rgba(14,165,233,.09),transparent 35%),
+    radial-gradient(circle at 18% 22%,rgba(37,99,235,.16),transparent 28%),
+    radial-gradient(circle at 82% 72%,rgba(124,58,237,.15),transparent 31%),
+    radial-gradient(circle at 45% 100%,rgba(14,165,233,.08),transparent 36%),
     #020617;
 }
 
-body:before,
-body:after{
+body:before{
   content:"";
   position:fixed;
   inset:0;
   pointer-events:none;
-}
 
-body:before{
   background-image:
     radial-gradient(1px 1px at 8% 12%,#fff,transparent),
     radial-gradient(1px 1px at 18% 76%,#fff,transparent),
@@ -46,19 +54,19 @@ body:before{
     radial-gradient(1px 1px at 78% 82%,#fff,transparent),
     radial-gradient(1px 1px at 88% 22%,#fff,transparent),
     radial-gradient(1px 1px at 94% 62%,#fff,transparent);
-  opacity:.65;
+
+  opacity:.62;
   animation:stars 12s linear infinite;
 }
 
-body:after{
-  background:
-    radial-gradient(ellipse at 50% 45%,rgba(99,102,241,.07),transparent 45%);
-}
-
 @keyframes stars{
-  from{transform:translateY(0)}
-  50%{transform:translateY(-10px)}
-  to{transform:translateY(0)}
+  0%,100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-10px);
+  }
 }
 
 button{
@@ -69,26 +77,36 @@ button{
 }
 
 .app{
-  position:relative;
   width:100%;
   height:100%;
   display:flex;
+  position:relative;
   z-index:1;
 }
+
 
 /* SIDEBAR */
 
 .sidebar{
   width:280px;
   height:100%;
-  border-right:1px solid rgba(255,255,255,.08);
-  background:rgba(2,6,23,.78);
-  backdrop-filter:blur(25px);
+  flex-shrink:0;
+
+  padding:18px;
+
   display:flex;
   flex-direction:column;
-  padding:18px;
+
+  background:rgba(2,6,23,.78);
+
+  border-right:
+    1px solid rgba(255,255,255,.08);
+
+  backdrop-filter:blur(25px);
+
   transition:.25s ease;
-  z-index:20;
+
+  z-index:30;
 }
 
 .brand{
@@ -101,11 +119,21 @@ button{
 .logo{
   width:42px;
   height:42px;
-  border-radius:13px;
+
   display:grid;
   place-items:center;
-  background:linear-gradient(135deg,#2563eb,#7c3aed);
-  box-shadow:0 0 28px rgba(99,102,241,.35);
+
+  border-radius:13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+    );
+
+  box-shadow:
+    0 0 28px rgba(99,102,241,.35);
 }
 
 .logo svg{
@@ -127,13 +155,24 @@ button{
 .new-chat{
   width:100%;
   height:46px;
-  border-radius:14px;
+
   display:flex;
   align-items:center;
   justify-content:center;
   gap:10px;
-  background:linear-gradient(135deg,#2563eb,#7c3aed);
-  box-shadow:0 8px 30px rgba(37,99,235,.2);
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+    );
+
+  box-shadow:
+    0 8px 30px rgba(37,99,235,.2);
+
   font-weight:700;
 }
 
@@ -157,12 +196,17 @@ button{
 
 .history-item{
   width:100%;
+
   padding:11px 12px;
   margin-bottom:5px;
+
   border-radius:11px;
+
   color:#cbd5e1;
   background:transparent;
+
   text-align:left;
+
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
@@ -179,13 +223,19 @@ button{
 
 .side-btn{
   width:100%;
+
   padding:11px;
+
   border-radius:11px;
+
   background:rgba(255,255,255,.035);
+
   display:flex;
   align-items:center;
   gap:10px;
+
   color:#cbd5e1;
+
   text-align:left;
 }
 
@@ -196,7 +246,14 @@ button{
 .side-btn svg{
   width:18px;
   height:18px;
+
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.7;
+  stroke-linecap:round;
+  stroke-linejoin:round;
 }
+
 
 /* MAIN */
 
@@ -204,6 +261,7 @@ button{
   flex:1;
   min-width:0;
   height:100%;
+
   display:flex;
   flex-direction:column;
 }
@@ -211,22 +269,30 @@ button{
 .topbar{
   height:64px;
   flex-shrink:0;
+
   display:flex;
   align-items:center;
+
   padding:0 20px;
-  border-bottom:1px solid rgba(255,255,255,.06);
+
+  border-bottom:
+    1px solid rgba(255,255,255,.06);
+
   background:rgba(2,6,23,.42);
+
   backdrop-filter:blur(20px);
 }
 
 .menu-btn{
   display:none;
+  margin-right:12px;
 }
 
 .status{
   display:flex;
   align-items:center;
   gap:8px;
+
   color:#94a3b8;
   font-size:12px;
 }
@@ -234,15 +300,27 @@ button{
 .status-dot{
   width:8px;
   height:8px;
+
   border-radius:50%;
+
   background:#22c55e;
-  box-shadow:0 0 12px #22c55e;
+
+  box-shadow:
+    0 0 12px #22c55e;
 }
+
+
+/* CHAT */
 
 .chat{
   flex:1;
+
   overflow:auto;
-  padding:28px 18px 150px;
+
+  padding:
+    28px
+    18px
+    155px;
 }
 
 .chat-inner{
@@ -258,13 +336,26 @@ button{
 .hero-icon{
   width:74px;
   height:74px;
+
   margin:auto;
+
   display:grid;
   place-items:center;
+
   border-radius:23px;
-  background:linear-gradient(135deg,rgba(37,99,235,.25),rgba(124,58,237,.25));
-  border:1px solid rgba(129,140,248,.25);
-  box-shadow:0 0 50px rgba(99,102,241,.15);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(37,99,235,.25),
+      rgba(124,58,237,.25)
+    );
+
+  border:
+    1px solid rgba(129,140,248,.25);
+
+  box-shadow:
+    0 0 50px rgba(99,102,241,.15);
 }
 
 .hero-icon svg{
@@ -274,7 +365,9 @@ button{
 
 .hero h1{
   margin:20px 0 8px;
+
   font-size:34px;
+
   letter-spacing:-1px;
 }
 
@@ -283,45 +376,73 @@ button{
   margin:0;
 }
 
-/* FEATURE CARDS */
+
+/* CARDS */
 
 .cards{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+
+  grid-template-columns:
+    repeat(4,1fr);
+
   gap:12px;
+
   margin:24px 0;
 }
 
 .card{
   min-height:125px;
+
   padding:17px;
+
   border-radius:18px;
+
   background:rgba(15,23,42,.55);
-  border:1px solid rgba(255,255,255,.07);
+
+  border:
+    1px solid rgba(255,255,255,.07);
+
   backdrop-filter:blur(15px);
+
   transition:.2s;
+
   text-align:left;
 }
 
 .card:hover{
   transform:translateY(-3px);
-  border-color:rgba(129,140,248,.35);
-  background:rgba(30,41,59,.65);
+
+  border-color:
+    rgba(129,140,248,.35);
+
+  background:
+    rgba(30,41,59,.65);
 }
 
 .card-icon{
   width:39px;
   height:39px;
+
   display:grid;
   place-items:center;
+
   border-radius:12px;
-  background:rgba(99,102,241,.13);
+
+  background:
+    rgba(99,102,241,.13);
+
   margin-bottom:13px;
 }
 
 .card-icon svg{
   width:21px;
   height:21px;
+
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.6;
+  stroke-linecap:round;
+  stroke-linejoin:round;
 }
 
 .card strong{
@@ -331,17 +452,24 @@ button{
 
 .card span{
   display:block;
+
   color:#64748b;
+
   font-size:11px;
+
   margin-top:5px;
+
   line-height:1.45;
 }
+
 
 /* MESSAGES */
 
 .message{
   display:flex;
+
   gap:10px;
+
   margin:18px 0;
 }
 
@@ -352,119 +480,236 @@ button{
 .avatar{
   width:34px;
   height:34px;
+
   flex:0 0 34px;
+
   border-radius:11px;
+
   display:grid;
   place-items:center;
-  background:linear-gradient(135deg,#2563eb,#7c3aed);
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+    );
 }
 
 .avatar svg{
   width:18px;
   height:18px;
-}
 
-.bubble{
-  max-width:min(760px,85%);
-  padding:13px 15px;
-  border-radius:17px;
-  background:rgba(15,23,42,.8);
-  border:1px solid rgba(255,255,255,.07);
-  color:#e2e8f0;
-  line-height:1.6;
-  white-space:pre-wrap;
-  word-break:break-word;
-}
-
-.user .bubble{
-  background:linear-gradient(135deg,rgba(37,99,235,.28),rgba(79,70,229,.25));
-}
-
-.msg-actions{
-  display:flex;
-  gap:5px;
-  margin-top:7px;
-}
-
-.icon-btn{
-  width:38px;
-  height:38px;
-  border-radius:11px;
-  display:grid;
-  place-items:center;
-  background:rgba(255,255,255,.045);
-  border:1px solid rgba(255,255,255,.06);
-  color:#cbd5e1;
-  transition:.18s;
-}
-
-.icon-btn:hover{
-  background:rgba(255,255,255,.1);
-  color:#fff;
-}
-
-.icon-btn svg{
-  width:19px;
-  height:19px;
   fill:none;
   stroke:currentColor;
-  stroke-width:1.8;
+  stroke-width:1.7;
   stroke-linecap:round;
   stroke-linejoin:round;
 }
 
-.message-image{
-  max-width:100%;
-  max-height:400px;
-  display:block;
-  border-radius:13px;
-  margin-top:10px;
+.bubble{
+  max-width:
+    min(760px,85%);
+
+  padding:
+    13px 15px;
+
+  border-radius:17px;
+
+  background:
+    rgba(15,23,42,.8);
+
+  border:
+    1px solid rgba(255,255,255,.07);
+
+  color:#e2e8f0;
+
+  line-height:1.6;
+
+  white-space:pre-wrap;
+
+  word-break:break-word;
 }
+
+.user .bubble{
+  background:
+    linear-gradient(
+      135deg,
+      rgba(37,99,235,.28),
+      rgba(79,70,229,.25)
+    );
+}
+
+.message-image{
+  display:block;
+
+  width:auto;
+  max-width:100%;
+
+  max-height:500px;
+
+  margin-top:10px;
+
+  border-radius:14px;
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.3);
+}
+
+
+/*
+  IMPORTANT:
+  There is intentionally NO speaker/
+  read-aloud button here.
+*/
+
+
+/* ICON BUTTONS */
+
+.icon-btn{
+  width:38px;
+  height:38px;
+
+  flex:0 0 38px;
+
+  border-radius:11px;
+
+  display:grid;
+  place-items:center;
+
+  background:
+    rgba(255,255,255,.045);
+
+  border:
+    1px solid rgba(255,255,255,.06);
+
+  color:#cbd5e1;
+
+  transition:.18s;
+}
+
+.icon-btn:hover{
+  background:
+    rgba(255,255,255,.1);
+
+  color:#fff;
+}
+
+.icon-btn svg{
+  width:20px;
+  height:20px;
+
+  fill:none;
+
+  stroke:currentColor;
+
+  stroke-width:1.8;
+
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.send-btn{
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+    );
+
+  color:#fff;
+}
+
+.send-btn:hover{
+  box-shadow:
+    0 0 25px rgba(99,102,241,.35);
+}
+
+.web-on{
+  color:#60a5fa;
+
+  background:
+    rgba(37,99,235,.15);
+}
+
 
 /* COMPOSER */
 
 .composer-wrap{
   position:absolute;
+
   left:280px;
   right:0;
   bottom:0;
-  padding:16px 18px 18px;
-  background:linear-gradient(transparent,rgba(2,6,23,.95) 35%);
+
+  padding:
+    16px
+    18px
+    18px;
+
+  background:
+    linear-gradient(
+      transparent,
+      rgba(2,6,23,.96) 35%
+    );
+
   z-index:10;
 }
 
 .composer{
   max-width:950px;
+
   margin:auto;
+
   padding:8px;
-  border:1px solid rgba(255,255,255,.1);
+
+  border:
+    1px solid rgba(255,255,255,.1);
+
   border-radius:19px;
-  background:rgba(15,23,42,.8);
+
+  background:
+    rgba(15,23,42,.8);
+
   backdrop-filter:blur(25px);
-  box-shadow:0 15px 50px rgba(0,0,0,.35);
+
+  box-shadow:
+    0 15px 50px rgba(0,0,0,.35);
 }
 
 .preview{
   display:none;
+
   position:relative;
+
   padding:6px;
 }
 
 .preview img{
   width:80px;
   height:80px;
+
   object-fit:cover;
+
   border-radius:12px;
 }
 
 .preview .remove{
   position:absolute;
+
   left:72px;
   top:0;
+
   width:23px;
   height:23px;
+
   border-radius:50%;
+
   background:#ef4444;
+
   display:grid;
   place-items:center;
 }
@@ -472,24 +717,39 @@ button{
 .preview .remove svg{
   width:13px;
   height:13px;
+
+  fill:none;
+  stroke:#fff;
+  stroke-width:2;
+  stroke-linecap:round;
 }
 
 .input-row{
   display:flex;
+
   align-items:flex-end;
+
   gap:7px;
 }
 
 textarea{
   flex:1;
+
   resize:none;
+
   min-height:44px;
   max-height:150px;
+
   border:0;
   outline:0;
+
   background:transparent;
+
   color:#fff;
-  padding:12px 8px;
+
+  padding:
+    12px 8px;
+
   font:inherit;
 }
 
@@ -497,40 +757,41 @@ textarea::placeholder{
   color:#64748b;
 }
 
-.web-on{
-  color:#60a5fa;
-  background:rgba(37,99,235,.15);
-}
-
-.send-btn{
-  background:linear-gradient(135deg,#2563eb,#7c3aed);
-  color:#fff;
-}
-
-.send-btn:hover{
-  box-shadow:0 0 25px rgba(99,102,241,.35);
-}
-
 .input-hint{
   text-align:center;
+
   color:#475569;
+
   font-size:10px;
+
   margin-top:6px;
 }
+
 
 /* TOOLS */
 
 .tools-panel{
   display:none;
+
   position:absolute;
+
   bottom:78px;
   right:10px;
+
   width:230px;
+
   padding:10px;
+
   border-radius:16px;
-  background:rgba(15,23,42,.97);
-  border:1px solid rgba(255,255,255,.1);
-  box-shadow:0 20px 60px rgba(0,0,0,.5);
+
+  background:
+    rgba(15,23,42,.97);
+
+  border:
+    1px solid rgba(255,255,255,.1);
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.5);
 }
 
 .tools-panel.open{
@@ -539,59 +800,104 @@ textarea::placeholder{
 
 .tool-option{
   width:100%;
+
   padding:11px;
+
   border-radius:10px;
+
   display:flex;
+
   align-items:center;
+
   gap:10px;
+
   background:transparent;
+
   color:#cbd5e1;
+
   text-align:left;
 }
 
 .tool-option:hover{
-  background:rgba(255,255,255,.07);
+  background:
+    rgba(255,255,255,.07);
 }
 
 .tool-option svg{
   width:18px;
   height:18px;
+
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.7;
+  stroke-linecap:round;
+  stroke-linejoin:round;
 }
 
-/* LOADING */
+
+/* TYPING */
 
 .typing{
   display:flex;
+
   gap:5px;
+
   padding:6px 2px;
 }
 
 .typing span{
   width:6px;
   height:6px;
+
   border-radius:50%;
+
   background:#94a3b8;
-  animation:typing 1s infinite;
+
+  animation:
+    typing 1s infinite;
 }
 
-.typing span:nth-child(2){animation-delay:.15s}
-.typing span:nth-child(3){animation-delay:.3s}
+.typing span:nth-child(2){
+  animation-delay:.15s;
+}
+
+.typing span:nth-child(3){
+  animation-delay:.3s;
+}
 
 @keyframes typing{
-  0%,60%,100%{opacity:.25;transform:translateY(0)}
-  30%{opacity:1;transform:translateY(-4px)}
+
+  0%,60%,100%{
+    opacity:.25;
+    transform:translateY(0);
+  }
+
+  30%{
+    opacity:1;
+    transform:translateY(-4px);
+  }
+
 }
+
 
 /* MODAL */
 
 .modal{
   position:fixed;
+
   inset:0;
+
   z-index:100;
+
   display:none;
+
   place-items:center;
+
   padding:20px;
-  background:rgba(0,0,0,.65);
+
+  background:
+    rgba(0,0,0,.65);
+
   backdrop-filter:blur(10px);
 }
 
@@ -600,32 +906,48 @@ textarea::placeholder{
 }
 
 .modal-box{
-  width:min(500px,100%);
+  width:
+    min(500px,100%);
+
   max-height:85vh;
+
   overflow:auto;
+
   padding:22px;
+
   border-radius:22px;
+
   background:#0f172a;
-  border:1px solid rgba(255,255,255,.1);
+
+  border:
+    1px solid rgba(255,255,255,.1);
 }
 
 .modal-head{
   display:flex;
+
   justify-content:space-between;
+
   align-items:center;
+
   margin-bottom:18px;
 }
 
 .modal-head h2{
   margin:0;
+
   font-size:18px;
 }
 
 .close-btn{
   width:36px;
   height:36px;
+
   border-radius:10px;
-  background:rgba(255,255,255,.06);
+
+  background:
+    rgba(255,255,255,.06);
+
   display:grid;
   place-items:center;
 }
@@ -633,32 +955,46 @@ textarea::placeholder{
 .close-btn svg{
   width:18px;
   height:18px;
+
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
 }
 
 .setting{
   padding:15px 0;
-  border-bottom:1px solid rgba(255,255,255,.07);
+
+  border-bottom:
+    1px solid rgba(255,255,255,.07);
 }
 
 .setting-title{
   font-weight:700;
+
   margin-bottom:5px;
 }
 
 .setting-desc{
   color:#64748b;
+
   font-size:12px;
 }
+
 
 /* MOBILE */
 
 @media(max-width:850px){
+
   .sidebar{
     position:fixed;
+
     left:-290px;
     top:0;
     bottom:0;
-    box-shadow:20px 0 60px rgba(0,0,0,.5);
+
+    box-shadow:
+      20px 0 60px rgba(0,0,0,.5);
   }
 
   .sidebar.open{
@@ -667,7 +1003,6 @@ textarea::placeholder{
 
   .menu-btn{
     display:grid;
-    margin-right:12px;
   }
 
   .composer-wrap{
@@ -675,21 +1010,28 @@ textarea::placeholder{
   }
 
   .cards{
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:
+      repeat(2,1fr);
   }
 
   .hero{
     padding-top:25px;
   }
+
 }
 
+
 @media(max-width:500px){
+
   .topbar{
     padding:0 12px;
   }
 
   .chat{
-    padding:15px 10px 145px;
+    padding:
+      15px
+      10px
+      150px;
   }
 
   .hero h1{
@@ -702,6 +1044,7 @@ textarea::placeholder{
 
   .card{
     min-height:110px;
+
     padding:13px;
   }
 
@@ -716,435 +1059,829 @@ textarea::placeholder{
   .bubble{
     max-width:88%;
   }
+
 }
+
 </style>
 </head>
+
 
 <body>
 
 <div class="app">
 
+
 <!-- SIDEBAR -->
+
 <aside class="sidebar" id="sidebar">
 
   <div class="brand">
+
     <div class="logo">
+
       <svg viewBox="0 0 24 24">
-        <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"
-              fill="none" stroke="currentColor" stroke-width="1.7"/>
-        <path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"
-              fill="none" stroke="currentColor" stroke-width="1.5"/>
+
+        <path
+          d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+        />
+
+        <path
+          d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        />
+
       </svg>
+
     </div>
+
     <div>
-      <div class="brand-title">SARVESH AI</div>
-      <div class="brand-sub">Neural Intelligence</div>
+
+      <div class="brand-title">
+        SARVESH AI
+      </div>
+
+      <div class="brand-sub">
+        Neural Intelligence
+      </div>
+
     </div>
+
   </div>
 
+
   <button class="new-chat" id="newChat">
+
     <svg viewBox="0 0 24 24">
-      <path d="M12 5v14M5 12h14"
-            fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round"/>
+
+      <path
+        d="M12 5v14M5 12h14"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+
     </svg>
-    <span>New Conversation</span>
+
+    <span>
+      New Conversation
+    </span>
+
   </button>
 
-  <div class="section-title">Memory Stream</div>
+
+  <div class="section-title">
+    Memory Stream
+  </div>
+
 
   <div class="history" id="history"></div>
+
 
   <div class="side-bottom">
 
     <button class="side-btn" id="memoryBtn">
+
       <svg viewBox="0 0 24 24">
-        <path d="M9 5a3 3 0 0 0-3 3v1a3 3 0 0 0-2 2.8A3.2 3.2 0 0 0 7.2 15H9a3 3 0 0 0 3 3V6a3 3 0 0 0-3-1zM15 5a3 3 0 0 1 3 3v1a3 3 0 0 1 2 2.8 3.2 3.2 0 0 1-3.2 3.2H15a3 3 0 0 1-3 3V6a3 3 0 0 1 3-1z"
-              fill="none" stroke="currentColor" stroke-width="1.6"/>
+
+        <path
+          d="M9 5a3 3 0 0 0-3 3v1a3 3 0 0 0-2 2.8A3.2 3.2 0 0 0 7.2 15H9a3 3 0 0 0 3 3V6a3 3 0 0 0-3-1zM15 5a3 3 0 0 1 3 3v1a3 3 0 0 1 2 2.8 3.2 3.2 0 0 1-3.2 3.2H15a3 3 0 0 1-3 3V6a3 3 0 0 1 3-1z"
+        />
+
       </svg>
-      <span>Memory</span>
+
+      <span>
+        Memory
+      </span>
+
     </button>
 
+
     <button class="side-btn" id="settingsBtn">
+
       <svg viewBox="0 0 24 24">
-        <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z"/>
-        <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3l-.5.2a1.7 1.7 0 0 0-1 1.5v.2h-2.6v-.2a1.7 1.7 0 0 0-1-1.5l-.5-.2a1.7 1.7 0 0 0-1.9.3l-.1.1-1.8-1.8.1-.1A1.7 1.7 0 0 0 7 15l-.2-.5a1.7 1.7 0 0 0-1.5-1H5v-2.6h.2a1.7 1.7 0 0 0 1.5-1l.2-.5a1.7 1.7 0 0 0-.3-1.9l-.1-.1 1.8-1.8.1.1a1.7 1.7 0 0 0 1.9.3l.5-.2a1.7 1.7 0 0 0 1-1.5V4h2.6v.2a1.7 1.7 0 0 0 1 1.5l.5.2a1.7 1.7 0 0 0 1.9-.3l.1-.1 1.8 1.8-.1.1a1.7 1.7 0 0 0-.3 1.9l.2.5a1.7 1.7 0 0 0 1.5 1h.2v2.6h-.2a1.7 1.7 0 0 0-1.5 1l-.2.6z"
-              fill="none" stroke="currentColor" stroke-width="1.5"/>
+
+        <circle
+          cx="12"
+          cy="12"
+          r="3"
+        />
+
+        <path
+          d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3l-.5.2a1.7 1.7 0 0 0-1 1.5v.2h-2.6v-.2a1.7 1.7 0 0 0-1-1.5l-.5-.2a1.7 1.7 0 0 0-1.9.3l-.1.1-1.8-1.8.1-.1A1.7 1.7 0 0 0 7 15l-.2-.5a1.7 1.7 0 0 0-1.5-1H5v-2.6h.2a1.7 1.7 0 0 0 1.5-1l.2-.5a1.7 1.7 0 0 0-.3-1.9l-.1-.1 1.8-1.8.1.1a1.7 1.7 0 0 0 1.9.3l.5-.2a1.7 1.7 0 0 0 1-1.5V4h2.6v.2a1.7 1.7 0 0 0 1 1.5l.5.2a1.7 1.7 0 0 0 1.9-.3l.1-.1 1.8 1.8-.1.1a1.7 1.7 0 0 0-.3 1.9l.2.5a1.7 1.7 0 0 0 1.5 1h.2v2.6h-.2a1.7 1.7 0 0 0-1.5 1l-.2.6z"
+        />
+
       </svg>
-      <span>Settings</span>
+
+      <span>
+        Settings
+      </span>
+
     </button>
 
   </div>
+
 </aside>
 
 
 <!-- MAIN -->
+
 <main class="main">
 
-  <header class="topbar">
 
-    <button class="icon-btn menu-btn" id="menuBtn"
-            aria-label="Open menu" title="Open menu">
-      <svg viewBox="0 0 24 24">
-        <path d="M4 6h16M4 12h16M4 18h16"/>
-      </svg>
-    </button>
+<header class="topbar">
 
-    <div class="status">
-      <span class="status-dot"></span>
-      <span>Neural Core Online</span>
-    </div>
+  <button
+    class="icon-btn menu-btn"
+    id="menuBtn"
+    aria-label="Open menu"
+    title="Open menu"
+  >
 
-  </header>
+    <svg viewBox="0 0 24 24">
 
+      <path d="M4 6h16M4 12h16M4 18h16"/>
 
-  <section class="chat" id="chat">
+    </svg>
 
-    <div class="chat-inner">
+  </button>
 
-      <div class="hero" id="hero">
 
-        <div class="hero-icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 3l1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7L12 3z"
-                  fill="none" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M18.5 15l.7 2.1 2.1.7-2.1.7-.7 2.1-.7-2.1-2.1-.7 2.1-.7.7-2.1z"
-                  fill="none" stroke="currentColor" stroke-width="1.4"/>
-          </svg>
-        </div>
+  <div class="status">
 
-        <h1>SARVESH AI</h1>
-        <p>Your intelligent digital companion. Ask anything and begin a new conversation.</p>
+    <span class="status-dot"></span>
 
-      </div>
-
-
-      <!-- FOUR WORKING CARDS -->
-
-      <div class="cards" id="featureCards">
-
-        <button class="card" data-prompt="Help me explore an interesting topic and discover something new.">
-
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5L12 3z"/>
-              <path d="M19 16l.7 2.3L22 19l-2.3.7L19 22l-.7-2.3L16 19l2.3-.7L19 16z"/>
-            </svg>
-          </div>
-
-          <strong>Explore Intelligence</strong>
-          <span>Discover ideas, topics and knowledge.</span>
-
-        </button>
-
-
-        <button class="card" data-prompt="Teach me something interesting in a simple and understandable way.">
-
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v17H6.5A2.5 2.5 0 0 0 4 22V5.5z"/>
-              <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v17h4.5A2.5 2.5 0 0 1 20 22V5.5z"/>
-            </svg>
-          </div>
-
-          <strong>Learn Something</strong>
-          <span>Understand difficult things easily.</span>
-
-        </button>
-
-
-        <button class="card" data-prompt="Give me some useful current information from the internet.">
-
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="8.5"/>
-              <path d="M3.5 12h17M12 3.5c2.2 2.3 3.3 5.1 3.3 8.5S14.2 18.2 12 20.5c-2.2-2.3-3.3-5.1-3.3-8.5S9.8 5.8 12 3.5z"/>
-            </svg>
-          </div>
-
-          <strong>Live Information</strong>
-          <span>Ask questions that need current information.</span>
-
-        </button>
-
-
-        <button class="card" data-prompt="Give me a creative idea that I can create using AI.">
-
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3z"/>
-              <path d="M5 16l.7 2.3L8 19l-2.3.7L5 22l-.7-2.3L2 19l2.3-.7L5 16z"/>
-            </svg>
-          </div>
-
-          <strong>Create Something</strong>
-          <span>Turn your ideas into creative projects.</span>
-
-        </button>
-
-      </div>
-
-
-      <div id="messages"></div>
-
-    </div>
-  </section>
-
-
-  <!-- COMPOSER -->
-
-  <div class="composer-wrap">
-
-    <div class="composer">
-
-      <div class="preview" id="preview">
-        <img id="previewImg">
-
-        <button class="remove" id="removeImage"
-                aria-label="Remove image" title="Remove image">
-          <svg viewBox="0 0 24 24">
-            <path d="M6 6l12 12M18 6L6 18"/>
-          </svg>
-        </button>
-      </div>
-
-
-      <div class="input-row">
-
-        <!-- IMAGE -->
-
-        <button class="icon-btn" id="imageBtn"
-                aria-label="Attach image" title="Attach image">
-          <svg viewBox="0 0 24 24">
-            <rect x="3" y="4" width="18" height="16" rx="3"/>
-            <circle cx="8.5" cy="9" r="1.5"/>
-            <path d="M4.5 17l4.5-4.5 3.2 3.2 2.3-2.3 4.5 4.6"/>
-          </svg>
-        </button>
-
-        <input
-          type="file"
-          id="imageFileInput"
-          accept="image/*"
-          hidden
-        >
-
-
-        <!-- TOOLS -->
-
-        <button class="icon-btn" id="toolsBtn"
-                aria-label="Tools" title="Tools">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2.8l1.4 5.1L18.5 9l-5.1 1.4L12 15.5l-1.4-5.1L5.5 9l5.1-1.1L12 2.8z"/>
-            <path d="M19 14.5l.7 2.8 2.8.7-2.8.7L19 21.5l-.7-2.8-2.8-.7 2.8-.7.7-2.8z"/>
-          </svg>
-        </button>
-
-
-        <!-- TEXT -->
-
-        <textarea
-          id="messageInput"
-          rows="1"
-          placeholder="Message SARVESH AI..."
-        ></textarea>
-
-
-        <!-- WEB -->
-
-        <button class="icon-btn" id="webBtn"
-                aria-label="Live web search" title="Live web search">
-          <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="8.5"/>
-            <path d="M3.5 12h17"/>
-            <path d="M12 3.5c2.2 2.3 3.3 5.1 3.3 8.5S14.2 18.2 12 20.5c-2.2-2.3-3.3-5.1-3.3-8.5S9.8 5.8 12 3.5z"/>
-          </svg>
-        </button>
-
-
-        <!-- MICROPHONE -->
-
-        <button class="icon-btn" id="micBtn"
-                aria-label="Voice input" title="Voice input">
-          <svg viewBox="0 0 24 24">
-            <rect x="8" y="3" width="8" height="12" rx="4"/>
-            <path d="M5 11a7 7 0 0 0 14 0M12 18v3M8.5 21h7"/>
-          </svg>
-        </button>
-
-
-        <!-- SEND -->
-
-        <button class="icon-btn send-btn" id="sendBtn"
-                aria-label="Send message" title="Send message">
-          <svg viewBox="0 0 24 24">
-            <path d="M4 4l16 8-16 8 3.5-8L4 4z"/>
-            <path d="M7.5 12H20"/>
-          </svg>
-        </button>
-
-      </div>
-
-      <div class="input-hint">
-        SARVESH AI can make mistakes. Check important information.
-      </div>
-
-    </div>
-
-
-    <!-- TOOLS POPUP -->
-
-    <div class="tools-panel" id="toolsPanel">
-
-      <button class="tool-option" id="generateImageTool">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5L12 3z"/>
-        </svg>
-        <span>Generate Image</span>
-      </button>
-
-      <button class="tool-option" id="clearChatTool">
-        <svg viewBox="0 0 24 24">
-          <path d="M5 7h14M9 7V4h6v3M7 7l1 14h8l1-14"/>
-          <path d="M10 11v6M14 11v6"/>
-        </svg>
-        <span>Clear Conversation</span>
-      </button>
-
-    </div>
+    <span>
+      Neural Core Online
+    </span>
 
   </div>
+
+</header>
+
+
+<section class="chat" id="chat">
+
+<div class="chat-inner">
+
+
+<div class="hero" id="hero">
+
+  <div class="hero-icon">
+
+    <svg viewBox="0 0 24 24">
+
+      <path
+        d="M12 3l1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7L12 3z"
+      />
+
+      <path
+        d="M18.5 15l.7 2.1 2.1.7-2.1.7-.7 2.1-.7-2.1-2.1-.7 2.1-.7.7-2.1z"
+      />
+
+    </svg>
+
+  </div>
+
+
+  <h1>
+    SARVESH AI
+  </h1>
+
+
+  <p>
+    Your intelligent digital companion.
+    Ask anything and begin a new conversation.
+  </p>
+
+</div>
+
+
+<!-- FEATURE CARDS -->
+
+<div class="cards" id="featureCards">
+
+
+<button
+  class="card"
+  data-prompt="Help me explore an interesting topic and discover something new."
+>
+
+  <div class="card-icon">
+
+    <svg viewBox="0 0 24 24">
+
+      <path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5L12 3z"/>
+
+      <path d="M19 16l.7 2.3L22 19l-2.3.7L19 22l-.7-2.3L16 19l2.3-.7L19 16z"/>
+
+    </svg>
+
+  </div>
+
+  <strong>
+    Explore Intelligence
+  </strong>
+
+  <span>
+    Discover ideas, topics and knowledge.
+  </span>
+
+</button>
+
+
+<button
+  class="card"
+  data-prompt="Teach me something interesting in a simple and understandable way."
+>
+
+  <div class="card-icon">
+
+    <svg viewBox="0 0 24 24">
+
+      <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v17H6.5A2.5 2.5 0 0 0 4 22V5.5z"/>
+
+      <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v17h4.5A2.5 2.5 0 0 1 20 22V5.5z"/>
+
+    </svg>
+
+  </div>
+
+  <strong>
+    Learn Something
+  </strong>
+
+  <span>
+    Understand difficult things easily.
+  </span>
+
+</button>
+
+
+<button
+  class="card"
+  data-prompt="Give me some useful current information from the internet."
+>
+
+  <div class="card-icon">
+
+    <svg viewBox="0 0 24 24">
+
+      <circle cx="12" cy="12" r="8.5"/>
+
+      <path d="M3.5 12h17"/>
+
+      <path d="M12 3.5c2.2 2.3 3.3 5.1 3.3 8.5S14.2 18.2 12 20.5c-2.2-2.3-3.3-5.1-3.3-8.5S9.8 5.8 12 3.5z"/>
+
+    </svg>
+
+  </div>
+
+  <strong>
+    Live Information
+  </strong>
+
+  <span>
+    Ask questions that need current information.
+  </span>
+
+</button>
+
+
+<button
+  class="card"
+  data-prompt="Create an image of a beautiful futuristic city at night."
+>
+
+  <div class="card-icon">
+
+    <svg viewBox="0 0 24 24">
+
+      <path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3z"/>
+
+      <path d="M5 16l.7 2.3L8 19l-2.3.7L5 22l-.7-2.3L2 19l2.3-.7L5 16z"/>
+
+    </svg>
+
+  </div>
+
+  <strong>
+    Create Something
+  </strong>
+
+  <span>
+    Turn your ideas into creative projects.
+  </span>
+
+</button>
+
+
+</div>
+
+
+<div id="messages"></div>
+
+
+</div>
+
+</section>
+
+
+<!-- COMPOSER -->
+
+<div class="composer-wrap">
+
+<div class="composer">
+
+
+<div
+  class="preview"
+  id="preview"
+>
+
+  <img
+    id="previewImg"
+    alt="Selected image"
+  >
+
+  <button
+    class="remove"
+    id="removeImage"
+    aria-label="Remove image"
+    title="Remove image"
+  >
+
+    <svg viewBox="0 0 24 24">
+
+      <path d="M6 6l12 12M18 6L6 18"/>
+
+    </svg>
+
+  </button>
+
+</div>
+
+
+<div class="input-row">
+
+
+<!-- IMAGE ATTACHMENT -->
+
+<button
+  class="icon-btn"
+  id="imageBtn"
+  aria-label="Attach image"
+  title="Attach image"
+>
+
+  <svg viewBox="0 0 24 24">
+
+    <rect
+      x="3"
+      y="4"
+      width="18"
+      height="16"
+      rx="3"
+    />
+
+    <circle
+      cx="8.5"
+      cy="9"
+      r="1.5"
+    />
+
+    <path
+      d="M4.5 17l4.5-4.5 3.2 3.2 2.3-2.3 4.5 4.6"
+    />
+
+  </svg>
+
+</button>
+
+
+<input
+  type="file"
+  id="imageFileInput"
+  accept="image/*"
+  hidden
+>
+
+
+<!-- TOOLS -->
+
+<button
+  class="icon-btn"
+  id="toolsBtn"
+  aria-label="Tools"
+  title="Tools"
+>
+
+  <svg viewBox="0 0 24 24">
+
+    <path
+      d="M12 2.8l1.4 5.1L18.5 9l-5.1 1.4L12 15.5l-1.4-5.1L5.5 9l5.1-1.1L12 2.8z"
+    />
+
+    <path
+      d="M19 14.5l.7 2.8 2.8.7-2.8.7L19 21.5l-.7-2.8-2.8-.7 2.8-.7.7-2.8z"
+    />
+
+  </svg>
+
+</button>
+
+
+<textarea
+  id="messageInput"
+  rows="1"
+  placeholder="Message SARVESH AI..."
+></textarea>
+
+
+<!-- LIVE WEB -->
+
+<button
+  class="icon-btn"
+  id="webBtn"
+  aria-label="Live web search"
+  title="Live web search"
+>
+
+  <svg viewBox="0 0 24 24">
+
+    <circle
+      cx="12"
+      cy="12"
+      r="8.5"
+    />
+
+    <path
+      d="M3.5 12h17"
+    />
+
+    <path
+      d="M12 3.5c2.2 2.3 3.3 5.1 3.3 8.5S14.2 18.2 12 20.5c-2.2-2.3-3.3-5.1-3.3-8.5S9.8 5.8 12 3.5z"
+    />
+
+  </svg>
+
+</button>
+
+
+<!-- VOICE INPUT ONLY -->
+
+<button
+  class="icon-btn"
+  id="micBtn"
+  aria-label="Voice input"
+  title="Voice input"
+>
+
+  <svg viewBox="0 0 24 24">
+
+    <rect
+      x="8"
+      y="3"
+      width="8"
+      height="12"
+      rx="4"
+    />
+
+    <path
+      d="M5 11a7 7 0 0 0 14 0"
+    />
+
+    <path
+      d="M12 18v3M8.5 21h7"
+    />
+
+  </svg>
+
+</button>
+
+
+<!-- SEND -->
+
+<button
+  class="icon-btn send-btn"
+  id="sendBtn"
+  aria-label="Send message"
+  title="Send message"
+>
+
+  <svg viewBox="0 0 24 24">
+
+    <path
+      d="M4 4l16 8-16 8 3.5-8L4 4z"
+    />
+
+    <path
+      d="M7.5 12H20"
+    />
+
+  </svg>
+
+</button>
+
+
+</div>
+
+
+<div class="input-hint">
+  SARVESH AI can make mistakes. Check important information.
+</div>
+
+
+</div>
+
+
+<!-- TOOLS POPUP -->
+
+<div
+  class="tools-panel"
+  id="toolsPanel"
+>
+
+<button
+  class="tool-option"
+  id="generateImageTool"
+>
+
+  <svg viewBox="0 0 24 24">
+
+    <path
+      d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5L12 3z"
+    />
+
+  </svg>
+
+  <span>
+    Generate Image
+  </span>
+
+</button>
+
+
+<button
+  class="tool-option"
+  id="clearChatTool"
+>
+
+  <svg viewBox="0 0 24 24">
+
+    <path d="M5 7h14M9 7V4h6v3M7 7l1 14h8l1-14"/>
+
+    <path d="M10 11v6M14 11v6"/>
+
+  </svg>
+
+  <span>
+    Clear Conversation
+  </span>
+
+</button>
+
+</div>
+
+</div>
 
 </main>
+
 </div>
 
 
-<!-- SETTINGS MODAL -->
+<!-- SETTINGS -->
 
-<div class="modal" id="settingsModal">
+<div
+  class="modal"
+  id="settingsModal"
+>
 
-  <div class="modal-box">
+<div class="modal-box">
 
-    <div class="modal-head">
-      <h2>Settings</h2>
+<div class="modal-head">
 
-      <button class="close-btn" data-close="settingsModal"
-              aria-label="Close" title="Close">
-        <svg viewBox="0 0 24 24">
-          <path d="M6 6l12 12M18 6L6 18"/>
-        </svg>
-      </button>
-    </div>
+<h2>
+Settings
+</h2>
 
-    <div class="setting">
-      <div class="setting-title">SARVESH AI</div>
-      <div class="setting-desc">
-        Your intelligent digital companion.
-      </div>
-    </div>
+<button
+  class="close-btn"
+  data-close="settingsModal"
+  aria-label="Close"
+  title="Close"
+>
 
-    <div class="setting">
-      <div class="setting-title">Backend</div>
-      <div class="setting-desc">
-        Connected through your SARVESH AI Cloudflare Worker.
-      </div>
-    </div>
+<svg viewBox="0 0 24 24">
 
-    <div class="setting">
-      <div class="setting-title">Image understanding</div>
-      <div class="setting-desc">
-        Attach an image and ask SARVESH AI to analyze it.
-      </div>
-    </div>
+<path d="M6 6l12 12M18 6L6 18"/>
 
-    <div class="setting">
-      <div class="setting-title">Image editing</div>
-      <div class="setting-desc">
-        Attach an image and describe the changes you want.
-      </div>
-    </div>
+</svg>
 
-  </div>
+</button>
+
 </div>
 
 
-<!-- MEMORY MODAL -->
+<div class="setting">
 
-<div class="modal" id="memoryModal">
+<div class="setting-title">
+SARVESH AI
+</div>
 
-  <div class="modal-box">
+<div class="setting-desc">
+Your intelligent digital companion.
+</div>
 
-    <div class="modal-head">
+</div>
 
-      <h2>Memory Stream</h2>
 
-      <button class="close-btn" data-close="memoryModal"
-              aria-label="Close" title="Close">
-        <svg viewBox="0 0 24 24">
-          <path d="M6 6l12 12M18 6L6 18"/>
-        </svg>
-      </button>
+<div class="setting">
 
-    </div>
+<div class="setting-title">
+Image generation
+</div>
 
-    <div class="setting">
-      <div class="setting-title">Local conversation memory</div>
-      <div class="setting-desc">
-        Recent conversations are stored locally in this browser.
-      </div>
-    </div>
+<div class="setting-desc">
+Create images from text prompts using the connected image model.
+</div>
 
-  </div>
+</div>
+
+
+<div class="setting">
+
+<div class="setting-title">
+Image editing
+</div>
+
+<div class="setting-desc">
+Attach an image and describe the changes you want.
+</div>
+
+</div>
+
+
+<div class="setting">
+
+<div class="setting-title">
+Voice
+</div>
+
+<div class="setting-desc">
+Voice input is available. AI response read-aloud has been removed.
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- MEMORY -->
+
+<div
+  class="modal"
+  id="memoryModal"
+>
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<h2>
+Memory Stream
+</h2>
+
+<button
+  class="close-btn"
+  data-close="memoryModal"
+  aria-label="Close"
+  title="Close"
+>
+
+<svg viewBox="0 0 24 24">
+
+<path d="M6 6l12 12M18 6L6 18"/>
+
+</svg>
+
+</button>
+
+</div>
+
+
+<div class="setting">
+
+<div class="setting-title">
+Local conversation memory
+</div>
+
+<div class="setting-desc">
+Recent conversations are stored locally in this browser.
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 
 <script>
-/* ================================
-   SARVESH AI CONFIG
-================================ */
+
+/* =========================================
+   SARVESH AI CONFIGURATION
+========================================= */
 
 const API_URL =
   "https://sarvesh-ai.sarveshghane77.workers.dev";
 
-const CHAT_ENDPOINT = API_URL + "/chat";
-const IMAGE_ENDPOINT = API_URL + "/image";
+const CHAT_ENDPOINT =
+  API_URL + "/chat";
+
+const IMAGE_ENDPOINT =
+  API_URL + "/image";
 
 
-/* ================================
+/* =========================================
    ELEMENTS
-================================ */
+========================================= */
 
-const sidebar = document.getElementById("sidebar");
-const menuBtn = document.getElementById("menuBtn");
-const newChat = document.getElementById("newChat");
+const sidebar =
+  document.getElementById("sidebar");
 
-const messagesEl = document.getElementById("messages");
-const hero = document.getElementById("hero");
-const cards = document.getElementById("featureCards");
+const menuBtn =
+  document.getElementById("menuBtn");
 
-const input = document.getElementById("messageInput");
-const sendBtn = document.getElementById("sendBtn");
+const newChat =
+  document.getElementById("newChat");
 
-const imageBtn = document.getElementById("imageBtn");
-const imageFileInput = document.getElementById("imageFileInput");
+const messagesEl =
+  document.getElementById("messages");
 
-const preview = document.getElementById("preview");
-const previewImg = document.getElementById("previewImg");
-const removeImage = document.getElementById("removeImage");
+const hero =
+  document.getElementById("hero");
 
-const toolsBtn = document.getElementById("toolsBtn");
-const toolsPanel = document.getElementById("toolsPanel");
+const cards =
+  document.getElementById("featureCards");
 
-const webBtn = document.getElementById("webBtn");
-const micBtn = document.getElementById("micBtn");
+const chat =
+  document.getElementById("chat");
 
-const historyEl = document.getElementById("history");
+const input =
+  document.getElementById("messageInput");
 
-const settingsBtn = document.getElementById("settingsBtn");
-const memoryBtn = document.getElementById("memoryBtn");
+const sendBtn =
+  document.getElementById("sendBtn");
 
-const settingsModal = document.getElementById("settingsModal");
-const memoryModal = document.getElementById("memoryModal");
+const imageBtn =
+  document.getElementById("imageBtn");
+
+const imageFileInput =
+  document.getElementById("imageFileInput");
+
+const preview =
+  document.getElementById("preview");
+
+const previewImg =
+  document.getElementById("previewImg");
+
+const removeImage =
+  document.getElementById("removeImage");
+
+const toolsBtn =
+  document.getElementById("toolsBtn");
+
+const toolsPanel =
+  document.getElementById("toolsPanel");
+
+const webBtn =
+  document.getElementById("webBtn");
+
+const micBtn =
+  document.getElementById("micBtn");
+
+const historyEl =
+  document.getElementById("history");
+
+const settingsBtn =
+  document.getElementById("settingsBtn");
+
+const memoryBtn =
+  document.getElementById("memoryBtn");
+
+const settingsModal =
+  document.getElementById("settingsModal");
+
+const memoryModal =
+  document.getElementById("memoryModal");
 
 const generateImageTool =
   document.getElementById("generateImageTool");
@@ -1153,30 +1890,66 @@ const clearChatTool =
   document.getElementById("clearChatTool");
 
 
-/* ================================
+/* =========================================
    STATE
-================================ */
+========================================= */
 
 let attachedImage = null;
+
 let webEnabled = false;
+
 let isLoading = false;
+
 let recognition = null;
 
 let conversation = [];
 
 
-/* ================================
-   LOCAL STORAGE
-================================ */
+/*
+  When true, the next text message is
+  explicitly treated as an image-generation
+  prompt.
+
+  This makes the Tools → Generate Image
+  workflow reliable.
+*/
+let forceImageGeneration = false;
+
+
+/* =========================================
+   SVG ICONS
+========================================= */
+
+const userIcon = `
+<svg viewBox="0 0 24 24">
+<circle cx="12" cy="8" r="3.2"/>
+<path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>
+</svg>
+`;
+
+
+const aiIcon = `
+<svg viewBox="0 0 24 24">
+<path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3z"/>
+</svg>
+`;
+
+
+/* =========================================
+   STORAGE
+========================================= */
 
 function saveConversation(){
 
   try{
+
     localStorage.setItem(
       "sarvesh_ai_conversation",
       JSON.stringify(conversation)
     );
-  }catch(e){}
+
+  }catch(error){}
+
 }
 
 
@@ -1185,171 +1958,212 @@ function loadConversation(){
   try{
 
     const saved =
-      localStorage.getItem("sarvesh_ai_conversation");
+      localStorage.getItem(
+        "sarvesh_ai_conversation"
+      );
 
-    if(saved){
-
-      conversation = JSON.parse(saved);
-
-      conversation.forEach(item=>{
-        renderMessage(
-          item.role,
-          item.content,
-          item.image || null,
-          false
-        );
-      });
-
-      if(conversation.length){
-        hero.style.display = "none";
-        cards.style.display = "none";
-      }
+    if(!saved){
+      return;
     }
 
-  }catch(e){
+    conversation =
+      JSON.parse(saved);
+
+    if(!Array.isArray(conversation)){
+      conversation = [];
+      return;
+    }
+
+    conversation.forEach(item=>{
+
+      renderMessage(
+        item.role,
+        item.content || "",
+        item.image || null,
+        false
+      );
+
+    });
+
+    if(conversation.length){
+
+      hero.style.display =
+        "none";
+
+      cards.style.display =
+        "none";
+
+    }
+
+  }catch(error){
 
     conversation = [];
 
   }
+
 }
 
 
-/* ================================
-   SVG HELPERS
-================================ */
-
-const userIcon = `
-<svg viewBox="0 0 24 24">
-<circle cx="12" cy="8" r="3.2"/>
-<path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>
-</svg>`;
-
-const aiIcon = `
-<svg viewBox="0 0 24 24">
-<path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3z"/>
-</svg>`;
-
-const speakerIcon = `
-<svg viewBox="0 0 24 24">
-<path d="M4 10v4h4l5 4V6l-5 4H4z"/>
-<path d="M16 9a4 4 0 0 1 0 6"/>
-<path d="M18.5 6.5a8 8 0 0 1 0 11"/>
-</svg>`;
-
-
-/* ================================
+/* =========================================
    RENDER MESSAGE
-================================ */
+========================================= */
 
-function renderMessage(role, text, image=null, save=true){
+function renderMessage(
+  role,
+  text,
+  image = null,
+  save = true
+){
 
-  hero.style.display = "none";
-  cards.style.display = "none";
+  hero.style.display =
+    "none";
 
-  const row = document.createElement("div");
-  row.className = "message " + role;
+  cards.style.display =
+    "none";
 
-  const avatar = document.createElement("div");
-  avatar.className = "avatar";
-  avatar.innerHTML = role === "user"
-    ? userIcon
-    : aiIcon;
 
-  const body = document.createElement("div");
+  const row =
+    document.createElement("div");
 
-  const bubble = document.createElement("div");
-  bubble.className = "bubble";
+  row.className =
+    "message " + role;
+
+
+  const avatar =
+    document.createElement("div");
+
+  avatar.className =
+    "avatar";
+
+  avatar.innerHTML =
+    role === "user"
+      ? userIcon
+      : aiIcon;
+
+
+  const body =
+    document.createElement("div");
+
+
+  const bubble =
+    document.createElement("div");
+
+  bubble.className =
+    "bubble";
+
 
   if(text){
-    bubble.textContent = text;
+
+    bubble.textContent =
+      text;
+
   }
+
 
   if(image){
 
-    const img = document.createElement("img");
+    const img =
+      document.createElement("img");
 
-    img.className = "message-image";
-    img.src = image;
-    img.alt = "Attached image";
+    img.className =
+      "message-image";
+
+    img.src =
+      image;
+
+    img.alt =
+      role === "user"
+        ? "Attached image"
+        : "Generated image";
 
     bubble.appendChild(img);
+
   }
+
 
   body.appendChild(bubble);
 
 
-  if(role === "assistant" && text){
-
-    const actions = document.createElement("div");
-    actions.className = "msg-actions";
-
-    const speak = document.createElement("button");
-
-    speak.className = "icon-btn";
-    speak.title = "Read aloud";
-    speak.setAttribute("aria-label","Read aloud");
-
-    speak.innerHTML = speakerIcon;
-
-    speak.onclick = ()=>{
-      speechSynthesis.cancel();
-
-      const utterance =
-        new SpeechSynthesisUtterance(text);
-
-      speechSynthesis.speak(utterance);
-    };
-
-    actions.appendChild(speak);
-    body.appendChild(actions);
-  }
+  /*
+    IMPORTANT:
+    There is NO speaker/read-aloud
+    button here.
+  */
 
 
   row.appendChild(avatar);
+
   row.appendChild(body);
 
   messagesEl.appendChild(row);
 
-  document.getElementById("chat").scrollTop =
-    document.getElementById("chat").scrollHeight;
+
+  chat.scrollTop =
+    chat.scrollHeight;
 
 
   if(save){
 
     conversation.push({
+
       role,
-      content:text || "",
-      image:image || null
+
+      content:
+        text || "",
+
+      image:
+        image || null
+
     });
 
     saveConversation();
+
+    renderHistory();
+
   }
 
+
   return row;
+
 }
 
 
-/* ================================
+/* =========================================
    TYPING
-================================ */
+========================================= */
 
 function showTyping(){
 
-  const row = document.createElement("div");
+  const row =
+    document.createElement("div");
 
-  row.className = "message assistant";
-  row.id = "typingMessage";
+  row.className =
+    "message assistant";
 
-  const avatar = document.createElement("div");
+  row.id =
+    "typingMessage";
 
-  avatar.className = "avatar";
-  avatar.innerHTML = aiIcon;
 
-  const body = document.createElement("div");
+  const avatar =
+    document.createElement("div");
 
-  const bubble = document.createElement("div");
+  avatar.className =
+    "avatar";
 
-  bubble.className = "bubble";
+  avatar.innerHTML =
+    aiIcon;
+
+
+  const body =
+    document.createElement("div");
+
+
+  const bubble =
+    document.createElement("div");
+
+  bubble.className =
+    "bubble";
+
 
   bubble.innerHTML = `
     <div class="typing">
@@ -1359,86 +2173,145 @@ function showTyping(){
     </div>
   `;
 
+
   body.appendChild(bubble);
+
   row.appendChild(avatar);
+
   row.appendChild(body);
 
   messagesEl.appendChild(row);
 
-  document.getElementById("chat").scrollTop =
-    document.getElementById("chat").scrollHeight;
+
+  chat.scrollTop =
+    chat.scrollHeight;
+
 }
 
 
 function removeTyping(){
 
-  const el =
-    document.getElementById("typingMessage");
+  const element =
+    document.getElementById(
+      "typingMessage"
+    );
 
-  if(el) el.remove();
+  if(element){
+    element.remove();
+  }
+
 }
 
 
-/* ================================
+/* =========================================
    IMAGE COMPRESSION
-================================ */
+========================================= */
 
 function compressImage(file){
 
-  return new Promise((resolve,reject)=>{
+  return new Promise(
+    (resolve,reject)=>{
 
-    const reader = new FileReader();
+      const reader =
+        new FileReader();
 
-    reader.onload = ()=>{
 
-      const img = new Image();
+      reader.onload = ()=>{
 
-      img.onload = ()=>{
+        const img =
+          new Image();
 
-        const max = 1600;
 
-        let w = img.width;
-        let h = img.height;
+        img.onload = ()=>{
 
-        if(w > max || h > max){
+          const max =
+            1600;
 
-          const scale =
-            Math.min(max/w,max/h);
+          let width =
+            img.width;
 
-          w *= scale;
-          h *= scale;
-        }
+          let height =
+            img.height;
 
-        const canvas =
-          document.createElement("canvas");
 
-        canvas.width = w;
-        canvas.height = h;
+          if(
+            width > max ||
+            height > max
+          ){
 
-        const ctx = canvas.getContext("2d");
+            const scale =
+              Math.min(
+                max / width,
+                max / height
+              );
 
-        ctx.drawImage(img,0,0,w,h);
+            width *= scale;
+            height *= scale;
 
-        resolve(
-          canvas.toDataURL("image/jpeg",.82)
-        );
+          }
+
+
+          const canvas =
+            document.createElement(
+              "canvas"
+            );
+
+          canvas.width =
+            width;
+
+          canvas.height =
+            height;
+
+
+          const context =
+            canvas.getContext(
+              "2d"
+            );
+
+
+          context.drawImage(
+            img,
+            0,
+            0,
+            width,
+            height
+          );
+
+
+          resolve(
+            canvas.toDataURL(
+              "image/jpeg",
+              .82
+            )
+          );
+
+        };
+
+
+        img.onerror =
+          reject;
+
+        img.src =
+          reader.result;
+
       };
 
-      img.onerror = reject;
 
-      img.src = reader.result;
-    };
+      reader.onerror =
+        reject;
 
-    reader.onerror = reject;
 
-    reader.readAsDataURL(file);
-  });
+      reader.readAsDataURL(file);
+
+    }
+  );
+
 }
 
 
-/* ================================
-   ATTACH IMAGE
-================================ */
+/* =========================================
+   IMAGE ATTACHMENT
+========================================= */
 
 imageBtn.onclick = ()=>{
 
@@ -1447,49 +2320,68 @@ imageBtn.onclick = ()=>{
 };
 
 
-imageFileInput.onchange = async ()=>{
+imageFileInput.onchange =
+  async ()=>{
 
-  const file = imageFileInput.files[0];
+    const file =
+      imageFileInput.files?.[0];
 
-  if(!file) return;
 
-  try{
+    if(!file){
+      return;
+    }
 
-    attachedImage =
-      await compressImage(file);
 
-    previewImg.src = attachedImage;
+    try{
 
-    preview.style.display = "block";
+      attachedImage =
+        await compressImage(file);
 
-  }catch(e){
 
-    alert("Could not load this image.");
+      previewImg.src =
+        attachedImage;
 
-  }
 
-};
+      preview.style.display =
+        "block";
+
+
+    }catch(error){
+
+      alert(
+        "Could not load this image."
+      );
+
+    }
+
+  };
 
 
 removeImage.onclick = ()=>{
 
-  attachedImage = null;
+  attachedImage =
+    null;
 
-  imageFileInput.value = "";
+  imageFileInput.value =
+    "";
 
-  preview.style.display = "none";
-  previewImg.src = "";
+  previewImg.src =
+    "";
+
+  preview.style.display =
+    "none";
 
 };
 
 
-/* ================================
-   WEB TOGGLE
-================================ */
+/* =========================================
+   LIVE WEB
+========================================= */
 
 webBtn.onclick = ()=>{
 
-  webEnabled = !webEnabled;
+  webEnabled =
+    !webEnabled;
 
   webBtn.classList.toggle(
     "web-on",
@@ -1499,244 +2391,490 @@ webBtn.onclick = ()=>{
 };
 
 
-/* ================================
+/* =========================================
    TOOLS
-================================ */
+========================================= */
 
-toolsBtn.onclick = e=>{
+toolsBtn.onclick = event=>{
 
-  e.stopPropagation();
+  event.stopPropagation();
 
-  toolsPanel.classList.toggle("open");
+  toolsPanel.classList.toggle(
+    "open"
+  );
 
 };
 
 
-document.addEventListener("click",e=>{
+document.addEventListener(
+  "click",
+  event=>{
 
-  if(
-    !toolsPanel.contains(e.target) &&
-    e.target !== toolsBtn
-  ){
-    toolsPanel.classList.remove("open");
+    if(
+      !toolsPanel.contains(
+        event.target
+      ) &&
+      event.target !== toolsBtn
+    ){
+
+      toolsPanel.classList.remove(
+        "open"
+      );
+
+    }
+
   }
+);
 
-});
 
-
+/*
+  Generate Image mode.
+*/
 generateImageTool.onclick = ()=>{
 
-  toolsPanel.classList.remove("open");
+  toolsPanel.classList.remove(
+    "open"
+  );
 
-  input.value =
-    "Create an image of ";
+
+  forceImageGeneration =
+    true;
+
+
+  input.placeholder =
+    "Describe the image you want...";
+
 
   input.focus();
 
 };
 
 
-clearChatTool.onclick = ()=>{
+/* =========================================
+   IMAGE GENERATION DETECTION
+========================================= */
 
-  conversation = [];
+function looksLikeImageGeneration(text){
 
-  localStorage.removeItem(
-    "sarvesh_ai_conversation"
+  const t =
+    text
+      .toLowerCase()
+      .replace(/[.!?,]/g," ")
+      .replace(/\s+/g," ")
+      .trim();
+
+
+  if(!t){
+    return false;
+  }
+
+
+  const patterns = [
+
+    /\bcreate\s+(an?\s+)?image\b/,
+    /\bgenerate\s+(an?\s+)?image\b/,
+    /\bmake\s+(an?\s+)?image\b/,
+    /\bdraw\s+(an?\s+)?image\b/,
+
+    /\bcreate\s+(an?\s+)?picture\b/,
+    /\bgenerate\s+(an?\s+)?picture\b/,
+    /\bmake\s+(an?\s+)?picture\b/,
+    /\bdraw\s+(an?\s+)?picture\b/,
+
+    /\bcreate\s+(an?\s+)?photo\b/,
+    /\bgenerate\s+(an?\s+)?photo\b/,
+    /\bmake\s+(an?\s+)?photo\b/,
+
+    /\bcreate\s+art\b/,
+    /\bgenerate\s+art\b/,
+    /\bmake\s+art\b/,
+
+    /\btext\s*to\s*image\b/,
+    /\bimage\s*generation\b/
+
+  ];
+
+
+  return patterns.some(
+    pattern =>
+      pattern.test(t)
   );
 
-  messagesEl.innerHTML = "";
-
-  hero.style.display = "";
-  cards.style.display = "";
-
-  renderHistory();
-
-};
+}
 
 
-/* ================================
+/* =========================================
+   IMAGE EDIT DETECTION
+========================================= */
+
+function looksLikeImageEdit(text){
+
+  const t =
+    text
+      .toLowerCase()
+      .trim();
+
+
+  if(!t){
+    return false;
+  }
+
+
+  const words = [
+
+    "edit",
+    "remove",
+    "erase",
+    "delete",
+    "change",
+    "replace",
+    "add",
+    "modify",
+    "alter",
+    "fix",
+    "retouch",
+    "enhance",
+    "restore",
+    "recolor",
+    "background",
+    "crop",
+    "resize",
+    "transform",
+    "turn this into",
+    "make this look like"
+
+  ];
+
+
+  return words.some(
+    word =>
+      t.includes(word)
+  );
+
+}
+
+
+/* =========================================
    SEND MESSAGE
-================================ */
+========================================= */
 
 async function sendMessage(){
 
-  if(isLoading) return;
+  if(isLoading){
+    return;
+  }
+
 
   const text =
     input.value.trim();
 
-  if(!text && !attachedImage) return;
 
-  isLoading = true;
+  if(
+    !text &&
+    !attachedImage
+  ){
+    return;
+  }
 
-  sendBtn.disabled = true;
 
-  const imageForMessage =
-    attachedImage;
+  isLoading =
+    true;
 
-  input.value = "";
+  sendBtn.disabled =
+    true;
 
-  input.style.height = "44px";
-
-  renderMessage(
-    "user",
-    text,
-    imageForMessage
-  );
 
   const currentImage =
     attachedImage;
 
-  attachedImage = null;
 
-  imageFileInput.value = "";
+  /*
+    Determine image generation BEFORE
+    resetting the state.
+  */
+  const shouldGenerate =
+    !currentImage &&
+    (
+      forceImageGeneration ||
+      looksLikeImageGeneration(text)
+    );
 
-  preview.style.display = "none";
+
+  const shouldEdit =
+    !!currentImage &&
+    looksLikeImageEdit(text);
+
+
+  input.value =
+    "";
+
+  input.style.height =
+    "44px";
+
+
+  input.placeholder =
+    "Message SARVESH AI...";
+
+
+  forceImageGeneration =
+    false;
+
+
+  /*
+    Show user's message.
+  */
+  renderMessage(
+    "user",
+    text,
+    currentImage
+  );
+
+
+  /*
+    Clear attachment.
+  */
+  attachedImage =
+    null;
+
+  imageFileInput.value =
+    "";
+
+  preview.style.display =
+    "none";
+
+  previewImg.src =
+    "";
+
 
   showTyping();
 
+
   try{
 
-    const isImageEdit =
-      currentImage &&
-      /edit|remove|erase|delete|change|replace|add|fix|modify|background|crop|enhance|transform/i
-      .test(text);
+    let response;
 
 
-    let result;
+    /* =====================================
+       IMAGE GENERATION
+    ===================================== */
 
+    if(shouldGenerate){
 
-    /* IMAGE EDITING */
+      response =
+        await fetch(
+          IMAGE_ENDPOINT,
+          {
+            method:"POST",
 
-    if(isImageEdit){
+            headers:{
+              "Content-Type":
+                "application/json"
+            },
 
-      result = await fetch(
-        IMAGE_ENDPOINT,
-        {
-          method:"POST",
-          headers:{
-            "Content-Type":"application/json"
-          },
-          body:JSON.stringify({
-            mode:"edit",
-            prompt:text,
-            image:currentImage
-          })
-        }
-      );
+            body:
+              JSON.stringify({
 
-    }
+                mode:
+                  "generate",
 
-    /* IMAGE GENERATION */
+                prompt:
+                  text
 
-    else if(
-      !currentImage &&
-      /generate image|create image|make an image|draw an image|create a picture|generate a picture/i.test(text)
-    ){
+              })
 
-      result = await fetch(
-        IMAGE_ENDPOINT,
-        {
-          method:"POST",
-          headers:{
-            "Content-Type":"application/json"
-          },
-          body:JSON.stringify({
-            mode:"generate",
-            prompt:text
-          })
-        }
-      );
+          }
+        );
 
     }
 
-    /* NORMAL CHAT / VISION */
+
+    /* =====================================
+       IMAGE EDITING
+    ===================================== */
+
+    else if(shouldEdit){
+
+      response =
+        await fetch(
+          IMAGE_ENDPOINT,
+          {
+            method:"POST",
+
+            headers:{
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify({
+
+                mode:
+                  "edit",
+
+                prompt:
+                  text,
+
+                image:
+                  currentImage
+
+              })
+
+          }
+        );
+
+    }
+
+
+    /* =====================================
+       NORMAL CHAT / VISION
+    ===================================== */
 
     else{
 
       const apiMessages =
-        conversation.map(m=>{
+        conversation.map(
+          message=>{
 
-          if(m.image){
+            if(message.image){
+
+              return {
+
+                role:
+                  message.role,
+
+                content:[
+
+                  {
+                    type:"text",
+
+                    text:
+                      message.content || ""
+                  },
+
+                  {
+                    type:"image_url",
+
+                    image_url:{
+                      url:
+                        message.image
+                    }
+
+                  }
+
+                ]
+
+              };
+
+            }
+
 
             return {
-              role:m.role,
-              content:[
-                {
-                  type:"text",
-                  text:m.content || ""
-                },
-                {
-                  type:"image_url",
-                  image_url:{
-                    url:m.image
-                  }
-                }
-              ]
+
+              role:
+                message.role,
+
+              content:
+                message.content
+
             };
 
           }
-
-          return {
-            role:m.role,
-            content:m.content
-          };
-
-        });
+        );
 
 
-      result = await fetch(
-        CHAT_ENDPOINT,
-        {
-          method:"POST",
-          headers:{
-            "Content-Type":"application/json"
-          },
-          body:JSON.stringify({
+      response =
+        await fetch(
+          CHAT_ENDPOINT,
+          {
+            method:"POST",
 
-            messages:apiMessages,
+            headers:{
+              "Content-Type":
+                "application/json"
+            },
 
-            web_search:webEnabled
+            body:
+              JSON.stringify({
 
-          })
-        }
+                messages:
+                  apiMessages,
+
+                web_search:
+                  webEnabled
+
+              })
+
+          }
+        );
+
+    }
+
+
+    const raw =
+      await response.text();
+
+
+    let data;
+
+
+    try{
+
+      data =
+        JSON.parse(raw);
+
+    }catch(error){
+
+      throw new Error(
+        "Server returned an invalid response."
       );
 
     }
 
 
-    const data =
-      await result.json();
-
-
-    if(!result.ok){
+    if(!response.ok){
 
       throw new Error(
         data.error ||
         data.message ||
-        "Server error"
+        "Server error " +
+        response.status
       );
+
     }
 
 
     removeTyping();
 
 
-    /* RETURNED IMAGE */
-
+    /*
+      Generated / edited image.
+    */
     if(data.image){
 
       renderMessage(
         "assistant",
+
         data.reply ||
-        "Image created.",
+          (
+            shouldEdit
+              ? "Your image has been edited."
+              : "Your image has been generated."
+          ),
+
         data.image
       );
 
-    }else{
+    }
+
+
+    /*
+      Normal AI answer.
+    */
+    else{
 
       renderMessage(
         "assistant",
+
         data.answer ||
         data.reply ||
         "I couldn't generate a response."
@@ -1749,227 +2887,359 @@ async function sendMessage(){
 
     removeTyping();
 
+
     renderMessage(
       "assistant",
-      "⚠️ " + (
-        error.message ||
+
+      "⚠️ " +
+      (
+        error?.message ||
         "Connection error."
       )
     );
 
+
   }finally{
 
-    isLoading = false;
+    isLoading =
+      false;
 
-    sendBtn.disabled = false;
+    sendBtn.disabled =
+      false;
 
   }
 
 }
 
 
-/* ================================
+/* =========================================
    SEND BUTTON
-================================ */
+========================================= */
 
-sendBtn.onclick = sendMessage;
+sendBtn.onclick =
+  sendMessage;
 
 
-/* ================================
-   ENTER KEY
-================================ */
+/* =========================================
+   ENTER
+========================================= */
 
-input.addEventListener("keydown",e=>{
+input.addEventListener(
+  "keydown",
+  event=>{
 
-  if(e.key === "Enter" && !e.shiftKey){
+    if(
+      event.key === "Enter" &&
+      !event.shiftKey
+    ){
 
-    e.preventDefault();
+      event.preventDefault();
 
-    sendMessage();
+      sendMessage();
+
+    }
 
   }
-
-});
-
-
-/* ================================
-   AUTO RESIZE
-================================ */
-
-input.addEventListener("input",()=>{
-
-  input.style.height = "auto";
-
-  input.style.height =
-    Math.min(input.scrollHeight,150) + "px";
-
-});
+);
 
 
-/* ================================
+/* =========================================
+   TEXTAREA RESIZE
+========================================= */
+
+input.addEventListener(
+  "input",
+  ()=>{
+
+    input.style.height =
+      "auto";
+
+    input.style.height =
+      Math.min(
+        input.scrollHeight,
+        150
+      ) + "px";
+
+  }
+);
+
+
+/* =========================================
    FEATURE CARDS
-================================ */
+========================================= */
 
-document.querySelectorAll(".card")
-.forEach(card=>{
+document
+  .querySelectorAll(".card")
+  .forEach(card=>{
 
-  card.onclick = ()=>{
+    card.onclick = ()=>{
 
-    input.value =
-      card.dataset.prompt;
-
-    input.focus();
-
-    input.dispatchEvent(
-      new Event("input")
-    );
-
-  };
-
-});
+      const prompt =
+        card.dataset.prompt;
 
 
-/* ================================
-   NEW CHAT
-================================ */
+      input.value =
+        prompt;
 
-newChat.onclick = ()=>{
+
+      /*
+        The Create Something card
+        already contains an image prompt,
+        so image generation detection
+        will automatically recognize it.
+      */
+      input.focus();
+
+      input.dispatchEvent(
+        new Event("input")
+      );
+
+    };
+
+  });
+
+
+/* =========================================
+   CLEAR CHAT
+========================================= */
+
+clearChatTool.onclick = ()=>{
+
+  toolsPanel.classList.remove(
+    "open"
+  );
+
 
   conversation = [];
+
 
   localStorage.removeItem(
     "sarvesh_ai_conversation"
   );
 
-  messagesEl.innerHTML = "";
 
-  hero.style.display = "";
-  cards.style.display = "";
+  messagesEl.innerHTML =
+    "";
 
-  input.value = "";
 
-  attachedImage = null;
+  hero.style.display =
+    "";
 
-  preview.style.display = "none";
+  cards.style.display =
+    "";
+
 
   renderHistory();
-
-  sidebar.classList.remove("open");
 
 };
 
 
-/* ================================
+/* =========================================
+   NEW CHAT
+========================================= */
+
+newChat.onclick = ()=>{
+
+  conversation = [];
+
+
+  localStorage.removeItem(
+    "sarvesh_ai_conversation"
+  );
+
+
+  messagesEl.innerHTML =
+    "";
+
+
+  hero.style.display =
+    "";
+
+  cards.style.display =
+    "";
+
+
+  input.value =
+    "";
+
+
+  attachedImage =
+    null;
+
+
+  forceImageGeneration =
+    false;
+
+
+  preview.style.display =
+    "none";
+
+
+  renderHistory();
+
+
+  sidebar.classList.remove(
+    "open"
+  );
+
+};
+
+
+/* =========================================
    HISTORY
-================================ */
+========================================= */
 
 function renderHistory(){
 
-  historyEl.innerHTML = "";
+  historyEl.innerHTML =
+    "";
+
 
   const userMessages =
     conversation.filter(
-      x => x.role === "user"
+      item =>
+        item.role === "user"
     );
 
-  userMessages.slice(-20).reverse()
-  .forEach(item=>{
 
-    const button =
-      document.createElement("button");
+  userMessages
+    .slice(-20)
+    .reverse()
+    .forEach(item=>{
 
-    button.className =
-      "history-item";
+      const button =
+        document.createElement(
+          "button"
+        );
 
-    button.textContent =
-      item.content ||
-      "Image conversation";
 
-    button.onclick = ()=>{
-      document.getElementById("chat")
-        .scrollTo({
-          top:document.getElementById("chat").scrollHeight,
-          behavior:"smooth"
+      button.className =
+        "history-item";
+
+
+      button.textContent =
+        item.content ||
+        "Image conversation";
+
+
+      button.onclick = ()=>{
+
+        chat.scrollTo({
+
+          top:
+            chat.scrollHeight,
+
+          behavior:
+            "smooth"
+
         });
-    };
 
-    historyEl.appendChild(button);
+      };
 
-  });
+
+      historyEl.appendChild(
+        button
+      );
+
+    });
 
 }
 
 
-/* ================================
+/* =========================================
    MOBILE MENU
-================================ */
+========================================= */
 
 menuBtn.onclick = ()=>{
 
-  sidebar.classList.toggle("open");
+  sidebar.classList.toggle(
+    "open"
+  );
 
 };
 
 
-/* ================================
+/* =========================================
    MODALS
-================================ */
+========================================= */
 
 settingsBtn.onclick = ()=>{
 
-  settingsModal.classList.add("open");
+  settingsModal.classList.add(
+    "open"
+  );
 
 };
 
 
 memoryBtn.onclick = ()=>{
 
-  memoryModal.classList.add("open");
+  memoryModal.classList.add(
+    "open"
+  );
 
 };
 
 
-document.querySelectorAll("[data-close]")
-.forEach(button=>{
+document
+  .querySelectorAll(
+    "[data-close]"
+  )
+  .forEach(button=>{
 
-  button.onclick = ()=>{
+    button.onclick = ()=>{
 
-    const id =
-      button.dataset.close;
-
-    document.getElementById(id)
-      .classList.remove("open");
-
-  };
-
-});
+      const id =
+        button.dataset.close;
 
 
-[settingsModal,memoryModal]
-.forEach(modal=>{
+      document
+        .getElementById(id)
+        .classList.remove(
+          "open"
+        );
 
-  modal.addEventListener("click",e=>{
-
-    if(e.target === modal){
-
-      modal.classList.remove("open");
-
-    }
+    };
 
   });
 
+
+[
+  settingsModal,
+  memoryModal
+].forEach(modal=>{
+
+  modal.addEventListener(
+    "click",
+    event=>{
+
+      if(
+        event.target === modal
+      ){
+
+        modal.classList.remove(
+          "open"
+        );
+
+      }
+
+    }
+  );
+
 });
 
 
-/* ================================
-   VOICE INPUT
-================================ */
+/* =========================================
+   MICROPHONE
+   VOICE INPUT ONLY
+========================================= */
 
 micBtn.onclick = ()=>{
 
   const SpeechRecognition =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
+
 
   if(!SpeechRecognition){
 
@@ -1978,6 +3248,7 @@ micBtn.onclick = ()=>{
     );
 
     return;
+
   }
 
 
@@ -1987,7 +3258,9 @@ micBtn.onclick = ()=>{
 
     recognition = null;
 
-    micBtn.classList.remove("web-on");
+    micBtn.classList.remove(
+      "web-on"
+    );
 
     return;
 
@@ -1997,51 +3270,72 @@ micBtn.onclick = ()=>{
   recognition =
     new SpeechRecognition();
 
+
   recognition.lang =
-    navigator.language || "en-IN";
+    navigator.language ||
+    "en-IN";
 
-  recognition.continuous = false;
 
-  recognition.interimResults = false;
+  recognition.continuous =
+    false;
+
+
+  recognition.interimResults =
+    false;
 
 
   recognition.onstart = ()=>{
 
-    micBtn.classList.add("web-on");
-
-  };
-
-
-  recognition.onresult = event=>{
-
-    const transcript =
-      event.results[0][0].transcript;
-
-    input.value =
-      (input.value + " " + transcript)
-      .trim();
-
-    input.dispatchEvent(
-      new Event("input")
+    micBtn.classList.add(
+      "web-on"
     );
 
   };
 
 
+  recognition.onresult =
+    event=>{
+
+      const transcript =
+        event.results[0][0]
+          .transcript;
+
+
+      input.value =
+        (
+          input.value +
+          " " +
+          transcript
+        ).trim();
+
+
+      input.dispatchEvent(
+        new Event("input")
+      );
+
+    };
+
+
   recognition.onerror = ()=>{
 
-    recognition = null;
+    recognition =
+      null;
 
-    micBtn.classList.remove("web-on");
+    micBtn.classList.remove(
+      "web-on"
+    );
 
   };
 
 
   recognition.onend = ()=>{
 
-    recognition = null;
+    recognition =
+      null;
 
-    micBtn.classList.remove("web-on");
+    micBtn.classList.remove(
+      "web-on"
+    );
 
   };
 
@@ -2051,9 +3345,9 @@ micBtn.onclick = ()=>{
 };
 
 
-/* ================================
+/* =========================================
    START
-================================ */
+========================================= */
 
 loadConversation();
 
