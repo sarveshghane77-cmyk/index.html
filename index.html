@@ -1,10 +1,16 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta name="theme-color" content="#020617">
 <link rel="manifest" href="./manifest.json">
-<title>SARVESH AI</title><script src="https://cdn.tailwindcss.com"></script><script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script><style>
+<title>SARVESH AI</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<style>
 *{box-sizing:border-box}
 
 html,body{
@@ -582,6 +588,65 @@ border-color:rgba(34,211,238,.35);
 box-shadow:0 0 15px rgba(34,211,238,.10)
 }
 
+/* IMAGE ATTACHMENT */
+#imagePreview{
+display:none;
+width:min(900px,100%);
+margin:0 auto 7px;
+padding:8px;
+border-radius:15px;
+background:rgba(5,15,35,.92);
+border:1px solid rgba(34,211,238,.18);
+box-shadow:0 10px 35px rgba(0,0,0,.25);
+align-items:center;
+gap:10px
+}
+
+#imagePreviewThumb{
+width:55px;
+height:55px;
+object-fit:cover;
+border-radius:10px;
+border:1px solid rgba(34,211,238,.25)
+}
+
+#imagePreviewInfo{
+flex:1;
+min-width:0;
+color:#94a3b8;
+font-size:12px
+}
+
+#imagePreviewName{
+color:#dbeafe;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis
+}
+
+#imagePreviewStatus{
+margin-top:3px;
+color:#64748b
+}
+
+#removeAttachmentBtn{
+width:34px;
+height:34px;
+border-radius:10px;
+border:1px solid rgba(239,68,68,.20);
+background:rgba(239,68,68,.05);
+color:#fca5a5
+}
+
+#removeAttachmentBtn:hover{
+background:rgba(239,68,68,.12);
+border-color:rgba(239,68,68,.35)
+}
+
+#attachmentInput{
+display:none
+}
+
 @media(max-width:767px){
 #sidebar{
 width:min(86vw,320px);transform:translateX(-105%);
@@ -608,6 +673,15 @@ main{width:100%;margin-left:0}
 padding:8px 11px;
 font-size:12px
 }
+
+#imagePreview{
+width:100%;
+}
+
+#imagePreviewThumb{
+width:48px;
+height:48px
+}
 }
 
 html,body,#app,main,#messages,#chatForm,.markdown-content{
@@ -619,35 +693,75 @@ overflow-wrap:anywhere;word-break:break-word
 }
 
 .markdown-content img,video{max-width:100%}
-</style></head><body><div id="space">
+</style>
+</head>
+
+<body>
+
+<div id="space">
 <div class="space-particles">
 <i></i><i></i><i></i><i></i><i></i>
 <i></i><i></i><i></i><i></i><i></i>
 </div>
-</div><div id="loading">
+</div>
+
+<div id="loading">
 <div class="loader-core"></div>
-</div><div id="app"><aside id="sidebar"><div class="brand">
+</div>
+
+<div id="app">
+
+<aside id="sidebar">
+
+<div class="brand">
 <div class="brand-core">
 <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
 <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5"/>
 <circle cx="12" cy="12" r="3" fill="currentColor"/>
-<path d="M12 1v4M12 19v4M1 12h4M19 12h4" stroke="currentColor" stroke-width="1.5"/>
+<path d="M12 1v4M12 19v4M1 12h4M19 12h4"
+stroke="currentColor" stroke-width="1.5"/>
 </svg>
-</div><div>
+</div>
+
+<div>
 <div class="brand-title">SARVESH AI</div>
 <div class="brand-sub">Neural Intelligence</div>
 </div>
-</div><button class="new-chat" id="newChatBtn">+ New Conversation</button>
+</div>
 
-<div class="history-label">Memory Stream</div><div id="chatHistory"></div><div class="sidebar-bottom">
+<button class="new-chat" id="newChatBtn">
++ New Conversation
+</button>
+
+<div class="history-label">Memory Stream</div>
+
+<div id="chatHistory"></div>
+
+<div class="sidebar-bottom">
 <button id="settingsBtn">⚙ Settings</button>
 <button id="mobileCloseBtn">× Close</button>
-</div></aside><main><header class="topbar"><button class="mobile-menu" id="mobileMenuBtn">☰</button>
+</div>
+
+</aside>
+
+<main>
+
+<header class="topbar">
+
+<button class="mobile-menu" id="mobileMenuBtn">
+☰
+</button>
 
 <div class="top-status">
 <span class="status-dot"></span>
 Neural Core Online
-</div><div style="display:flex;align-items:center;gap:7px"><button class="icon-btn" id="voiceToggleBtn" title="Voice reading OFF"
+</div>
+
+<div style="display:flex;align-items:center;gap:7px">
+
+<button class="icon-btn"
+id="voiceToggleBtn"
+title="Voice reading OFF"
 style="width:36px;height:36px;border-radius:11px">
 
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -657,97 +771,286 @@ stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
 stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
 <path d="M18 6.5c2.8 3 2.8 8 0 11"
 stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-</svg></button><button class="icon-btn" id="stopSpeechBtn" title="Stop speech"
+</svg>
+
+</button>
+
+<button class="icon-btn"
+id="stopSpeechBtn"
+title="Stop speech"
 style="width:36px;height:36px;border-radius:11px">
 
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
 <rect x="7" y="7" width="10" height="10" rx="1.5"
 stroke="currentColor" stroke-width="1.7"/>
-</svg></button><div class="top-status">SECURE</div></div></header><section id="messages">
+</svg>
+
+</button>
+
+<div class="top-status">SECURE</div>
+
+</div>
+
+</header>
+
+<section id="messages">
 <div id="messageContainer"></div>
-</section><section id="welcome"><div class="welcome-inner"><div class="orbital"><div class="atom-system">
-<span class="atom"></span><span class="atom"></span>
-<span class="atom"></span><span class="atom"></span>
-<span class="atom"></span><span class="atom"></span>
-<span class="atom"></span><span class="atom"></span>
-</div><div class="core-sparks">
+</section>
+
+<section id="welcome">
+
+<div class="welcome-inner">
+
+<div class="orbital">
+
+<div class="atom-system">
+<span class="atom"></span>
+<span class="atom"></span>
+<span class="atom"></span>
+<span class="atom"></span>
+<span class="atom"></span>
+<span class="atom"></span>
+<span class="atom"></span>
+<span class="atom"></span>
+</div>
+
+<div class="core-sparks">
 <span></span><span></span><span></span>
 <span></span><span></span><span></span>
-</div><div class="core-scan"></div>
-<div class="orb-core"></div></div><div class="welcome-title">SARVESH AI</div><div class="welcome-text">
+</div>
+
+<div class="core-scan"></div>
+<div class="orb-core"></div>
+
+</div>
+
+<div class="welcome-title">SARVESH AI</div>
+
+<div class="welcome-text">
 Your intelligent digital companion.
 Ask anything and begin a new conversation.
-</div></div></section><div class="input-zone"><form id="chatForm"><button type="button" class="icon-btn" id="imageBtn" title="Generate image"><svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+</div>
+
+</div>
+
+</section>
+
+<div class="input-zone">
+
+<!-- NEW: ATTACHMENT PREVIEW -->
+<div id="imagePreview">
+
+<img id="imagePreviewThumb" src="" alt="Attached image">
+
+<div id="imagePreviewInfo">
+
+<div id="imagePreviewName">
+Image attached
+</div>
+
+<div id="imagePreviewStatus">
+Ready for image editing
+</div>
+
+</div>
+
+<button type="button" id="removeAttachmentBtn" title="Remove image">
+×
+</button>
+
+</div>
+
+<!-- Hidden file input -->
+<input
+id="attachmentInput"
+type="file"
+accept="image/*"
+>
+
+<form id="chatForm">
+
+<!-- Existing image button retained -->
+<button
+type="button"
+class="icon-btn"
+id="imageBtn"
+title="Generate image / Attach image">
+
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
 <rect x="3" y="4" width="18" height="16" rx="3"
 stroke="currentColor" stroke-width="1.6"/>
 <circle cx="8.5" cy="9" r="1.5" fill="currentColor"/>
 <path d="m5 17 4.5-4 3.2 3 2.5-2.2L19 17"
 stroke="currentColor" stroke-width="1.6"
 stroke-linecap="round" stroke-linejoin="round"/>
-</svg></button><button type="button" class="icon-btn" id="toolsBtn" title="Tools"><svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+</svg>
+
+</button>
+
+<button type="button"
+class="icon-btn"
+id="toolsBtn"
+title="Tools">
+
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
 <path d="M12 3v18M3 12h18"
 stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
 <circle cx="12" cy="12" r="7.5"
 stroke="currentColor" stroke-width="1.2" opacity=".55"/>
-</svg></button><textarea id="messageInput" rows="1"
-placeholder="Transmit a message..." autocomplete="off"></textarea><button type="button" class="icon-btn" id="micBtn" title="Voice input"><svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+</svg>
+
+</button>
+
+<textarea
+id="messageInput"
+rows="1"
+placeholder="Transmit a message..."
+autocomplete="off"></textarea>
+
+<button
+type="button"
+class="icon-btn"
+id="micBtn"
+title="Voice input">
+
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
 <rect x="8" y="3" width="8" height="12" rx="4"
 stroke="currentColor" stroke-width="1.6"/>
 <path d="M5 11a7 7 0 0 0 14 0"
 stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
 <path d="M12 18v3"
 stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-</svg></button><button type="submit" class="icon-btn" id="sendBtn" title="Send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+</svg>
+
+</button>
+
+<button
+type="submit"
+class="icon-btn"
+id="sendBtn"
+title="Send">
+
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
 <path d="M21 3 10.5 13.5"
 stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
 <path d="m21 3-6.7 18-3.8-7.7L3 9.7 21 3Z"
 stroke="currentColor" stroke-width="1.8"
 stroke-linejoin="round"/>
-</svg></button></form>
-</div></main>
-</div><div id="chatActionMenu">
+</svg>
+
+</button>
+
+</form>
+
+</div>
+
+</main>
+
+</div>
+
+<div id="chatActionMenu">
 <button id="renameChatBtn">✎ Rename</button>
 <button id="deleteChatBtn">⌫ Delete</button>
-</div><div id="toolsMenu">
+</div>
+
+<div id="toolsMenu">
+
 <button data-tool="summarize">✦ Summarize</button>
 <button data-tool="explain">◉ Explain</button>
 <button data-tool="translate">⇄ Translate</button>
 <button data-tool="rewrite">✎ Rewrite</button>
 <button data-tool="brainstorm">✧ Brainstorm</button>
 <button data-tool="code">&lt;/&gt; Code</button>
-</div><div class="modal-bg" id="renameModal">
+
+</div>
+
+<div class="modal-bg" id="renameModal">
+
 <div class="modal">
+
 <h2>Rename Conversation</h2>
-<input id="renameInput" type="text" placeholder="Enter new name">
+
+<input
+id="renameInput"
+type="text"
+placeholder="Enter new name">
+
 <div class="modal-actions">
-<button id="renameCancel">Cancel</button>
-<button class="primary" id="renameSave">Rename</button>
+
+<button id="renameCancel">
+Cancel
+</button>
+
+<button class="primary" id="renameSave">
+Rename
+</button>
+
 </div>
+
 </div>
-</div><div class="modal-bg" id="deleteModal">
+
+</div>
+
+<div class="modal-bg" id="deleteModal">
+
 <div class="modal">
+
 <h2>Delete Conversation?</h2>
+
 <p style="color:#64748b;font-size:14px">
 This conversation will be permanently removed.
 </p>
+
 <div class="modal-actions">
-<button id="deleteCancel">Cancel</button>
-<button class="primary" id="deleteConfirm">Delete</button>
+
+<button id="deleteCancel">
+Cancel
+</button>
+
+<button class="primary" id="deleteConfirm">
+Delete
+</button>
+
 </div>
+
 </div>
-</div><div class="modal-bg" id="settingsModal">
+
+</div>
+
+<div class="modal-bg" id="settingsModal">
+
 <div class="modal">
+
 <h2>System Settings</h2>
-<textarea id="systemPrompt"
+
+<textarea
+id="systemPrompt"
 style="width:100%;min-height:150px;padding:12px;border-radius:11px;
 background:#020617;color:#e2e8f0;border:1px solid rgba(148,163,184,.15);
 outline:none;resize:vertical"
-placeholder="Enter system instructions..."></textarea><div class="modal-actions">
-<button id="settingsCancel">Close</button>
-<button class="primary" id="settingsSave">Save</button>
+placeholder="Enter system instructions..."></textarea>
+
+<div class="modal-actions">
+
+<button id="settingsCancel">
+Close
+</button>
+
+<button class="primary" id="settingsSave">
+Save
+</button>
+
 </div>
+
 </div>
-</div><script>
+
+</div>
+
+<script>
+
+/* =========================================================
+   CONFIGURATION
+   ========================================================= */
 
 const API_URL =
 "https://sarvesh-ai.sarveshghane77.workers.dev";
@@ -756,6 +1059,28 @@ const CHAT_KEY="sarvesh_chats";
 const ACTIVE_KEY="sarvesh_active_chat";
 const SYSTEM_KEY="sarvesh_system_prompt";
 const VOICE_KEY="sarvesh_voice_enabled";
+
+/*
+  IMPORTANT:
+  Local chat history is unlimited.
+
+  BUT only a safe recent context is sent to the Worker.
+  This prevents the OpenRouter 128K context error.
+*/
+
+const MAX_CONTEXT_CHARS = 300000;
+const MAX_CONTEXT_MESSAGES = 80;
+
+/*
+  Internet capability flags.
+
+  The HTML sends these to the Worker.
+  The Worker will be updated next to actually perform
+  live web searches.
+*/
+
+const ENABLE_WEB_SEARCH = true;
+const ENABLE_IMAGE_INPUT = true;
 
 const CREATOR_IDENTITY = `
 Identity instruction:
@@ -780,6 +1105,9 @@ let speechIndex=0;
 let recognition=null;
 let isListening=false;
 let recognitionStarting=false;
+
+/* Current image attachment */
+let pendingAttachment=null;
 
 
 /* =========================================================
@@ -909,11 +1237,8 @@ resolve(null);
 
 async function requestWebIntoMicrophone(){
 
-if(!hasWebIntoBridge()){
-
+if(!hasWebIntoBridge())
 return false;
-
-}
 
 try{
 
@@ -959,40 +1284,6 @@ return false;
 
 }
 
-async function checkWebIntoMicrophone(){
-
-if(!hasWebIntoBridge())return false;
-
-try{
-
-const result=
-await nativeCall(
-"permissions",
-{
-action:"CHECK_PERMISSION",
-payload:{
-permission:"AUDIO"
-}
-}
-);
-
-return !!(
-result &&
-(
-result.status===true ||
-result.granted===true ||
-result.allowed===true
-)
-);
-
-}catch{
-
-return false;
-
-}
-
-}
-
 
 /* =========================================================
    SAVE / LOAD
@@ -1000,10 +1291,21 @@ return false;
 
 function saveChats(){
 
+try{
+
 localStorage.setItem(
 CHAT_KEY,
 JSON.stringify(chats)
 );
+
+}catch(error){
+
+console.error(
+"SARVESH AI local storage error:",
+error
+);
+
+}
 
 }
 
@@ -1140,6 +1442,7 @@ activeChatId
 );
 
 stopSpeech();
+clearAttachment();
 renderHistory();
 renderMessages();
 
@@ -1187,6 +1490,151 @@ item.appendChild(menu);
 history.appendChild(item);
 
 });
+
+}
+
+
+/* =========================================================
+   CONTEXT PROTECTION
+   ========================================================= */
+
+/*
+  IMPORTANT:
+
+  This function is the main fix for the 128K error.
+
+  Your complete chat remains stored locally.
+
+  The API request receives only recent messages and
+  never receives giant generated-image HTML/base64 data.
+*/
+
+function cleanMessageForContext(message){
+
+if(!message)
+return null;
+
+let role=
+message.role==="assistant"
+?"assistant":"user";
+
+let content=
+typeof message.content==="string"
+?message.content
+:String(message.content||"");
+
+/*
+  Remove generated image HTML.
+*/
+
+content=
+content.replace(
+/<div[^>]*generated-image-container[^>]*>[\s\S]*?<\/div>/gi,
+"[Generated image omitted from conversation context]"
+);
+
+/*
+  Remove very large data URLs.
+*/
+
+content=
+content.replace(
+/data:image\/[^;]+;base64,[A-Za-z0-9+/=]+/gi,
+"[Image data omitted from conversation context]"
+);
+
+/*
+  Prevent accidental giant individual messages.
+*/
+
+const MAX_SINGLE_MESSAGE_CHARS=12000;
+
+if(content.length>MAX_SINGLE_MESSAGE_CHARS){
+
+content=
+content.slice(
+0,
+MAX_SINGLE_MESSAGE_CHARS
+)+
+"\n[Older portion of this message omitted to protect context length]";
+
+}
+
+const result={
+role,
+content
+};
+
+return result;
+
+}
+
+
+function buildContextMessages(chat){
+
+if(!chat || !Array.isArray(chat.messages))
+return[];
+
+const source=
+chat.messages
+.filter(Boolean)
+.map(cleanMessageForContext)
+.filter(Boolean);
+
+/*
+  Start from newest messages and work backwards.
+*/
+
+const selected=[];
+let totalChars=0;
+
+for(
+let i=source.length-1;
+i>=0;
+i--
+){
+
+const msg=source[i];
+
+const size=
+(msg.content||"").length+40;
+
+if(
+selected.length>=MAX_CONTEXT_MESSAGES
+)
+break;
+
+if(
+selected.length>0 &&
+totalChars+size>MAX_CONTEXT_CHARS
+)
+break;
+
+selected.unshift(msg);
+
+totalChars+=size;
+
+}
+
+/*
+  Always tell the model when older history was removed.
+*/
+
+if(
+selected.length<source.length
+){
+
+selected.unshift({
+role:"system",
+content:
+"[Conversation history was automatically shortened. " +
+"Only the most recent relevant messages are included. " +
+"Do not assume omitted older messages unless they are present here.]"
+});
+
+}
+
+return selected;
 
 }
 
@@ -1358,11 +1806,11 @@ splitSpeechText(clean);
 
 speechIndex=0;
 
-speakNextChunk(clean);
+speakNextChunk();
 
 }
 
-function speakNextChunk(originalText){
+function speakNextChunk(){
 
 if(
 speechIndex>=speechChunks.length
@@ -1400,7 +1848,7 @@ utterance.onend=()=>{
 speechIndex++;
 
 setTimeout(
-()=>speakNextChunk(originalText),
+()=>speakNextChunk(),
 30
 );
 
@@ -1436,7 +1884,233 @@ speechIndex=0;
 
 
 /* =========================================================
-   IMAGE DOWNLOAD — FIXED
+   IMAGE ATTACHMENT
+   ========================================================= */
+
+function formatBytes(bytes){
+
+if(!bytes)
+return"0 B";
+
+const units=["B","KB","MB","GB"];
+
+let index=0;
+let value=bytes;
+
+while(
+value>=1024 &&
+index<units.length-1
+){
+
+value/=1024;
+index++;
+
+}
+
+return value.toFixed(
+index===0?0:1
+)+" "+units[index];
+
+}
+
+
+/*
+  Resize/compress the selected image.
+
+  This prevents a 5-15 MB phone photo from becoming
+  an unnecessarily huge API request.
+*/
+
+function processImageFile(file){
+
+return new Promise((resolve,reject)=>{
+
+if(!file)
+return reject(
+new Error("No image selected.")
+);
+
+if(!file.type.startsWith("image/"))
+return reject(
+new Error("Please select an image file.")
+);
+
+const MAX_FILE_SIZE=15*1024*1024;
+
+if(file.size>MAX_FILE_SIZE){
+
+return reject(
+new Error(
+"Image is too large. Please select an image smaller than 15 MB."
+)
+);
+
+}
+
+const reader=
+new FileReader();
+
+reader.onload=()=>{
+
+const img=
+new Image();
+
+img.onload=()=>{
+
+const MAX_DIMENSION=1600;
+
+let width=img.width;
+let height=img.height;
+
+if(
+width>MAX_DIMENSION ||
+height>MAX_DIMENSION
+){
+
+const scale=
+Math.min(
+MAX_DIMENSION/width,
+MAX_DIMENSION/height
+);
+
+width=
+Math.round(width*scale);
+
+height=
+Math.round(height*scale);
+
+}
+
+const canvas=
+document.createElement("canvas");
+
+canvas.width=width;
+canvas.height=height;
+
+const ctx=
+canvas.getContext("2d");
+
+ctx.drawImage(
+img,
+0,
+0,
+width,
+height
+);
+
+const dataUrl=
+canvas.toDataURL(
+"image/jpeg",
+0.82
+);
+
+resolve({
+name:file.name,
+type:"image/jpeg",
+data:dataUrl,
+originalSize:file.size,
+width,
+height
+});
+
+};
+
+img.onerror=()=>{
+
+reject(
+new Error("Could not read the selected image.")
+);
+
+};
+
+img.src=
+reader.result;
+
+};
+
+reader.onerror=()=>{
+
+reject(
+new Error("Could not load image.")
+);
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+}
+
+function showAttachment(){
+
+if(!pendingAttachment){
+
+$("imagePreview").style.display="none";
+return;
+
+}
+
+$("imagePreviewThumb").src=
+pendingAttachment.data;
+
+$("imagePreviewName").textContent=
+pendingAttachment.name;
+
+$("imagePreviewStatus").textContent=
+"Ready • "+
+pendingAttachment.width+
+"×"+
+pendingAttachment.height+
+" • "+
+formatBytes(pendingAttachment.originalSize);
+
+$("imagePreview").style.display=
+"flex";
+
+}
+
+function clearAttachment(){
+
+pendingAttachment=null;
+
+$("attachmentInput").value="";
+
+$("imagePreviewThumb").src="";
+
+$("imagePreview").style.display=
+"none";
+
+}
+
+async function handleAttachment(file){
+
+try{
+
+const processed=
+await processImageFile(file);
+
+pendingAttachment=
+processed;
+
+showAttachment();
+
+$("messageInput").focus();
+
+}catch(error){
+
+alert(
+error?.message||
+"Could not attach image."
+);
+
+}
+
+}
+
+
+/* =========================================================
+   DOWNLOAD GENERATED IMAGE
    ========================================================= */
 
 async function downloadGeneratedImage(button){
@@ -1446,117 +2120,65 @@ try{
 const wrap =
 button.closest(".message-wrap");
 
-if(!wrap){
-
-console.error(
-"SARVESH AI: message wrapper not found."
-);
-
+if(!wrap)
 return;
-
-}
 
 const image =
 wrap.querySelector(
 ".generated-image-container img"
 );
 
-if(!image || !image.src){
-
-console.error(
-"SARVESH AI: generated image not found."
-);
-
+if(!image || !image.src)
 return;
 
-}
-
-const source =
-image.src;
-
-console.log(
-"SARVESH AI: Download requested."
-);
-
-
-/* ---------------------------------------------------------
-   CASE 1 — DATA IMAGE
-   --------------------------------------------------------- */
+const source=image.src;
 
 if(source.startsWith("data:")){
 
-const parts =
-source.split(",");
+const parts=source.split(",");
 
 if(parts.length<2)
 throw new Error("Invalid image data.");
 
-const header =
-parts[0];
+const header=parts[0];
 
-const base64 =
-parts.slice(1).join(",");
+const base64=parts.slice(1).join(",");
 
-const mime =
+const mime=
 (
 header.match(
 /data:([^;]+)/i
 )||[]
-)[1] ||
+)[1]||
 "image/png";
 
-const binary =
-atob(base64);
+const binary=atob(base64);
 
-const length =
-binary.length;
+const bytes=
+new Uint8Array(binary.length);
 
-const bytes =
-new Uint8Array(length);
+for(let i=0;i<binary.length;i++)
+bytes[i]=binary.charCodeAt(i);
 
-for(let i=0;i<length;i++){
-
-bytes[i]=
-binary.charCodeAt(i);
-
-}
-
-const blob =
+const blob=
 new Blob(
 [bytes],
 {type:mime}
 );
 
-const blobUrl =
+const blobUrl=
 URL.createObjectURL(blob);
 
-
-/*
-  Create a real browser download.
-*/
-
-const link =
+const link=
 document.createElement("a");
 
-link.href =
-blobUrl;
-
-link.download =
-"SARVESH-AI-Generated-Image.png";
-
+link.href=blobUrl;
+link.download="SARVESH-AI-Generated-Image.png";
 link.style.display="none";
 
 document.body.appendChild(link);
-
 link.click();
-
 link.remove();
-
-
-/*
-  Keep the object URL alive briefly so Chrome
-  has time to start the download.
-*/
 
 setTimeout(
 ()=>URL.revokeObjectURL(blobUrl),
@@ -1566,11 +2188,6 @@ setTimeout(
 return;
 
 }
-
-
-/* ---------------------------------------------------------
-   CASE 2 — NORMAL HTTP/HTTPS IMAGE
-   --------------------------------------------------------- */
 
 if(
 source.startsWith("http://") ||
@@ -1579,37 +2196,29 @@ source.startsWith("https://")
 
 try{
 
-const response =
+const response=
 await fetch(
 source,
-{
-mode:"cors"
-}
+{mode:"cors"}
 );
 
 if(response.ok){
 
-const blob =
+const blob=
 await response.blob();
 
-const blobUrl =
+const blobUrl=
 URL.createObjectURL(blob);
 
-const link =
+const link=
 document.createElement("a");
 
-link.href =
-blobUrl;
-
-link.download =
-"SARVESH-AI-Generated-Image.png";
-
+link.href=blobUrl;
+link.download="SARVESH-AI-Generated-Image.png";
 link.style.display="none";
 
 document.body.appendChild(link);
-
 link.click();
-
 link.remove();
 
 setTimeout(
@@ -1621,22 +2230,9 @@ return;
 
 }
 
-}catch(error){
+}catch{}
 
-console.log(
-"SARVESH AI: CORS download unavailable.",
-error
-);
-
-}
-
-
-/*
-  If the server does not allow fetch/CORS,
-  open the actual image in Chrome.
-*/
-
-const opened =
+const opened=
 window.open(
 source,
 "_blank"
@@ -1644,72 +2240,39 @@ source,
 
 if(opened){
 
-try{
-opened.focus();
-}catch{}
+try{opened.focus()}catch{}
 
 return;
 
 }
 
-window.location.href =
-source;
-
+window.location.href=source;
 return;
 
 }
-
-
-/* ---------------------------------------------------------
-   CASE 3 — BLOB URL
-   --------------------------------------------------------- */
 
 if(source.startsWith("blob:")){
 
-const link =
+const link=
 document.createElement("a");
 
-link.href =
-source;
-
-link.download =
-"SARVESH-AI-Generated-Image.png";
-
+link.href=source;
+link.download="SARVESH-AI-Generated-Image.png";
 link.style.display="none";
 
 document.body.appendChild(link);
-
 link.click();
-
 link.remove();
 
 return;
 
 }
 
+const opened=
+window.open(source,"_blank");
 
-/* ---------------------------------------------------------
-   FINAL FALLBACK
-   --------------------------------------------------------- */
-
-const opened =
-window.open(
-source,
-"_blank"
-);
-
-if(opened){
-
-try{
-opened.focus();
-}catch{}
-
-}else{
-
-window.location.href =
-source;
-
-}
+if(!opened)
+window.location.href=source;
 
 }catch(error){
 
@@ -1717,47 +2280,6 @@ console.error(
 "SARVESH AI image download error:",
 error
 );
-
-/*
- If anything fails, still try opening the
- generated image directly.
-*/
-
-try{
-
-const wrap =
-button.closest(".message-wrap");
-
-const image =
-wrap?.querySelector(
-".generated-image-container img"
-);
-
-if(image?.src){
-
-const opened =
-window.open(
-image.src,
-"_blank"
-);
-
-if(!opened){
-
-window.location.href =
-image.src;
-
-}
-
-}
-
-}catch(fallbackError){
-
-console.error(
-"SARVESH AI final image fallback failed:",
-fallbackError
-);
-
-}
 
 }
 
@@ -1770,15 +2292,15 @@ fallbackError
 
 function renderMessages(){
 
-const container =
+const container=
 $("messageContainer");
 
 container.innerHTML="";
 
-const welcome =
+const welcome=
 $("welcome");
 
-const chat =
+const chat=
 getActiveChat();
 
 if(
@@ -1786,22 +2308,20 @@ if(
 !chat.messages.length
 ){
 
-welcome.style.display =
-"flex";
-
+welcome.style.display="flex";
 return;
 
 }
 
-welcome.style.display =
-"none";
+welcome.style.display="none";
 
 chat.messages.forEach(
 msg=>{
 
 addMessageToUI(
 msg.role,
-msg.content
+msg.content,
+msg.attachment
 );
 
 });
@@ -1812,23 +2332,24 @@ scrollBottom();
 
 function addMessageToUI(
 role,
-content
+content,
+attachment=null
 ){
 
-const wrap =
+const wrap=
 document.createElement("div");
 
-wrap.className =
+wrap.className=
 "message-wrap "+
 (
 role==="user"
 ?"user":""
 );
 
-const bubble =
+const bubble=
 document.createElement("div");
 
-bubble.className =
+bubble.className=
 "message "+
 (
 role==="user"
@@ -1837,12 +2358,42 @@ role==="user"
 
 if(role==="user"){
 
-bubble.textContent =
+if(attachment?.data){
+
+const attachedImage=
+document.createElement("img");
+
+attachedImage.src=
+attachment.data;
+
+attachedImage.alt=
+"Attached image";
+
+attachedImage.style.maxWidth="280px";
+attachedImage.style.marginBottom=
+content?"10px":"0";
+
+bubble.appendChild(
+attachedImage
+);
+
+}
+
+if(content){
+
+const textNode=
+document.createElement("div");
+
+textNode.textContent=
 content;
 
-wrap.appendChild(
-bubble
+bubble.appendChild(
+textNode
 );
+
+}
+
+wrap.appendChild(bubble);
 
 }else{
 
@@ -1851,41 +2402,34 @@ bubble.className +=
 
 try{
 
-bubble.innerHTML =
+bubble.innerHTML=
 marked.parse(
 content||""
 );
 
 }catch{
 
-bubble.textContent =
+bubble.textContent=
 content||"";
 
 }
 
-wrap.appendChild(
-bubble
-);
+wrap.appendChild(bubble);
 
-const tools =
+const tools=
 document.createElement("div");
 
-tools.className =
+tools.className=
 "message-tools";
 
-const speaker =
+const speaker=
 document.createElement("button");
 
-speaker.type =
-"button";
+speaker.type="button";
+speaker.className="message-speaker";
+speaker.title="Read aloud";
 
-speaker.className =
-"message-speaker";
-
-speaker.title =
-"Read aloud";
-
-speaker.innerHTML = `
+speaker.innerHTML=`
 <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
 <path d="M11 5 6 9H3v6h3l5 4V5Z"
 stroke="currentColor" stroke-width="1.6"
@@ -1899,41 +2443,33 @@ stroke-linecap="round"/>
 </svg>
 `;
 
-speaker.onclick =
-e=>{
+speaker.onclick=e=>{
 
 e.stopPropagation();
 
-speakText(
-content||""
-);
+speakText(content||"");
 
 };
 
-tools.appendChild(
-speaker
-);
+tools.appendChild(speaker);
 
-const hasGeneratedImage =
+const hasGeneratedImage=
 bubble.querySelector(
 ".generated-image-container img"
 );
 
 if(hasGeneratedImage){
 
-const downloadButton =
+const downloadButton=
 document.createElement("button");
 
-downloadButton.type =
-"button";
-
-downloadButton.className =
+downloadButton.type="button";
+downloadButton.className=
 "download-image-btn";
-
-downloadButton.title =
+downloadButton.title=
 "Download image";
 
-downloadButton.innerHTML = `
+downloadButton.innerHTML=`
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
 <path d="M12 3v12"
 stroke="currentColor"
@@ -1952,8 +2488,7 @@ stroke-linecap="round"/>
 <span>Download Image</span>
 `;
 
-downloadButton.onclick =
-e=>{
+downloadButton.onclick=e=>{
 
 e.preventDefault();
 e.stopPropagation();
@@ -1970,27 +2505,21 @@ downloadButton
 
 }
 
-wrap.appendChild(
-tools
-);
+wrap.appendChild(tools);
 
 }
 
 $("messageContainer")
-.appendChild(
-wrap
-);
+.appendChild(wrap);
 
 }
 
 function scrollBottom(){
 
-const box =
-$("messages");
+const box=$("messages");
 
 setTimeout(
-()=>box.scrollTop =
-box.scrollHeight,
+()=>box.scrollTop=box.scrollHeight,
 20
 );
 
@@ -2003,35 +2532,27 @@ box.scrollHeight,
 
 function addTyping(){
 
-const wrap =
+const wrap=
 document.createElement("div");
 
-wrap.className =
-"message-wrap";
+wrap.className="message-wrap";
+wrap.id="typingMessage";
 
-wrap.id =
-"typingMessage";
-
-const bubble =
+const bubble=
 document.createElement("div");
 
-bubble.className =
-"message ai";
+bubble.className="message ai";
 
-bubble.innerHTML = `
+bubble.innerHTML=`
 <div class="typing">
 <span></span><span></span><span></span>
 </div>
 `;
 
-wrap.appendChild(
-bubble
-);
+wrap.appendChild(bubble);
 
 $("messageContainer")
-.appendChild(
-wrap
-);
+.appendChild(wrap);
 
 scrollBottom();
 
@@ -2039,7 +2560,7 @@ scrollBottom();
 
 function removeTyping(){
 
-const typing =
+const typing=
 $("typingMessage");
 
 if(typing)
@@ -2059,18 +2580,18 @@ chat.title==="New Conversation" &&
 chat.messages.length
 ){
 
-const first =
+const first=
 chat.messages.find(
 m=>m.role==="user"
 );
 
 if(first){
 
-chat.title =
-first.content
+chat.title=
+(first.content||"")
 .replace(/\s+/g," ")
 .trim()
-.slice(0,35) ||
+.slice(0,35)||
 "New Conversation";
 
 }
@@ -2084,14 +2605,26 @@ first.content
    SEND MESSAGE
    ========================================================= */
 
-async function sendMessage(text){
+async function sendMessage(
+text,
+attachment=null
+){
 
-const chat =
+const chat=
 ensureChat();
+
+const cleanText=
+String(text||"").trim();
+
+/*
+  Save attachment locally with the user message
+  so it remains visible when the conversation is reopened.
+*/
 
 chat.messages.push({
 role:"user",
-content:text
+content:cleanText,
+attachment:attachment||null
 });
 
 setChatTitle(chat);
@@ -2104,31 +2637,82 @@ addTyping();
 
 $("messageInput").value="";
 
+clearAttachment();
+
 try{
 
-const savedSystem =
+const savedSystem=
 localStorage.getItem(
 SYSTEM_KEY
 )||"";
 
-const system =
+const system=
 CREATOR_IDENTITY+
 "\n"+
 savedSystem;
 
-const response =
+/*
+  THIS is the context-protected payload.
+
+  We deliberately do NOT send chat.messages directly.
+*/
+
+const contextMessages=
+buildContextMessages(chat);
+
+/*
+  Current image is sent separately.
+
+  The Worker update will read:
+    attachments
+    image_edit
+    web
+    internet_access
+*/
+
+const attachments=
+attachment?
+[{
+name:attachment.name,
+type:attachment.type,
+data:attachment.data
+}]
+:[];
+
+const response=
 await fetch(
 API_URL,
 {
 method:"POST",
+
 headers:{
 "Content-Type":
 "application/json"
 },
+
 body:JSON.stringify({
-messages:
-chat.messages,
-system
+
+/* Existing chat API */
+messages:contextMessages,
+system,
+
+/* New capabilities */
+web:ENABLE_WEB_SEARCH,
+internet_access:ENABLE_WEB_SEARCH,
+
+/* Image input/editing */
+image_edit:
+!!attachment,
+
+attachments,
+
+/* Helps Worker distinguish this request */
+features:{
+web_search:ENABLE_WEB_SEARCH,
+image_input:ENABLE_IMAGE_INPUT,
+image_editing:!!attachment
+}
+
 })
 }
 );
@@ -2137,7 +2721,7 @@ let data=null;
 
 try{
 
-data =
+data=
 await response.json();
 
 }catch{
@@ -2178,16 +2762,30 @@ else if(
 data?.choices &&
 data.choices[0] &&
 data.choices[0].message
-)
+){
 
-reply =
-data.choices[0]
-.message.content;
+const content=
+data.choices[0].message.content;
 
-else
+if(Array.isArray(content)){
 
-reply =
+reply=
+content
+.map(x=>x?.text||"")
+.join("");
+
+}else{
+
+reply=content;
+
+}
+
+}else{
+
+reply=
 JSON.stringify(data);
+
+}
 
 if(!reply){
 
@@ -2224,7 +2822,7 @@ setTimeout(
 
 removeTyping();
 
-const errorText =
+const errorText=
 "⚠️ Connection error: "+
 (
 error?.message||
@@ -2260,7 +2858,7 @@ setTimeout(
 
 async function generateImage(prompt){
 
-const chat =
+const chat=
 ensureChat();
 
 chat.messages.push({
@@ -2279,18 +2877,30 @@ addTyping();
 
 try{
 
-const response =
+const response=
 await fetch(
 API_URL,
 {
 method:"POST",
+
 headers:{
 "Content-Type":
 "application/json"
 },
+
 body:JSON.stringify({
+
 type:"image",
-prompt
+
+prompt,
+
+/*
+  Keep these flags available for the Worker.
+*/
+
+web:false,
+internet_access:false
+
 })
 }
 );
@@ -2299,7 +2909,7 @@ let data=null;
 
 try{
 
-data =
+data=
 await response.json();
 
 }catch{}
@@ -2315,7 +2925,7 @@ response.status
 
 }
 
-let imageUrl =
+let imageUrl=
 data?.image;
 
 if(
@@ -2328,7 +2938,7 @@ if(
 !imageUrl.startsWith("data:")
 ){
 
-imageUrl =
+imageUrl=
 "data:image/jpeg;base64,"+
 imageUrl;
 
@@ -2362,7 +2972,7 @@ renderMessages();
 
 removeTyping();
 
-const errorText =
+const errorText=
 "⚠️ Image generation error: "+
 (
 error?.message||
@@ -2371,8 +2981,7 @@ error?.message||
 
 chat.messages.push({
 role:"assistant",
-content:
-errorText
+content:errorText
 });
 
 saveChats();
@@ -2395,19 +3004,46 @@ e=>{
 
 e.preventDefault();
 
-const input =
+const input=
 $("messageInput");
 
-const text =
+const text=
 input.value.trim();
 
-if(!text)
+if(!text && !pendingAttachment){
+
 return;
+
+}
+
+/*
+  If an image is attached, send it as an image-edit request.
+*/
+
+if(pendingAttachment){
+
+const attachment=
+pendingAttachment;
+
+sendMessage(
+text ||
+"Please analyze and describe this image.",
+attachment
+);
+
+return;
+
+}
 
 sendMessage(text);
 
 }
 );
+
+
+/* =========================================================
+   TEXT INPUT
+   ========================================================= */
 
 $("messageInput")
 .addEventListener(
@@ -2434,10 +3070,9 @@ $("messageInput")
 "input",
 e=>{
 
-e.target.style.height =
-"auto";
+e.target.style.height="auto";
 
-e.target.style.height =
+e.target.style.height=
 Math.min(
 e.target.scrollHeight,
 150
@@ -2451,10 +3086,12 @@ e.target.scrollHeight,
    NEW CHAT
    ========================================================= */
 
-$("newChatBtn").onclick =
+$("newChatBtn").onclick=
 ()=>{
 
 stopSpeech();
+
+clearAttachment();
 
 createChat();
 
@@ -2468,7 +3105,7 @@ $("messageInput")
    MOBILE
    ========================================================= */
 
-$("mobileMenuBtn").onclick =
+$("mobileMenuBtn").onclick=
 ()=>{
 
 $("sidebar")
@@ -2476,7 +3113,7 @@ $("sidebar")
 
 };
 
-$("mobileCloseBtn").onclick =
+$("mobileCloseBtn").onclick=
 ()=>{
 
 $("sidebar")
@@ -2493,10 +3130,10 @@ document.addEventListener(
 "click",
 e=>{
 
-const menu =
+const menu=
 $("chatActionMenu");
 
-const tools =
+const tools=
 $("toolsMenu");
 
 if(
@@ -2504,8 +3141,7 @@ menu.style.display==="block" &&
 !menu.contains(e.target)
 ){
 
-menu.style.display =
-"none";
+menu.style.display="none";
 
 }
 
@@ -2515,8 +3151,7 @@ tools.style.display==="block" &&
 e.target!==$("toolsBtn")
 ){
 
-tools.style.display =
-"none";
+tools.style.display="none";
 
 }
 
@@ -2528,14 +3163,13 @@ tools.style.display =
    RENAME
    ========================================================= */
 
-$("renameChatBtn").onclick =
+$("renameChatBtn").onclick=
 ()=>{
 
 $("chatActionMenu")
-.style.display =
-"none";
+.style.display="none";
 
-const chat =
+const chat=
 chats.find(
 c=>c.id===selectedChatId
 );
@@ -2543,12 +3177,11 @@ c=>c.id===selectedChatId
 if(!chat)
 return;
 
-$("renameInput").value =
+$("renameInput").value=
 chat.title;
 
 $("renameModal")
-.style.display =
-"flex";
+.style.display="flex";
 
 setTimeout(
 ()=>$("renameInput").focus(),
@@ -2557,19 +3190,18 @@ setTimeout(
 
 };
 
-$("renameCancel").onclick =
+$("renameCancel").onclick=
 ()=>{
 
 $("renameModal")
-.style.display =
-"none";
+.style.display="none";
 
 };
 
-$("renameSave").onclick =
+$("renameSave").onclick=
 ()=>{
 
-const chat =
+const chat=
 chats.find(
 c=>c.id===selectedChatId
 );
@@ -2577,7 +3209,7 @@ c=>c.id===selectedChatId
 if(!chat)
 return;
 
-const name =
+const name=
 $("renameInput")
 .value
 .trim();
@@ -2589,8 +3221,7 @@ saveChats();
 renderHistory();
 
 $("renameModal")
-.style.display =
-"none";
+.style.display="none";
 
 };
 
@@ -2599,34 +3230,31 @@ $("renameModal")
    DELETE
    ========================================================= */
 
-$("deleteChatBtn").onclick =
+$("deleteChatBtn").onclick=
 ()=>{
 
 $("chatActionMenu")
-.style.display =
-"none";
+.style.display="none";
 
 $("deleteModal")
-.style.display =
-"flex";
+.style.display="flex";
 
 };
 
-$("deleteCancel").onclick =
+$("deleteCancel").onclick=
 ()=>{
 
 $("deleteModal")
-.style.display =
-"none";
+.style.display="none";
 
 };
 
-$("deleteConfirm").onclick =
+$("deleteConfirm").onclick=
 ()=>{
 
 stopSpeech();
 
-chats =
+chats=
 chats.filter(
 c=>c.id!==selectedChatId
 );
@@ -2640,7 +3268,7 @@ activeChatId=null;
 
 if(chats.length){
 
-activeChatId =
+activeChatId=
 chats[0].id;
 
 }else{
@@ -2662,29 +3290,47 @@ renderHistory();
 renderMessages();
 
 $("deleteModal")
-.style.display =
-"none";
+.style.display="none";
 
 };
 
 
 /* =========================================================
-   IMAGE
+   IMAGE BUTTON
    ========================================================= */
 
-$("imageBtn").onclick =
+/*
+  Existing button now has two functions without adding
+  another visible button:
+
+  - TEXT PRESENT + no attachment:
+      Generate image
+
+  - NO TEXT:
+      Open image attachment picker
+
+  - Attachment already selected:
+      Selecting another image replaces it.
+*/
+
+$("imageBtn").onclick=
 ()=>{
 
-const prompt =
+const prompt=
 $("messageInput")
 .value
 .trim();
 
+if(pendingAttachment){
+
+$("attachmentInput").click();
+return;
+
+}
+
 if(!prompt){
 
-$("messageInput")
-.focus();
-
+$("attachmentInput").click();
 return;
 
 }
@@ -2697,12 +3343,47 @@ generateImage(prompt);
 
 
 /* =========================================================
+   FILE INPUT
+   ========================================================= */
+
+$("attachmentInput").addEventListener(
+"change",
+async e=>{
+
+const file=
+e.target.files &&
+e.target.files[0];
+
+if(!file)
+return;
+
+await handleAttachment(file);
+
+}
+);
+
+
+/* =========================================================
+   REMOVE ATTACHMENT
+   ========================================================= */
+
+$("removeAttachmentBtn").onclick=
+()=>{
+
+clearAttachment();
+
+$("messageInput").focus();
+
+};
+
+
+/* =========================================================
    VOICE OUTPUT
    ========================================================= */
 
 function updateVoiceButton(){
 
-const button =
+const button=
 $("voiceToggleBtn");
 
 if(!button)
@@ -2714,7 +3395,7 @@ button.classList.add(
 "voice-active"
 );
 
-button.title =
+button.title=
 "Voice reading ON";
 
 }else{
@@ -2723,14 +3404,14 @@ button.classList.remove(
 "voice-active"
 );
 
-button.title =
+button.title=
 "Voice reading OFF";
 
 }
 
 }
 
-$("voiceToggleBtn").onclick =
+$("voiceToggleBtn").onclick=
 ()=>{
 
 if(
@@ -2745,7 +3426,7 @@ return;
 
 }
 
-voiceEnabled =
+voiceEnabled=
 !voiceEnabled;
 
 localStorage.setItem(
@@ -2760,7 +3441,7 @@ stopSpeech();
 
 };
 
-$("stopSpeechBtn").onclick =
+$("stopSpeechBtn").onclick=
 ()=>{
 
 stopSpeech();
@@ -2774,7 +3455,7 @@ stopSpeech();
 
 async function prepareMicrophone(){
 
-const nativeGranted =
+const nativeGranted=
 await requestWebIntoMicrophone();
 
 if(nativeGranted)
@@ -2788,7 +3469,7 @@ typeof navigator.mediaDevices.getUserMedia===
 
 try{
 
-const stream =
+const stream=
 await navigator.mediaDevices
 .getUserMedia({
 audio:true
@@ -2826,28 +3507,28 @@ null;
 
 async function setupVoiceRecognition(){
 
-const SpeechRecognition =
+const SpeechRecognition=
 getSpeechRecognition();
 
 if(!SpeechRecognition)
 return false;
 
-recognition =
+recognition=
 new SpeechRecognition();
 
-recognition.lang =
+recognition.lang=
 "en-IN";
 
-recognition.continuous =
+recognition.continuous=
 false;
 
-recognition.interimResults =
+recognition.interimResults=
 false;
 
-recognition.maxAlternatives =
+recognition.maxAlternatives=
 1;
 
-recognition.onstart =
+recognition.onstart=
 ()=>{
 
 isListening=true;
@@ -2858,15 +3539,15 @@ $("micBtn")
 "voice-active"
 );
 
-$("micBtn").title =
+$("micBtn").title=
 "Listening...";
 
 };
 
-recognition.onresult =
+recognition.onresult=
 event=>{
 
-const result =
+const result=
 event.results &&
 event.results[0] &&
 event.results[0][0];
@@ -2874,16 +3555,16 @@ event.results[0][0];
 if(!result)
 return;
 
-const transcript =
+const transcript=
 result.transcript||"";
 
-const input =
+const input=
 $("messageInput");
 
-const existing =
+const existing=
 input.value.trim();
 
-input.value =
+input.value=
 existing
 ?existing+" "+transcript
 :transcript;
@@ -2896,7 +3577,7 @@ input.focus();
 
 };
 
-recognition.onerror =
+recognition.onerror=
 event=>{
 
 isListening=false;
@@ -2907,7 +3588,7 @@ $("micBtn")
 "voice-active"
 );
 
-$("micBtn").title =
+$("micBtn").title=
 "Voice input";
 
 if(
@@ -2924,7 +3605,7 @@ alert(
 
 };
 
-recognition.onend =
+recognition.onend=
 ()=>{
 
 isListening=false;
@@ -2935,7 +3616,7 @@ $("micBtn")
 "voice-active"
 );
 
-$("micBtn").title =
+$("micBtn").title=
 "Voice input";
 
 };
@@ -2944,15 +3625,13 @@ return true;
 
 }
 
-$("micBtn").onclick =
+$("micBtn").onclick=
 async()=>{
 
 if(isListening){
 
 try{
-
 recognition.stop();
-
 }catch{}
 
 return;
@@ -2962,7 +3641,7 @@ return;
 if(recognitionStarting)
 return;
 
-const SpeechRecognition =
+const SpeechRecognition=
 getSpeechRecognition();
 
 if(!SpeechRecognition){
@@ -2977,17 +3656,17 @@ return;
 
 recognitionStarting=true;
 
-$("micBtn").title =
+$("micBtn").title=
 "Requesting microphone...";
 
-const permission =
+const permission=
 await prepareMicrophone();
 
 if(!permission){
 
 recognitionStarting=false;
 
-$("micBtn").title =
+$("micBtn").title=
 "Voice input";
 
 alert(
@@ -3017,7 +3696,7 @@ $("micBtn")
 "voice-active"
 );
 
-$("micBtn").title =
+$("micBtn").title=
 "Voice input";
 
 console.log(
@@ -3034,7 +3713,7 @@ error
    TOOLS
    ========================================================= */
 
-const toolInstructions = {
+const toolInstructions={
 
 summarize:
 input=>
@@ -3068,12 +3747,12 @@ input
 
 };
 
-$("toolsBtn").onclick =
+$("toolsBtn").onclick=
 e=>{
 
 e.stopPropagation();
 
-const menu =
+const menu=
 $("toolsMenu");
 
 if(
@@ -3085,7 +3764,7 @@ return;
 
 }
 
-const rect =
+const rect=
 $("toolsBtn")
 .getBoundingClientRect();
 
@@ -3099,7 +3778,7 @@ left+width >
 window.innerWidth-8
 ){
 
-left =
+left=
 window.innerWidth-width-8;
 
 }
@@ -3107,13 +3786,13 @@ window.innerWidth-width-8;
 if(top<8)
 top=rect.bottom+8;
 
-menu.style.left =
+menu.style.left=
 left+"px";
 
-menu.style.top =
+menu.style.top=
 top+"px";
 
-menu.style.display =
+menu.style.display=
 "block";
 
 };
@@ -3125,21 +3804,21 @@ document
 .forEach(
 button=>{
 
-button.onclick =
+button.onclick=
 ()=>{
 
-const tool =
+const tool=
 button.dataset.tool;
 
-const input =
+const input=
 $("messageInput");
 
-const current =
+const current=
 input.value.trim();
 
 if(!current){
 
-const examples = {
+const examples={
 
 summarize:
 "Summarize this text:\n\n",
@@ -3161,7 +3840,7 @@ code:
 
 };
 
-input.value =
+input.value=
 examples[tool]||"";
 
 input.focus();
@@ -3172,7 +3851,7 @@ new Event("input")
 
 }else{
 
-const instruction =
+const instruction=
 toolInstructions[tool];
 
 if(instruction){
@@ -3186,8 +3865,7 @@ instruction(current)
 }
 
 $("toolsMenu")
-.style.display =
-"none";
+.style.display="none";
 
 };
 
@@ -3199,30 +3877,28 @@ $("toolsMenu")
    SETTINGS
    ========================================================= */
 
-$("settingsBtn").onclick =
+$("settingsBtn").onclick=
 ()=>{
 
-$("systemPrompt").value =
+$("systemPrompt").value=
 localStorage.getItem(
 SYSTEM_KEY
 )||"";
 
 $("settingsModal")
-.style.display =
-"flex";
+.style.display="flex";
 
 };
 
-$("settingsCancel").onclick =
+$("settingsCancel").onclick=
 ()=>{
 
 $("settingsModal")
-.style.display =
-"none";
+.style.display="none";
 
 };
 
-$("settingsSave").onclick =
+$("settingsSave").onclick=
 ()=>{
 
 localStorage.setItem(
@@ -3231,8 +3907,7 @@ $("systemPrompt").value
 );
 
 $("settingsModal")
-.style.display =
-"none";
+.style.display="none";
 
 };
 
@@ -3245,7 +3920,7 @@ if(
 "speechSynthesis"in window
 ){
 
-speechSynthesis.onvoiceschanged =
+speechSynthesis.onvoiceschanged=
 ()=>{
 
 getSpeechVoices();
@@ -3281,8 +3956,7 @@ renderMessages();
 setTimeout(
 ()=>{
 
-$("loading").style.opacity =
-"0";
+$("loading").style.opacity="0";
 
 setTimeout(
 ()=>$("loading").remove(),
@@ -3324,5 +3998,7 @@ navigator.serviceWorker
 
 startApp();
 
-</script></body>
+</script>
+
+</body>
 </html>
